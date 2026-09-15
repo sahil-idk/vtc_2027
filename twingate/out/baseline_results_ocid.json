@@ -1,0 +1,91 @@
+{
+  "1": {
+    "operator": 1,
+    "calibration_offset_db": -17.00003930089814,
+    "calibration_std_db": 46.39670389075607,
+    "calibration_n_train_rows": 2689,
+    "calibration_anchored_to_3gpp": false,
+    "baseline_val_mae_db": 28.293259042605563,
+    "baseline_val_rmse_db": 56.60756596501347,
+    "n_val_rows": 21249,
+    "n_towers": 70,
+    "position_source_counts": {
+      "ocid_exact": 46,
+      "ocid_enb_sibling": 14,
+      "wcl_fallback": 2,
+      "ocid_eci_notac": 8
+    },
+    "by_device": {
+      "pc1": {
+        "mae": 25.784623079124298,
+        "rmse": 53.06135677010867,
+        "n": 11759
+      },
+      "pc4": {
+        "mae": 31.401694268588297,
+        "rmse": 60.71499960378226,
+        "n": 9490
+      }
+    },
+    "by_position_source": {
+      "ocid_eci_notac": {
+        "mae": 19.883266919010538,
+        "n": 2839
+      },
+      "ocid_enb_sibling": {
+        "mae": 67.39423483068347,
+        "n": 5095
+      },
+      "ocid_exact": {
+        "mae": 15.001326754752705,
+        "n": 12989
+      },
+      "wcl_fallback": {
+        "mae": 20.027628630182356,
+        "n": 326
+      }
+    }
+  },
+  "2": {
+    "operator": 2,
+    "calibration_offset_db": -26.971475645448987,
+    "calibration_std_db": 39.39522406957566,
+    "calibration_n_train_rows": 4271,
+    "calibration_anchored_to_3gpp": false,
+    "baseline_val_mae_db": 15.899860876114037,
+    "baseline_val_rmse_db": 31.4000529014345,
+    "n_val_rows": 22031,
+    "n_towers": 115,
+    "position_source_counts": {
+      "ocid_exact": 35,
+      "wcl_fallback": 23,
+      "ocid_enb_sibling": 57
+    },
+    "by_device": {
+      "pc2": {
+        "mae": 15.65845233241831,
+        "rmse": 30.72260379155218,
+        "n": 10175
+      },
+      "pc3": {
+        "mae": 16.107041369712558,
+        "rmse": 31.970005602090474,
+        "n": 11856
+      }
+    },
+    "by_position_source": {
+      "ocid_enb_sibling": {
+        "mae": 18.026786140362063,
+        "n": 9043
+      },
+      "ocid_exact": {
+        "mae": 13.905043732095066,
+        "n": 8526
+      },
+      "wcl_fallback": {
+        "mae": 15.400987233198508,
+        "n": 4462
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+ts_gps,cell_eci,rsrp_meas,snr_meas,rsrp_raw,rsrp_los,is_los,los_minus_tot,dist_tx_rx_m,dist_veh_tx_m,dist_veh_rx_m,veh_x,veh_y,tx_src
+2021-06-22 10:43:07,26367490,-94.9375,5.099999904632568,-83.48434448242188,-83.48434448242188,True,0.0,3219.1638978314863,3058.3383646635243,217.1751825481122,-2850.0,-450.0,wcl

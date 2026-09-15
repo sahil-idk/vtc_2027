@@ -1,0 +1,12 @@
+{
+  "proxy_a_optimal_threshold_dbm": -116.0,
+  "proxy_a_precision": 0.5162866449511401,
+  "proxy_a_recall": 0.8212435233160622,
+  "proxy_a_f1": 0.634,
+  "proxy_a_fixed110_precision": 0.2595777951524629,
+  "proxy_a_fixed110_recall": 0.8601036269430051,
+  "proxy_a_fixed110_f1": 0.3987987987987988,
+  "proxy_b_total_handovers": 351,
+  "proxy_b_correct": 156,
+  "proxy_b_accuracy": 0.4444444444444444
+}

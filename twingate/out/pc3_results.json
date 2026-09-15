@@ -1,0 +1,18 @@
+{
+  "device": "pc3",
+  "operator": 2,
+  "split": "stratified_80_20",
+  "sentinel_dBm": -100.0,
+  "min_sionna_std_dBm": 1.0,
+  "n_train": 40920,
+  "n_val": 10259,
+  "n_towers_ols": 116,
+  "n_towers_fallback": 9,
+  "mae_global_offset": 10.474241847026875,
+  "mae_per_tower_mean": 6.957209077319234,
+  "mae_per_tower_ols": 6.72657162056008,
+  "rmse_per_tower_ols": 14.572412354511414,
+  "spearman_rho_median": 0.7902087307796548,
+  "alpha_mean": 1.1345852591504708,
+  "alpha_std": 0.6595163966939489
+}

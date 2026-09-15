@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Completeness to Coverage — Gate 1 Field Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d1116;
+    --paper:#eef1f0;
+    --paper-dim:#e2e6e4;
+    --panel-dark:#12171d;
+    --panel-dark-2:#1a212a;
+    --line:#c9d0cc;
+    --line-dark:#2a333d;
+    --teal:#2bb3a3;
+    --teal-soft:#bfe6e0;
+    --amber:#e0a336;
+    --amber-soft:#f4dfb8;
+    --muted:#5c6b68;
+    --muted-dark:#8b98a3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif; font-size:17px; line-height:1.6;
+  }
+  h1,h2,h3{ font-family:'Fraunces', serif; font-weight:700; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  .wrap{ max-width:800px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:radial-gradient(ellipse at 50% -10%, #1c2530 0%, var(--panel-dark) 60%);
+    color:var(--paper); padding:100px 0 80px; position:relative; overflow:hidden;
+  }
+  .hero .wrap{ position:relative; z-index:2; }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--teal); margin-bottom:18px;
+  }
+  .hero h1{ font-size:2.6rem; line-height:1.12; margin:0 0 22px; color:#f5f7f6; max-width:9.5em; }
+  .hero p.lede{ font-size:1.15rem; color:var(--muted-dark); max-width:34em; margin:0 0 8px;}
+  .rings{ position:absolute; right:-140px; top:-60px; width:520px; height:520px; z-index:1; opacity:0.9;}
+  .rings circle{ fill:none; stroke:var(--teal); }
+  @keyframes sweep { from{ stroke-dashoffset:0; } to { stroke-dashoffset:-880; } }
+  .sweep-ring{ stroke-dasharray:6 10; animation:sweep 14s linear infinite; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:64px 0; }
+  section.dark{ background:var(--panel-dark); color:var(--paper); }
+  section.dark h2{ color:#f5f7f6; }
+  .kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--teal); margin:0 0 10px; display:block;
+  }
+  section.dark .kicker{ color:var(--teal); }
+  h2{ font-size:1.7rem; margin:0 0 20px; }
+  h3{ font-size:1.15rem; margin:32px 0 12px; color:var(--ink); }
+  section.dark h3{ color:#e7ece9; }
+  p{ margin:0 0 16px; }
+
+  blockquote{
+    margin:28px 0; padding:20px 24px; background:var(--panel-dark-2); color:#dfe6e2;
+    border-left:3px solid var(--amber); font-size:0.98rem; line-height:1.65;
+  }
+  blockquote cite{ display:block; margin-top:10px; font-size:0.82rem; color:var(--muted-dark); font-style:normal; }
+
+  /* ---------- data callouts ---------- */
+  .finding{
+    background:#fff; border:1px solid var(--line); border-left:4px solid var(--teal);
+    padding:20px 22px; margin:24px 0; border-radius:2px;
+  }
+  .finding.warn{ border-left-color:var(--amber); }
+  .finding .label{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:0.1em; color:var(--muted); margin-bottom:8px; display:block; }
+  .finding .big{ font-family:'Fraunces',serif; font-weight:700; font-size:1.6rem; color:var(--ink); }
+
+  /* ---------- comparison bars ---------- */
+  .barchart{ margin:22px 0 30px; }
+  .barrow{ display:grid; grid-template-columns:180px 1fr 70px; align-items:center; gap:12px; margin-bottom:10px; }
+  .barrow .rowlabel{ font-size:0.86rem; color:var(--muted); }
+  section.dark .barrow .rowlabel{ color:var(--muted-dark); }
+  .bartrack{ background:var(--paper-dim); height:20px; border-radius:3px; overflow:hidden; position:relative; }
+  section.dark .bartrack{ background:var(--line-dark); }
+  .barfill{ height:100%; border-radius:3px; }
+  .barfill.teal{ background:var(--teal); }
+  .barfill.amber{ background:var(--amber); }
+  .barval{ font-family:'IBM Plex Mono',monospace; font-size:0.86rem; text-align:right; }
+
+  /* ---------- tables ---------- */
+  table{ width:100%; border-collapse:collapse; margin:18px 0 8px; font-size:0.92rem; }
+  th,td{ padding:9px 10px; text-align:left; border-bottom:1px solid var(--line); }
+  th{ font-family:'IBM Plex Mono',monospace; font-size:0.74rem; text-transform:uppercase;
+      letter-spacing:0.06em; color:var(--muted); font-weight:500; }
+  td.num, th.num{ font-family:'IBM Plex Mono',monospace; text-align:right; }
+  tr.flag td{ background:rgba(224,163,54,0.10); }
+
+  /* ---------- device coverage cards ---------- */
+  .devgrid{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:26px 0; }
+  @media (max-width:620px){ .devgrid{ grid-template-columns:1fr; } }
+  .devcard{ background:#fff; border:1px solid var(--line); border-radius:4px; padding:18px 20px; }
+  .devcard.flagged{ border-color:var(--amber); box-shadow:0 0 0 1px var(--amber) inset; }
+  .devcard h4{ margin:0 0 4px; font-family:'Fraunces',serif; font-size:1.15rem; }
+  .devcard .sub{ font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--muted); margin-bottom:14px; }
+  .spectrum{ display:flex; height:16px; border-radius:2px; overflow:hidden; margin-bottom:6px; }
+  .spectrum span{ height:100%; }
+  .spectrum-label{ font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--muted); margin-bottom:14px; display:block; }
+  .score-row{ display:flex; justify-content:space-between; align-items:baseline; margin-top:14px; }
+  .score-row .score{ font-family:'Fraunces',serif; font-weight:700; font-size:1.5rem; }
+  .score-row .score.low{ color:var(--amber); }
+  .score-row .score.high{ color:var(--teal); }
+  .score-row .scorelabel{ font-size:0.78rem; color:var(--muted); }
+
+  /* ---------- misc ---------- */
+  ul.tight{ padding-left:20px; margin:0 0 16px; }
+  ul.tight li{ margin-bottom:6px; }
+  .divider{ height:1px; background:var(--line); margin:48px 0; border:none; }
+  section.dark .divider{ background:var(--line-dark); }
+  .caption{ font-size:0.82rem; color:var(--muted); margin-top:6px; }
+  footer{ padding:50px 0 70px; text-align:center; color:var(--muted); font-size:0.86rem; }
+  .pill{ display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:0.72rem;
+    padding:3px 9px; border-radius:99px; background:var(--teal-soft); color:#0f4d46; margin-right:6px; }
+  .pill.amber{ background:var(--amber-soft); color:#6b4a0c; }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <svg class="rings" viewBox="0 0 520 520">
+    <circle cx="380" cy="140" r="60" stroke-width="1.5" opacity="0.35"/>
+    <circle cx="380" cy="140" r="110" stroke-width="1.5" opacity="0.28"/>
+    <circle cx="380" cy="140" r="160" stroke-width="1.5" opacity="0.22"/>
+    <circle cx="380" cy="140" r="210" stroke-width="1.5" opacity="0.16"/>
+    <circle class="sweep-ring" cx="380" cy="140" r="185" stroke-width="2"/>
+  </svg>
+  <div class="wrap">
+    <span class="eyebrow">Gate 1 field report &middot; Berlin V2X cellular dataset</span>
+    <h1>Completeness lied.<br>Coverage tells the truth.</h1>
+    <p class="lede">A controlled experiment built in response to peer review — testing
+    whether "how much data you have" actually predicts digital-twin fidelity. It doesn't.
+    What matters is which physical conditions the data actually spans.</p>
+  </div>
+</div>
+
+<!-- ============ 1. THE CHALLENGE ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker">01 &middot; The challenge</span>
+    <h2>A reviewer asked for the experiment we hadn't run</h2>
+    <p>The original manuscript claimed a 16-percentage-point SUMO accuracy gap between
+    a "complete" device (PC1) and three "incomplete" devices (PC2–PC4), attributed
+    entirely to data completeness. Reviewer 2 wasn't convinced:</p>
+    <blockquote>
+      "PC1 and PC2–PC4 correspond to different vehicles, which may have traversed
+      different routes, environments, and signal conditions. To isolate completeness
+      as the sole cause, a controlled experiment is needed — for example, artificially
+      sub-sampling PC1 to match the completeness level of PC2–PC4 and observing the
+      resulting accuracy drop."
+      <cite>— Reviewer 2, ITSC 2026 review</cite>
+    </blockquote>
+    <p>This report is that experiment — and two more it led to.</p>
+  </div>
+</section>
+
+<!-- ============ 2. EXPERIMENT 1 ============ -->
+<section class="dark">
+  <div class="wrap">
+    <span class="kicker">02 &middot; Experiment 1</span>
+    <h2>Degrading PC1's own completeness to PC4's level</h2>
+    <p>Same vehicle. Same route. Same physical conditions in both arms — the
+    vehicle/route confound is eliminated by construction. A fixed 30% test set
+    (11,540 rows) is scored identically in every condition. The model: a transparent
+    2-parameter log-distance fit per frequency band, predicting RSRP from real
+    distance-to-serving-tower (geolocated via OpenCelliD).</p>
+
+    <h3 style="color:#e7ece9">Result: % of predictions within 6&nbsp;dB of measured RSRP</h3>
+    <div class="barchart">
+      <div class="barrow">
+        <div class="rowlabel">FULL (99.95% complete)</div>
+        <div class="bartrack"><div class="barfill teal" style="width:88.4%"></div></div>
+        <div class="barval">44.19%</div>
+      </div>
+      <div class="barrow">
+        <div class="rowlabel">DEGRADED (79.04%, matched to PC4)</div>
+        <div class="bartrack"><div class="barfill teal" style="width:88.3%"></div></div>
+        <div class="barval">44.13%</div>
+      </div>
+    </div>
+    <p class="caption" style="color:var(--muted-dark)">5 random trials, ±0.02pp. A further sweep down to 2% of the training pool (533 rows) still held ~44% flat.</p>
+
+    <div class="finding warn" style="background:var(--panel-dark-2); border-color:var(--amber);">
+      <span class="label" style="color:var(--amber)">Finding</span>
+      <span class="big" style="color:#f5f7f6">Gap: 0.06 percentage points.</span>
+      <p style="margin:10px 0 0; color:var(--muted-dark)">Removing a fifth of the training
+      data — even down to 2% of it — barely moves accuracy. Row <em>quantity</em> does not
+      explain the original 16pp gap. It was almost certainly the vehicle/route confound
+      the reviewer suspected.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. THE TWIST ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker">03 &middot; A closer look at the mechanism</span>
+    <h2>PC4 didn't lose random rows — it lost a route segment</h2>
+    <p>Before retiring completeness entirely, we checked <em>how</em> PC4 actually lost
+    its data. Two structural checks, run on the real (not synthetic) missingness pattern:</p>
+
+    <table>
+      <tr><th>Check</th><th>Result</th></tr>
+      <tr><td>Co-missingness</td><td>Cell&nbsp;Identity, RSRP, RSRQ, RSSI, SNR all go missing <strong>together</strong> (98.6% agreement) — whole-measurement dropout, not a single blank field</td></tr>
+      <tr><td>Run-length (time-ordered)</td><td><strong>11 distinct gap events</strong> total. Median length 9 rows. <strong>Longest: 9,045 consecutive rows.</strong></td></tr>
+    </table>
+    <p>That's the signature of an equipment or connectivity outage — a tunnel, a dead
+    zone, a logging failure — not thousands of independent random drops. Our Experiment
+    1 test (random single-row removal) tested the wrong failure mode entirely.</p>
+  </div>
+</section>
+
+<!-- ============ 4. EXPERIMENT 2 ============ -->
+<section class="dark">
+  <div class="wrap">
+    <span class="kicker">04 &middot; Experiment 2</span>
+    <h2>Testing the right failure mode: losing a whole regime, not random rows</h2>
+    <p>Same PC1 setup, same fixed test set — but this time removing one contiguous,
+    distance-sorted 21% block of the training pool, in three positions.</p>
+
+    <div class="barchart">
+      <div class="barrow">
+        <div class="rowlabel">No removal (reference)</div>
+        <div class="bartrack"><div class="barfill teal" style="width:88.4%"></div></div>
+        <div class="barval">44.19%</div>
+      </div>
+      <div class="barrow">
+        <div class="rowlabel">Random 21% (MCAR)</div>
+        <div class="bartrack"><div class="barfill teal" style="width:88.3%"></div></div>
+        <div class="barval">44.13%</div>
+      </div>
+      <div class="barrow">
+        <div class="rowlabel">Remove nearest 21%</div>
+        <div class="bartrack"><div class="barfill amber" style="width:86.9%"></div></div>
+        <div class="barval">43.47%</div>
+      </div>
+      <div class="barrow">
+        <div class="rowlabel">Remove middle 21%</div>
+        <div class="bartrack"><div class="barfill teal" style="width:88.1%"></div></div>
+        <div class="barval">44.03%</div>
+      </div>
+      <div class="barrow">
+        <div class="rowlabel">Remove farthest 21% (cell-edge)</div>
+        <div class="bartrack"><div class="barfill amber" style="width:85.3%"></div></div>
+        <div class="barval">42.67%</div>
+      </div>
+    </div>
+
+    <div class="finding" style="background:var(--panel-dark-2); border-color:var(--teal);">
+      <span class="label" style="color:var(--teal)">Finding</span>
+      <span class="big" style="color:#f5f7f6">Losing the cell-edge regime costs ~1.5pp. Losing the same amount at random costs ~0pp.</span>
+      <p style="margin:10px 0 0; color:var(--muted-dark)">Small in magnitude, but real and
+      repeatable. <strong>Which</strong> conditions go missing matters. <strong>How much</strong>
+      data is missing, by itself, mostly doesn't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. COVERAGE SCORE ============ -->
+<section>
+  <div class="wrap">
+    <span class="kicker">05 &middot; The replacement metric</span>
+    <h2>The coverage score</h2>
+    <p>Two entropy-based sub-scores, computed per device, that measure whether the data
+    spans the range of conditions a twin needs — not how many rows exist.</p>
+    <ul class="tight">
+      <li><strong>Distance-bin coverage</strong> — Shannon entropy of row-counts across
+      8 distance-to-tower bins (0–30m … 1000m+), normalized to 1.0 = perfectly even spread.</li>
+      <li><strong>Band-diversity coverage</strong> — same entropy calculation over the
+      frequency bands actually observed.</li>
+    </ul>
+
+    <div class="devgrid">
+      <div class="devcard flagged">
+        <h4>pc1</h4>
+        <div class="sub">38,540 rows &middot; Operator 1</div>
+        <div class="spectrum">
+          <span style="width:96.8%; background:var(--amber);"></span><span style="width:3.2%; background:#d8c084;"></span>
+        </div>
+        <span class="spectrum-label">band mix: 96.8% one band (1800MHz)</span>
+        <div class="score-row">
+          <div><div class="scorelabel">distance coverage</div><div class="mono">0.834</div></div>
+          <div><div class="scorelabel">band diversity</div><div class="mono" style="color:var(--amber)">0.130</div></div>
+          <div><div class="scorelabel">composite</div><div class="score low">0.482</div></div>
+        </div>
+      </div>
+      <div class="devcard">
+        <h4>pc2</h4>
+        <div class="sub">14,167 rows &middot; Operator 2</div>
+        <div class="spectrum">
+          <span style="width:44.9%; background:var(--teal);"></span><span style="width:41.4%; background:#5fcbbd;"></span><span style="width:13.7%; background:#9adfd5;"></span>
+        </div>
+        <span class="spectrum-label">band mix: 3 bands, well balanced</span>
+        <div class="score-row">
+          <div><div class="scorelabel">distance coverage</div><div class="mono">0.797</div></div>
+          <div><div class="scorelabel">band diversity</div><div class="mono" style="color:var(--teal)">0.720</div></div>
+          <div><div class="scorelabel">composite</div><div class="score high">0.759</div></div>
+        </div>
+      </div>
+      <div class="devcard">
+        <h4>pc3</h4>
+        <div class="sub">21,655 rows &middot; Operator 2</div>
+        <div class="spectrum">
+          <span style="width:66.4%; background:var(--teal);"></span><span style="width:29.7%; background:#5fcbbd;"></span><span style="width:3.9%; background:#9adfd5;"></span>
+        </div>
+        <span class="spectrum-label">band mix: 3 bands, moderately balanced</span>
+        <div class="score-row">
+          <div><div class="scorelabel">distance coverage</div><div class="mono">0.830</div></div>
+          <div><div class="scorelabel">band diversity</div><div class="mono" style="color:var(--teal)">0.691</div></div>
+          <div><div class="scorelabel">composite</div><div class="score high">0.761</div></div>
+        </div>
+      </div>
+      <div class="devcard flagged">
+        <h4>pc4</h4>
+        <div class="sub">20,589 rows &middot; Operator 1</div>
+        <div class="spectrum">
+          <span style="width:97.3%; background:var(--amber);"></span><span style="width:2.7%; background:#d8c084;"></span>
+        </div>
+        <span class="spectrum-label">band mix: 97.3% one band (1800MHz)</span>
+        <div class="score-row">
+          <div><div class="scorelabel">distance coverage</div><div class="mono">0.837</div></div>
+          <div><div class="scorelabel">band diversity</div><div class="mono" style="color:var(--amber)">0.180</div></div>
+          <div><div class="scorelabel">composite</div><div class="score low">0.508</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="finding warn">
+      <span class="label">Finding</span>
+      <span class="big">PC1 — ranked "best" at 99.95% completeness — has the worst band coverage in the dataset.</span>
+      <p style="margin:10px 0 0;">Both Operator 1 devices (pc1, pc4) see almost exclusively
+      one band. Operator 2's devices (pc2, pc3) see a genuine multi-band mix. PC1 also has
+      essentially zero far-distance samples — 2 rows beyond 1km, out of 38,540. A
+      completeness metric is structurally blind to both facts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. WHAT CHANGES ============ -->
+<section class="dark">
+  <div class="wrap">
+    <span class="kicker">06 &middot; What changes in Gate 1</span>
+    <h2>The redesign</h2>
+    <table>
+      <tr><th>Old Gate 1</th><th>New Gate 1</th></tr>
+      <tr><td>Completeness % as primary readiness signal</td><td>Demoted to a secondary diagnostic only</td></tr>
+      <tr><td>(no coverage concept)</td><td><strong>Feature-space coverage score</strong> — primary axis</td></tr>
+      <tr><td>(no missingness-mechanism check)</td><td><strong>Structural missingness check</strong> — co-missingness + run-length, flags outage-style gaps distinctly from noise</td></tr>
+      <tr><td>Value / representation checks (V1, V2, V3)</td><td>Unchanged — independently justified, untouched by this analysis</td></tr>
+    </table>
+
+    <h3 style="color:#e7ece9">Open question</h3>
+    <p style="color:var(--muted-dark)">The 50/50 weighting between distance-coverage and
+    band-diversity above is a placeholder, not a fitted result. The principled next step:
+    correlate each sub-score against actual Gate 2 (Sionna RT) fidelity across enough
+    slices to let the weights be derived from evidence — the same "Gate 2 calibrates
+    Gate 1" idea from the original two-gate architecture, now with a concrete metric
+    to calibrate.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="pill">Gate 1 &middot; readiness</span><span class="pill amber">retired: completeness-as-primary</span><span class="pill">promoted: coverage score</span>
+    <p style="margin-top:18px;">See <span class="mono">GATE1_COVERAGE_ANALYSIS.md</span> for full methodology
+    and <span class="mono">05_compute_coverage_score.py</span> for the reusable implementation.</p>
+  </div>
+</footer>
+
+</body>
+</html>

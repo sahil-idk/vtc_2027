@@ -1,0 +1,12 @@
+Op1 (MNC=1): found 97/145 (66.9%)
+  ocid_exact: 70
+  ocid_eci_notac: 11
+  ocid_enb_sibling: 0
+  wcl_fallback: 16
+  MISSING: 48
+Op2 (MNC=2): found 138/186 (74.2%)
+  ocid_exact: 56
+  ocid_eci_notac: 0
+  ocid_enb_sibling: 0
+  wcl_fallback: 82
+  MISSING: 48

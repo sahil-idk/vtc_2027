@@ -1,0 +1,19 @@
+{
+  "device": "pc3",
+  "operator": 2,
+  "experiment": "A19_gate2_final",
+  "dry_run": false,
+  "full_mode": true,
+  "scatter_s": 0.4,
+  "zone_exclusion_applied": true,
+  "zone_exclude_radius_m": 150.0,
+  "n_training_rows_excluded": 867,
+  "n_towers": 65,
+  "wcl_val_mae_weighted": NaN,
+  "refined_val_mae_weighted": NaN,
+  "gain_db": NaN,
+  "n_improved": 61,
+  "total_sionna_calls": 5791,
+  "total_sionna_time_s": 4953.915823459625,
+  "avg_sionna_call_time_s": 0.8554508415575246
+}

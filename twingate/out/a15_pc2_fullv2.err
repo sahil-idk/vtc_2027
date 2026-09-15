@@ -1,0 +1,3 @@
+jitc_llvm_init(): LLVM API initialization failed ..
+C:\Users\sahil\dt-sionna-rt\twingate\A15_tx_position_refinement.py:304: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  rho, _  = spearmanr(x_va, y_va)

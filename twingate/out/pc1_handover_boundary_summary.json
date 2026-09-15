@@ -1,0 +1,9 @@
+{
+  "device": "pc1",
+  "min_persist_s": 10.0,
+  "n_val_transitions": 335,
+  "n_covered": 322,
+  "hda": 0.09937888198757763,
+  "flip_rate": 0.6086956521739131,
+  "mean_margin_correct_db": 6.434141516685486
+}

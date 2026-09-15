@@ -1,0 +1,15 @@
+{
+  "device": "pc3",
+  "n_towers": 115,
+  "full_mode": true,
+  "n_opt_rows": null,
+  "wcl_val_mae_weighted": 6.599055978005192,
+  "refined_val_mae_weighted": 3.2366821298621673,
+  "gain_db": 3.362373848143025,
+  "n_improved": 100,
+  "n_worsened": 8,
+  "delta_m_mean": 63.452970423962704,
+  "delta_m_median": 48.71508186504324,
+  "spearman_wcl_median": 0.7584650067605799,
+  "spearman_refined_median": 0.7545648985035688
+}

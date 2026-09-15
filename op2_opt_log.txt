@@ -1,0 +1,83 @@
+jitc_llvm_init(): LLVM API initialization failed ..
+
+
+=== Operator 2 ===
+  Scene: scene_operator2/scene.xml
+  Fixed offset: -21.196 dB
+  Scene origin: (52.506112, 13.321908)
+
+  --- Tower 2568970 (n_obs=4736) ---
+    WCL=(52.49186,13.30467), 2842 localization rows
+      iter  10: dx=  +13.8 dy=  +81.2  loss=222.6057 dB^2
+      iter  20: dx=  +60.6 dy= +156.9  loss=1000000.0000 dB^2
+      iter  30: dx=  +77.6 dy= +125.0  loss=168.6717 dB^2
+      iter  40: dx=  +95.3 dy= +117.6  loss=1000000.0000 dB^2
+      iter  50: dx= +122.0 dy=  +90.1  loss=1000000.0000 dB^2
+      iter  60: dx= +121.0 dy=  +88.5  loss=155.7207 dB^2
+      iter  70: dx= +127.3 dy=  +79.6  loss=1000000.0000 dB^2
+      iter  80: dx= +135.6 dy=  +64.8  loss=1000000.0000 dB^2
+      iter  90: dx= +134.8 dy=  +65.6  loss=153.2464 dB^2
+      iter 100: dx= +136.3 dy=  +62.8  loss=1000000.0000 dB^2
+      iter 110: dx= +137.4 dy=  +60.1  loss=152.8591 dB^2
+      iter 120: dx= +138.8 dy=  +56.9  loss=1000000.0000 dB^2
+      iter 130: dx= +138.7 dy=  +57.1  loss=1000000.0000 dB^2
+    Displacement: 150.0 m  Converged: True  Evals: 139  Final loss: 152.6752 dB^2
+    WARNING: hit displacement bound -- likely diverging, do not trust
+
+  --- Tower 2819850 (n_obs=4650) ---
+    WCL=(52.50352,13.33962), 2790 localization rows
+      iter  10: dx=  -48.8 dy=  +85.0  loss=1290.0598 dB^2
+      iter  20: dx=  -31.7 dy=  +54.4  loss=398.4529 dB^2
+      iter  30: dx=  -30.3 dy=  +56.2  loss=397.4851 dB^2
+      iter  40: dx=  -29.8 dy=  +55.5  loss=393.3584 dB^2
+      iter  50: dx=  -30.0 dy=  +55.8  loss=392.3060 dB^2
+      iter  60: dx=  -30.0 dy=  +55.8  loss=392.4285 dB^2
+      iter  70: dx=  -30.0 dy=  +55.8  loss=392.3028 dB^2
+    Displacement: 63.4 m  Converged: True  Evals: 71  Final loss: 392.2860 dB^2
+
+  --- Tower 3499534 (n_obs=4074) ---
+    WCL=(52.51155,13.28652), 2444 localization rows
+      iter  10: dx=  -85.0 dy=  +81.2  loss=136.4483 dB^2
+      iter  20: dx= -125.0 dy= +101.2  loss=1000000.0000 dB^2
+      iter  30: dx= -120.6 dy=  +95.0  loss=1000000.0000 dB^2
+      iter  40: dx= -120.7 dy=  +87.9  loss=117.6902 dB^2
+      iter  50: dx= -141.9 dy=  +51.7  loss=1000000.0000 dB^2
+      iter  60: dx= -141.4 dy=  +50.7  loss=1000000.0000 dB^2
+      iter  70: dx= -142.1 dy=  +48.0  loss=114.3023 dB^2
+      iter  80: dx= -142.9 dy=  +45.6  loss=1000000.0000 dB^2
+    Displacement: 150.0 m  Converged: True  Evals: 85  Final loss: 114.2815 dB^2
+    WARNING: hit displacement bound -- likely diverging, do not trust
+
+  --- Tower 2824458 (n_obs=3759) ---
+    WCL=(52.49977,13.31371), 2255 localization rows
+      iter  10: dx=  +81.2 dy=  -85.0  loss=101.5836 dB^2
+      iter  20: dx=  +93.8 dy=  -75.0  loss=99.4047 dB^2
+      iter  30: dx= +121.2 dy=   -5.0  loss=92.5744 dB^2
+      iter  40: dx= +139.5 dy=  +35.6  loss=89.7774 dB^2
+      iter  50: dx= +140.4 dy=  +48.8  loss=89.4573 dB^2
+      iter  60: dx= +141.1 dy=  +51.0  loss=1000000.0000 dB^2
+      iter  70: dx= +140.1 dy=  +53.1  loss=89.3262 dB^2
+    Displacement: 149.8 m  Converged: True  Evals: 70  Final loss: 89.3262 dB^2
+    WARNING: hit displacement bound -- likely diverging, do not trust
+
+  --- Tower 2818312 (n_obs=2963) ---
+    WCL=(52.50210,13.27968), 1778 localization rows
+      iter  10: dx=  -85.0 dy=  +13.8  loss=327.5598 dB^2
+      iter  20: dx= -159.5 dy=  +33.1  loss=1000000.0000 dB^2
+      iter  30: dx= -149.3 dy=  +12.2  loss=290.9595 dB^2
+      iter  40: dx= -142.1 dy=  -55.7  loss=1000000.0000 dB^2
+      iter  50: dx= -142.7 dy=  -44.8  loss=278.9088 dB^2
+      iter  60: dx= -133.1 dy=  -68.7  loss=274.0678 dB^2
+      iter  70: dx= -131.4 dy=  -72.5  loss=1000000.0000 dB^2
+      iter  80: dx= -129.2 dy=  -76.1  loss=272.8466 dB^2
+      iter  90: dx= -128.0 dy=  -78.2  loss=272.5681 dB^2
+      iter 100: dx= -124.6 dy=  -83.7  loss=1000000.0000 dB^2
+      iter 110: dx= -124.2 dy=  -84.1  loss=271.8755 dB^2
+      iter 120: dx= -123.1 dy=  -85.7  loss=1000000.0000 dB^2
+      iter 130: dx= -121.9 dy=  -87.4  loss=1000000.0000 dB^2
+      iter 140: dx= -121.7 dy=  -87.6  loss=1000000.0000 dB^2
+    Displacement: 150.0 m  Converged: True  Evals: 147  Final loss: 271.5494 dB^2
+    WARNING: hit displacement bound -- likely diverging, do not trust
+
+Saved op2_refined_towers_prototype.csv
+

@@ -1,0 +1,23 @@
+# Core data handling
+pandas>=2.0
+numpy>=1.24
+
+# Tower geolocation (OpenCelliD API calls / caching)
+requests>=2.31
+
+# Sionna RT (ray tracing) -- requires a Linux machine, NVIDIA GPU strongly
+# recommended (CPU works for small scenes but is slow). Check your installed
+# version with `pip show sionna` -- the RT API changed across versions; the
+# script comments flag where you may need to adjust calls.
+sionna>=0.19,<1.0
+tensorflow>=2.13,<2.16   # sionna's backend as of the 0.19.x line
+mitsuba>=3.5
+drjit>=0.4
+
+# Geometry / OSM scene prep (if you build the scene via Blender+Blosm,
+# these aren't strictly required, but useful for coordinate conversions)
+pyproj>=3.6
+utm>=0.7
+
+# Plotting for before/after comparison
+matplotlib>=3.7

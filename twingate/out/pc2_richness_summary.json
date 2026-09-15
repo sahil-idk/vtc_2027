@@ -1,0 +1,17 @@
+{
+  "device": "pc2",
+  "n_val_rows": 2044,
+  "n_towers": 36,
+  "los_n": 1898,
+  "los_mean_dbm": -96.47113648326028,
+  "los_std_db": 11.48691889918063,
+  "nlos_n": 146,
+  "nlos_mean_dbm": -95.52990697625812,
+  "nlos_std_db": 7.3977740626513855,
+  "welch_t": -1.4119735331591037,
+  "welch_p": 0.15948700317310985,
+  "corr_taurms_residual": -0.144129373023979,
+  "corr_taurms_residual_p": 5.894088360985866e-11,
+  "corr_nvalid_residual": -0.14319757553351745,
+  "corr_nvalid_residual_p": 7.840264735279303e-11
+}

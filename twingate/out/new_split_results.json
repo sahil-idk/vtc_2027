@@ -1,0 +1,20 @@
+{
+  "1": {
+    "mae_per_tower_linear_new_split": 3.56913644881651,
+    "rmse_per_tower_linear_new_split": 4.930167487954164,
+    "mae_flat_mean_new_split": 4.879256654121426,
+    "mae_wcl_baseline": 10.866130192544071,
+    "n_train": 19048,
+    "n_val": 4836,
+    "median_alpha": 0.749176522595934
+  },
+  "2": {
+    "mae_per_tower_linear_new_split": 5.585703257969686,
+    "rmse_per_tower_linear_new_split": 7.5229530077339115,
+    "mae_flat_mean_new_split": 8.491123571297363,
+    "mae_wcl_baseline": 12.23780464724777,
+    "n_train": 18095,
+    "n_val": 8136,
+    "median_alpha": 1.1535887810080367
+  }
+}

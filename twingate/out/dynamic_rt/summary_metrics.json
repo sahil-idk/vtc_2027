@@ -1,0 +1,14 @@
+{
+  "total_rows": 2572,
+  "towers": 49,
+  "los_fraction": 0.859642301710731,
+  "rsrp_mae_all": 12.871464522961226,
+  "rsrp_rmse_all": 30.69876373246212,
+  "rsrp_bias_all": -23.929774524105603,
+  "snr_mae_thermal": 12.87146452296122,
+  "snr_mae_vs_measured": 12.808868197096777,
+  "rsrp_mae_los": 5.554677302179661,
+  "rsrp_mae_nlos": 48.86616788680744,
+  "noise_floor_dbm": -97.0,
+  "snr_note": "snr_mae_vs_measured uses PCell_SNR_1 from drive-test logs (SINR, includes interference)"
+}

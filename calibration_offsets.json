@@ -1,0 +1,14 @@
+{
+  "1": {
+    "operator": 1,
+    "offset_db": -27.99,
+    "std_db": 34.067,
+    "n_samples": 480
+  },
+  "2": {
+    "operator": 2,
+    "offset_db": -21.196,
+    "std_db": 30.928,
+    "n_samples": 360
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "1": {
+    "mae_per_tower_linear": 3.460437214993586,
+    "rmse_per_tower_linear": 4.95354788429062,
+    "mae_flat_mean": 4.622399648472758,
+    "mae_wcl_baseline": 10.866130192544071,
+    "improvement_vs_flat": 1.161962433479172,
+    "improvement_vs_wcl": 7.405692977550485,
+    "median_alpha": 0.8865514047858094,
+    "median_r": 0.7178213624458437,
+    "verdict": "SIONNA LINEAR BEATS FLAT MEAN: genuine spatial contribution!"
+  },
+  "2": {
+    "mae_per_tower_linear": 5.11171078226529,
+    "rmse_per_tower_linear": 6.804331841394282,
+    "mae_flat_mean": 7.74085700325231,
+    "mae_wcl_baseline": 12.23780464724777,
+    "improvement_vs_flat": 2.6291462209870193,
+    "improvement_vs_wcl": 7.12609386498248,
+    "median_alpha": 1.2580267556731861,
+    "median_r": 0.775356109373491,
+    "verdict": "SIONNA LINEAR BEATS FLAT MEAN: genuine spatial contribution!"
+  }
+}

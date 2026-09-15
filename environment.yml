@@ -1,0 +1,17 @@
+name: sionna_dtquest
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas>=2.0
+  - numpy>=1.24
+  - requests>=2.31
+  - pyproj>=3.6
+  - matplotlib>=3.7
+  - pip
+  - pip:
+      - sionna>=0.19,<1.0
+      - tensorflow>=2.13,<2.16
+      - mitsuba>=3.5
+      - drjit>=0.4
+      - utm>=0.7

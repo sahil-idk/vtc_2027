@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DT-QUEST — A Digital-Twin Readiness Benchmark</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/theme/white.css" id="theme">
+<style>
+  :root{ --ink:#12263a; --accent:#0b6bcb; --accent2:#1a7f5a; --warn:#b9770e; --bad:#b3261e; --muted:#5b6b7b; }
+  .reveal{ font-size:29px; color:var(--ink); }
+  .reveal h1{ font-size:1.5em; color:var(--ink); }
+  .reveal h2{ font-size:1.1em; color:var(--accent); text-transform:none; letter-spacing:0; }
+  .reveal h3{ font-size:0.88em; color:var(--accent2); text-transform:none; }
+  .reveal section{ text-align:left; }
+  .reveal section.center{ text-align:center; }
+  .reveal p,.reveal li{ line-height:1.35; }
+  .reveal ul{ margin-left:0.6em; }
+  .reveal em{ color:var(--accent); font-style:normal; font-weight:600; }
+  .reveal table{ font-size:0.5em; border-collapse:collapse; }
+  .reveal table th{ background:#eef4fb; color:var(--ink); border-bottom:2px solid var(--accent); }
+  .reveal table td,.reveal table th{ padding:.24em .45em; border-bottom:1px solid #dfe6ee; }
+  .small{ font-size:0.6em; color:var(--muted); }
+  .tiny{ font-size:0.48em; color:var(--muted); }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:.7em; }
+  .card{ background:#f6f9fc; border:1px solid #dbe6f0; border-radius:10px; padding:.5em .7em; }
+  .card h3{ margin:.1em 0 .25em; }
+  .arch{ display:flex; flex-direction:column; align-items:center; gap:.22em; margin-top:.2em; }
+  .row{ display:flex; gap:.5em; justify-content:center; width:100%; }
+  .box{ background:#eef4fb; border:2px solid var(--accent); border-radius:10px; padding:.4em .6em; text-align:center; font-size:.56em; flex:1; }
+  .box.alt{ background:#eefaf4; border-color:var(--accent2); }
+  .box.out{ background:#fff7ea; border-color:var(--warn); }
+  .box b{ display:block; font-size:1.05em; }
+  .arrow{ color:var(--accent); font-size:.85em; line-height:1; }
+  .kpi{ color:var(--accent); font-weight:700; }
+  .pill{ display:inline-block; font-size:.48em; padding:.1em .45em; border-radius:999px; color:#fff; vertical-align:middle; margin-right:.3em; }
+  .p-teal{ background:var(--accent2); } .p-blue{ background:var(--accent); } .p-amber{ background:var(--warn); }
+  .rt-fig{ display:flex; align-items:center; justify-content:center; gap:.6em; margin:.5em 0; font-size:.6em; }
+  .rt-node{ background:#eef4fb; border:2px solid var(--accent); border-radius:8px; padding:.35em .6em; text-align:center; }
+  .rt-node.rx{ background:#eefaf4; border-color:var(--accent2); }
+  .rt-path{ font-size:.85em; color:var(--muted); }
+  code{ font-size:0.95em; background:#eef4fb; padding:0 .2em; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- 1 TITLE -->
+<section class="center">
+  <h1>DT-QUEST</h1>
+  <p class="small" style="font-size:1.05em">A benchmark for digital-twin readiness in V2X datasets</p>
+  <p class="small">Berlin V2X cellular data &middot; Gate 1 cleaning &middot; Gate 2 physics validation via Sionna RT</p>
+</section>
+
+<!-- 2 FRAMING -->
+<section>
+  <h2>What we're building</h2>
+  <p>Not a one-off cleaning of a single dataset — a <em>reusable benchmark protocol</em> for asking:
+  "is this V2X dataset fit to build a reliable digital twin from?"</p>
+  <div class="two" style="margin-top:.6em">
+    <div class="card"><h3>Gate 1 — readiness</h3><p class="small">Does the raw data itself hold up? Value correctness, representation, structure.</p></div>
+    <div class="card"><h3>Gate 2 — fidelity</h3><p class="small">Does an independent physics reconstruction (Sionna RT) agree with what was measured?</p></div>
+  </div>
+  <p class="small" style="margin-top:.5em">The benchmark's real claim: a readiness signal computed <em>without</em> ever running Sionna should predict Gate-2 fidelity. That's what makes it a benchmark, not a checklist.</p>
+</section>
+
+<!-- 3 THE DATASET -->
+<section>
+  <h2>The dataset — Berlin V2X, cellular (V2I)</h2>
+  <table>
+    <tr><th>Property</th><th>Value</th></tr>
+    <tr><td>Records</td><td>207,434 cellular (LTE Uu) rows</td></tr>
+    <tr><td>Operators</td><td>2, each with 2 devices (PC1+PC4 = Op1, PC2+PC3 = Op2)</td></tr>
+    <tr><td>Per-row content</td><td>real GPS position, serving cell ID, RSRP/RSRQ/RSSI/SNR, frequency band</td></tr>
+    <tr><td>Not in the dataset</td><td>tower's own physical position (UE-side logging can't see this)</td></tr>
+  </table>
+  <p class="small" style="margin-top:.5em">This last row is the structural reason Gate 2 needs its own position-estimation step before any ray tracing can happen — covered in the flow next.</p>
+</section>
+
+<!-- 4 FLOW DIAGRAM -->
+<section>
+  <h2>From raw data to Sionna RT</h2>
+  <div class="arch">
+    <div class="row"><div class="box"><b>Raw Berlin V2X</b>207,434 rows &middot; GPS + cell ID + RF metrics</div></div>
+    <div class="arrow">&#9660;</div>
+    <div class="row"><div class="box alt" style="flex:0 0 78%"><b>Gate 1 &middot; cleaning</b>value &amp; representation checks against corrected 3GPP bounds &middot; structural missingness</div></div>
+    <div class="arrow">&#9660;</div>
+    <div class="row"><div class="box alt" style="flex:0 0 78%"><b>Tower position estimation</b>RSRP-weighted centroid per cell &middot; localization/validation split &middot; consistency-checked</div></div>
+    <div class="arrow">&#9660;</div>
+    <div class="row"><div class="box" style="flex:0 0 78%"><b>Feed to Sionna RT</b>OSM building geometry &middot; estimated tower + real receiver positions &middot; ray trace</div></div>
+    <div class="arrow">&#9660;</div>
+    <div class="row"><div class="box out" style="flex:0 0 78%"><b>Gate 2 &middot; comparison</b>calibrate &middot; diagnose &middot; stratified fidelity vs measured RSRP</div></div>
+  </div>
+</section>
+
+<!-- 5 HOW SIONNA RT WORKS -->
+<section>
+  <h2>How Sionna RT works, concretely</h2>
+  <p class="small">A ray tracer needs an explicit 3D position for both ends of a link — this is physics, not a design choice.</p>
+  <div class="rt-fig">
+    <div class="rt-node"><b>Transmitter</b><span class="tiny">estimated tower position</span></div>
+    <div class="rt-path">&#8594; LOS<br>&#8594; reflection<br>&#8594; diffraction</div>
+    <div class="rt-node rx"><b>Receiver</b><span class="tiny">real vehicle GPS position</span></div>
+  </div>
+  <ul class="small">
+    <li>The scene: OSM building footprints, extruded to simple boxes with a concrete-like material model</li>
+    <li>For each valid path found, Sionna returns a complex amplitude + delay</li>
+    <li>Sum path power &rarr; one predicted received-power number per receiver, per tower</li>
+    <li>Compared against real measured RSRP, after a calibration step (Sionna's power isn't on an absolute dBm scale by default)</li>
+  </ul>
+</section>
+
+<!-- 5b SIONNA RT API DETAILS -->
+<section>
+  <h2>The exact Sionna RT calls we make</h2>
+  <p class="tiny"><code>from sionna.rt import PlanarArray, PathSolver, Receiver, Transmitter, load_scene</code></p>
+  <table>
+    <tr><th>Call</th><th>Parameters we pass</th><th>Why / what it enables</th></tr>
+    <tr><td><code>load_scene()</code></td><td>OSM scene XML, <code>merge_shapes=True</code></td><td>real building geometry so rays can actually be blocked/reflected</td></tr>
+    <tr><td><code>PlanarArray()</code> &times;2</td><td>1&times;1, <code>tr38901</code> (tx) / <code>dipole</code> (rx)</td><td>antenna radiation pattern — shapes directional gain</td></tr>
+    <tr><td><code>Transmitter()</code></td><td>estimated tower position, height 25m</td><td class="kpi">needs a real 3D point Sionna itself can't supply</td></tr>
+    <tr><td><code>Receiver()</code></td><td>real vehicle GPS, height 1.5m</td><td>uses the dataset's own trustworthy GPS directly</td></tr>
+    <tr><td><code>scene.frequency</code></td><td>per-row <code>PCell_freq_MHz</code> &rarr; Hz</td><td>wavelength changes how strongly buildings block/reflect</td></tr>
+    <tr><td><code>PathSolver()</code></td><td><code>max_depth=6</code>, diffraction on, diffuse/refraction off</td><td>controls which propagation mechanisms get modeled</td></tr>
+    <tr><td><code>paths.cir()</code></td><td>amplitude + delay per path</td><td>summed to received power, compared against measured RSRP</td></tr>
+  </table>
+  <p class="small" style="margin-top:.4em"><code>Transmitter()</code> is the one call that needs a position the dataset never provides — that's exactly why the tower-estimation step exists, covered next.</p>
+</section>
+
+<!-- 6a TOWER ESTIMATION METHOD -->
+<section>
+  <h2>How we estimate tower positions</h2>
+  <p class="small">The dataset never logs a tower's own position — only the vehicle's. So we estimate it directly from the data itself: <em>Weighted Centroid Localization (WCL)</em>.</p>
+  <ul class="small">
+    <li>Every row connected to a given cell is a real GPS fix "near" that tower</li>
+    <li>Weight each fix by its linear signal power (stronger RSRP &rarr; closer to tower)</li>
+    <li>Take the weighted-average position across all fixes for that cell</li>
+  </ul>
+  <div class="card" style="margin-top:.4em">
+    <h3>Avoiding circularity</h3>
+    <p class="small">Each cell's rows are split into a disjoint <em>localization set</em> (60%, estimates the position) and <em>validation set</em> (40%, held out for Sionna comparison later) — never both from the same rows.</p>
+  </div>
+  <div class="card" style="margin-top:.4em">
+    <h3>Consistency check</h3>
+    <p class="small">No independent ground truth exists, so we test physical plausibility instead: does RSRP get weaker with distance from the estimated position, as it should? Correlation more negative than <span class="kpi">&minus;0.1</span> &rarr; high confidence; otherwise flagged low.</p>
+  </div>
+</section>
+
+<!-- 6b TOWER ESTIMATION RESULTS -->
+<section>
+  <h2>Results — Berlin V2X cellular run</h2>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Gate-1-clean rows with valid cell ID, GPS, RSRP</td><td>192,296 / 207,434</td></tr>
+    <tr><td>Towers estimated</td><td class="kpi">267</td></tr>
+    <tr><td>Towers skipped (insufficient data, not guessed)</td><td>58</td></tr>
+    <tr><td>Flagged low-confidence (failed consistency check)</td><td>22 / 267 (~8%)</td></tr>
+  </table>
+  <div class="two" style="margin-top:.5em">
+    <div class="card"><h3>Operator 1</h3><p class="small">119 towers &middot; 10 low-confidence<br>median spread <span class="kpi">35.4m</span> &middot; median correlation <span class="kpi">&minus;0.736</span></p></div>
+    <div class="card"><h3>Operator 2</h3><p class="small">148 towers &middot; 12 low-confidence<br>median spread <span class="kpi">31.6m</span> &middot; median correlation <span class="kpi">&minus;0.768</span></p></div>
+  </div>
+  <p class="small" style="margin-top:.5em">Row split: <span class="kpi">115,204</span> localization &middot; <span class="kpi">76,614</span> validation &middot; <span class="kpi">15,616</span> excluded. Strongly negative correlations on both operators support the estimates being physically sensible, not arbitrary.</p>
+</section>
+
+<!-- 6c SIONNA RUN RESULTS -->
+<section>
+  <h2>Results — Sionna RT run (n=1000 sampled per operator)</h2>
+  <table>
+    <tr><th>Metric</th><th>Operator 1</th><th>Operator 2</th></tr>
+    <tr><td>Buildings fetched (OSM)</td><td>1,152</td><td>735</td></tr>
+    <tr><td>Zero-path failure rate</td><td>24.1%</td><td class="kpi">55.5%</td></tr>
+    <tr><td>Median failure distance</td><td>67m</td><td class="kpi">167m</td></tr>
+    <tr><td>Successful predictions</td><td>759 / 1000</td><td>445 / 1000</td></tr>
+  </table>
+  <div class="card" style="margin-top:.5em">
+    <h3>An asymmetry worth investigating</h3>
+    <p class="small">Op2 fails more than twice as often, at meaningfully longer range. Per the diagnostic's own logic: failures concentrated <em>above</em> the typical distance suggest a genuine scene-fidelity gap (worth <code>--diffuse-reflection</code> or higher <code>--max-depth</code>) rather than normal geometric noise — Op1's pattern (close-in, occasional) looks like noise; Op2's doesn't.</p>
+  </div>
+  <p class="small" style="margin-top:.4em">Op2 also hit a transient Overpass 504 timeout, recovered on retry — the retry logic worked, but this is also why Op2 fetched fewer buildings for a similar-sized area.</p>
+</section>
+
+<!-- 7 THE KNOBS -->
+<section>
+  <h2>The knobs in the benchmark design</h2>
+  <div class="two">
+    <div class="card">
+      <h3>Physical ray-tracing knobs</h3>
+      <table>
+        <tr><td>max ray depth</td><td class="small">bounce/diffraction budget</td></tr>
+        <tr><td>diffraction on/off</td><td class="small">shadowed-receiver paths</td></tr>
+        <tr><td>diffuse reflection</td><td class="small">rough-surface scattering</td></tr>
+        <tr><td>sample size</td><td class="small">receivers traced per run</td></tr>
+        <tr><td>localization fraction</td><td class="small">tower-estimation split</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Diagnostic metric knobs</h3>
+      <table>
+        <tr><td>tower confidence</td><td class="small">RSRP-distance consistency</td></tr>
+        <tr><td>zero-path rate</td><td class="small">scene-fidelity signal</td></tr>
+        <tr><td>calibration sanity</td><td class="small">cross-operator offset check</td></tr>
+        <tr><td>stratification dims</td><td class="small">device, distance regime</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="small" style="margin-top:.4em">Every knob here is tunable precisely because we've hit a real bug behind each one — none are hypothetical.</p>
+</section>
+
+<!-- 8 NEXT STEPS -->
+<section>
+  <h2>Next steps</h2>
+  <ol class="small">
+    <li>Lock the Tier 1 (diagnostics) / Tier 2 (stratified fidelity) / Tier 3 (adjusted composite) metric schema</li>
+    <li>Run the readiness &rarr; fidelity correlation at scale, across devices and distance regimes</li>
+    <li>Test whether the benchmark protocol itself generalizes to a second V2X dataset</li>
+    <li>Formalize as a submittable benchmark contribution, not a single-dataset case study</li>
+  </ol>
+</section>
+
+<!-- 9 REFERENCES -->
+<section>
+  <h2>References</h2>
+  <p class="small"><span class="pill p-blue">DT readiness term</span>Wiedner, W. et al. <em>The Vienna 4G/5G Drive-Test Dataset.</em> arXiv:2603.02638, 2026. — defines "DT readiness" as joint availability of deployment metadata + environmental context; a checklist notion we build a fidelity-based alternative to.</p>
+  <p class="small"><span class="pill p-teal">Physics oracle</span>Hoydis, J. et al. <em>Sionna RT: Differentiable Ray Tracing for Radio Propagation Modeling.</em> IEEE Globecom Workshops, 2023.</p>
+  <p class="small"><span class="pill p-teal">Tower localization precedent</span>Eller, L. et al. <em>Localizing Basestations From End-User Timing Advance Measurements.</em> IEEE Access, 2022. — TA-based method; not applicable to Berlin (no TA field), motivating our RSRP-weighted centroid fallback.</p>
+  <p class="small"><span class="pill p-amber">Ray-tracer position calibration</span><em>Site-Specific Location Calibration and Validation of Ray-Tracing Simulator NYURay.</em> arXiv:2507.22027, 2025.</p>
+</section>
+
+</div></div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({ hash:true, slideNumber:'c/t', width:1180, height:740, margin:0.06 });
+</script>
+</body>
+</html>

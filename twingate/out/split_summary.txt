@@ -1,0 +1,13 @@
+TWINGATE Gate 2 — Split & Leakage Check
+Train dates: {'2021-06-22', '2021-06-23'}
+Val date  : 2021-06-24
+Train rows: 158,579
+Val rows  : 46,363
+Overlap   : 0 — PASS
+
+split            train  unknown    val
+operator device                       
+1        pc1     39374      689  20145
+         pc4     39667      525   3154
+2        pc2     39725      579   3154
+         pc3     39813      699  19910

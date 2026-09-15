@@ -1,0 +1,408 @@
+﻿python : jitc_llvm_init(): LLVM API initialization failed ..
+At line:1 char:336
++ ... sionna-rt"; python twingate/A07_sionna_inverse_localization.py 2>&1 | ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (jitc_llvm_init(...ation failed ..:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+A07 Sionna Inverse Localization
+============================================================
+
+============================================================
+Operator 1  --  Inverse Localization
+============================================================
+  Towers to optimize: 30 (of 144 total, covering 16468 / 21869 val rows)
+
+  -- Tower 26947072  [wcl_fallback]  n_train=3047  n_val=1472
+     Init pos: (52.49205, 13.30468)
+    Grid search 5x5...
+    Grid best: offset=(+0,+300) m  loss=211.846 dB^2
+      NM iter  20: d=(+8,+288) m  loss=1066.9461 dB^2
+      NM iter  40: d=(+19,+271) m  loss=80.2633 dB^2
+     Refined:  (52.49447, 13.30500)  disp=270 m
+     Train MAE (refined): 6.201 dB  NM iters=23
+
+  -- Tower 28650241  [ocid_exact]  n_train=2354  n_val=1025
+     Init pos: (52.49790, 13.30730)
+    Grid search 5x5...
+    Grid best: offset=(+0,-150) m  loss=64.857 dB^2
+      NM iter  20: d=(+40,-50) m  loss=23.6732 dB^2
+      NM iter  40: d=(+54,-77) m  loss=15.2525 dB^2
+      NM iter  60: d=(+54,-78) m  loss=14.9905 dB^2
+     Refined:  (52.49720, 13.30810)  disp=95 m
+     Train MAE (refined): 3.003 dB  NM iters=28
+
+  -- Tower 26368258  [wcl_fallback]  n_train=1695  n_val=1007
+     Init pos: (52.49949, 13.31271)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=18.811 dB^2
+      NM iter  20: d=(-4,-10) m  loss=18.3219 dB^2
+     Refined:  (52.49942, 13.31270)  disp=8 m
+     Train MAE (refined): 3.327 dB  NM iters=15
+
+  -- Tower 26947074  [ocid_exact]  n_train=1532  n_val=994
+     Init pos: (52.49300, 13.29780)
+    Grid search 5x5...
+    Grid best: offset=(-150,+0) m  loss=36.026 dB^2
+      NM iter  20: d=(-147,-39) m  loss=33.7350 dB^2
+      NM iter  40: d=(-125,-52) m  loss=26.1128 dB^2
+     Refined:  (52.49253, 13.29595)  disp=136 m
+     Train MAE (refined): 4.088 dB  NM iters=24
+
+  -- Tower 26356993  [ocid_eci_notac]  n_train=1864  n_val=985
+     Init pos: (52.51200, 13.28700)
+    Grid search 5x5...
+    Grid best: offset=(-300,+300) m  loss=16.457 dB^2
+      NM iter  20: d=(-402,+152) m  loss=16.2399 dB^2
+      NM iter  40: d=(-402,+154) m  loss=16.2401 dB^2
+     Refined:  (52.51337, 13.28107)  disp=429 m
+     Train MAE (refined): 3.118 dB  NM iters=19
+
+  -- Tower 26359554  [ocid_exact]  n_train=1377  n_val=646
+     Init pos: (52.50510, 13.33320)
+    Grid search 5x5...
+    Grid best: offset=(+150,+0) m  loss=42.698 dB^2
+      NM iter  20: d=(+176,-67) m  loss=22.1429 dB^2
+     Refined:  (52.50439, 13.33572)  disp=188 m
+     Train MAE (refined): 3.594 dB  NM iters=16
+
+  -- Tower 26358785  [wcl_fallback]  n_train=1911  n_val=607
+     Init pos: (52.50386, 13.34005)
+    Grid search 5x5...
+    Grid best: offset=(+0,+150) m  loss=21.823 dB^2
+      NM iter  20: d=(+8,+97) m  loss=19.2826 dB^2
+     Refined:  (52.50469, 13.34016)  disp=92 m
+     Train MAE (refined): 3.349 dB  NM iters=18
+
+  -- Tower 40782336  [ocid_exact]  n_train=2521  n_val=601
+     Init pos: (52.48940, 13.30310)
+    Grid search 5x5...
+    Grid best: offset=(+0,-150) m  loss=80.634 dB^2
+      NM iter  20: d=(-91,-56) m  loss=53.3196 dB^2
+      NM iter  40: d=(-90,-59) m  loss=52.7129 dB^2
+     Refined:  (52.48886, 13.30177)  disp=108 m
+     Train MAE (refined): 5.126 dB  NM iters=20
+
+  -- Tower 29127682  [ocid_exact]  n_train=1398  n_val=586
+     Init pos: (52.51250, 13.31660)
+    Grid search 5x5...
+    Grid best: offset=(-150,+0) m  loss=10.789 dB^2
+      NM iter  20: d=(-187,+8) m  loss=9.6179 dB^2
+     Refined:  (52.51261, 13.31381)  disp=190 m
+     Train MAE (refined): 2.289 dB  NM iters=14
+
+  -- Tower 26947073  [wcl_fallback]  n_train=401  n_val=553
+     Init pos: (52.48964, 13.29818)
+    Grid search 5x5...
+    Grid best: offset=(+0,-150) m  loss=8.792 dB^2
+      NM iter  20: d=(+80,-250) m  loss=7.7401 dB^2
+     Refined:  (52.48737, 13.29938)  disp=266 m
+     Train MAE (refined): 2.017 dB  NM iters=17
+
+  -- Tower 26349058  [ocid_exact]  n_train=1478  n_val=545
+     Init pos: (52.50870, 13.36450)
+    Grid search 5x5...
+    Grid best: offset=(-150,+300) m  loss=13.001 dB^2
+      NM iter  20: d=(-129,+278) m  loss=12.6489 dB^2
+     Refined:  (52.51118, 13.36263)  disp=304 m
+     Train MAE (refined): 2.598 dB  NM iters=13
+
+  -- Tower 26358784  [ocid_exact]  n_train=2948  n_val=542
+     Init pos: (52.50500, 13.34160)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=24.921 dB^2
+      NM iter  20: d=(-10,+79) m  loss=16.3724 dB^2
+     Refined:  (52.50570, 13.34147)  disp=78 m
+     Train MAE (refined): 2.688 dB  NM iters=12
+
+  -- Tower 26365185  [ocid_exact]  n_train=1332  n_val=529
+     Init pos: (52.51160, 13.30410)
+    Grid search 5x5...
+    Grid best: offset=(-300,+300) m  loss=19.360 dB^2
+      NM iter  20: d=(-499,+237) m  loss=18.9667 dB^2
+      NM iter  40: d=(-516,+230) m  loss=18.9473 dB^2
+     Refined:  (52.51366, 13.29646)  disp=565 m
+     Train MAE (refined): 3.917 dB  NM iters=20
+
+  -- Tower 33802242  [ocid_exact]  n_train=1522  n_val=523
+     Init pos: (52.51270, 13.33440)
+    Grid search 5x5...
+    Grid best: offset=(+150,+150) m  loss=48.523 dB^2
+      NM iter  20: d=(+103,+155) m  loss=43.5575 dB^2
+     Refined:  (52.51408, 13.33588)  disp=183 m
+     Train MAE (refined): 5.408 dB  NM iters=15
+
+  -- Tower 30829824  [ocid_exact]  n_train=1163  n_val=496
+     Init pos: (52.51460, 13.35090)
+    Grid search 5x5...
+    Grid best: offset=(-150,+0) m  loss=19.317 dB^2
+      NM iter  20: d=(-136,-45) m  loss=15.5594 dB^2
+     Refined:  (52.51432, 13.34884)  disp=143 m
+     Train MAE (refined): 2.914 dB  NM iters=15
+
+  -- Tower 29127681  [ocid_exact]  n_train=1334  n_val=438
+     Init pos: (52.51230, 13.32440)
+    Grid search 5x5...
+    Grid best: offset=(-150,-150) m  loss=13.771 dB^2
+      NM iter  20: d=(-73,-125) m  loss=12.0804 dB^2
+     Refined:  (52.51117, 13.32327)  disp=147 m
+     Train MAE (refined): 2.897 dB  NM iters=16
+
+  -- Tower 26365186  [ocid_exact]  n_train=1129  n_val=428
+     Init pos: (52.51050, 13.29330)
+    Grid search 5x5...
+    Grid best: offset=(+150,+150) m  loss=10.299 dB^2
+      NM iter  20: d=(+142,+143) m  loss=10.2548 dB^2
+     Refined:  (52.51181, 13.29539)  disp=203 m
+     Train MAE (refined): 2.662 dB  NM iters=14
+
+  -- Tower 40812800  [ocid_eci_notac]  n_train=1939  n_val=415
+     Init pos: (52.50920, 13.28310)
+    Grid search 5x5...
+    Grid best: offset=(+300,-300) m  loss=46.964 dB^2
+      NM iter  20: d=(+248,-435) m  loss=44.4834 dB^2
+      NM iter  40: d=(+269,-458) m  loss=44.4171 dB^2
+     Refined:  (52.50507, 13.28707)  disp=531 m
+     Train MAE (refined): 5.232 dB  NM iters=22
+
+  -- Tower 28792066  [ocid_exact]  n_train=1255  n_val=406
+     Init pos: (52.49300, 13.31090)
+    Grid search 5x5...
+    Grid best: offset=(+0,-300) m  loss=1881.019 dB^2
+      NM iter  20: d=(+4,-339) m  loss=1585.0426 dB^2
+     Refined:  (52.48962, 13.31091)  disp=376 m
+     Train MAE (refined): 5.148 dB  NM iters=18
+
+  -- Tower 26369024  [ocid_exact]  n_train=2643  n_val=384
+     Init pos: (52.50900, 13.35220)
+    Grid search 5x5...
+    Grid best: offset=(-150,+300) m  loss=7.041 dB^2
+      NM iter  20: d=(-99,+265) m  loss=6.7109 dB^2
+     Refined:  (52.51136, 13.35075)  disp=280 m
+     Train MAE (refined): 2.195 dB  NM iters=15
+
+  -- Tower 26607105  [ocid_exact]  n_train=1585  n_val=375
+     Init pos: (52.51580, 13.38000)
+    Grid search 5x5...
+    Grid best: offset=(-150,-150) m  loss=24.010 dB^2
+      NM iter  20: d=(-136,-190) m  loss=22.0130 dB^2
+     Refined:  (52.51411, 13.37808)  disp=229 m
+     Train MAE (refined): 4.052 dB  NM iters=13
+
+  -- Tower 26353920  [ocid_eci_notac]  n_train=891  n_val=369
+     Init pos: (52.51340, 13.28830)
+    Grid search 5x5...
+    Grid best: offset=(+150,-300) m  loss=6.513 dB^2
+      NM iter  20: d=(+139,-344) m  loss=3.7457 dB^2
+     Refined:  (52.51032, 13.29038)  disp=370 m
+     Train MAE (refined): 1.525 dB  NM iters=18
+
+  -- Tower 26795520  [ocid_exact]  n_train=1156  n_val=358
+     Init pos: (52.50060, 13.33150)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=9.796 dB^2
+      NM iter  20: d=(-11,-40) m  loss=4.6037 dB^2
+     Refined:  (52.50028, 13.33128)  disp=39 m
+     Train MAE (refined): 1.765 dB  NM iters=18
+
+  -- Tower 34210562  [ocid_eci_notac]  n_train=938  n_val=358
+     Init pos: (52.49830, 13.28130)
+    Grid search 5x5...
+    Grid best: offset=(+150,+0) m  loss=21.486 dB^2
+      NM iter  20: d=(+114,-42) m  loss=15.6810 dB^2
+      NM iter  40: d=(+120,-50) m  loss=15.4133 dB^2
+     Refined:  (52.49785, 13.28308)  disp=130 m
+     Train MAE (refined): 2.719 dB  NM iters=22
+
+  -- Tower 30827264  [ocid_exact]  n_train=1190  n_val=352
+     Init pos: (52.51620, 13.38010)
+    Grid search 5x5...
+    Grid best: offset=(-300,+0) m  loss=27.425 dB^2
+      NM iter  20: d=(-242,-11) m  loss=20.8113 dB^2
+     Refined:  (52.51619, 13.37650)  disp=244 m
+     Train MAE (refined): 3.560 dB  NM iters=17
+
+  -- Tower 26367489  [ocid_exact]  n_train=876  n_val=316
+     Init pos: (52.51420, 13.33030)
+    Grid search 5x5...
+    Grid best: offset=(-150,+150) m  loss=34.980 dB^2
+      NM iter  20: d=(-125,+95) m  loss=33.3713 dB^2
+     Refined:  (52.51507, 13.32836)  disp=163 m
+     Train MAE (refined): 4.706 dB  NM iters=18
+
+  -- Tower 26367744  [wcl_fallback]  n_train=892  n_val=312
+     Init pos: (52.50029, 13.32765)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=6.555 dB^2
+      NM iter  20: d=(+14,-1) m  loss=4.0195 dB^2
+      NM iter  40: d=(+19,-25) m  loss=3.3039 dB^2
+     Refined:  (52.50008, 13.32792)  disp=29 m
+     Train MAE (refined): 1.428 dB  NM iters=19
+
+  -- Tower 33802241  [ocid_exact]  n_train=682  n_val=304
+     Init pos: (52.51420, 13.34310)
+    Grid search 5x5...
+    Grid best: offset=(-150,+150) m  loss=21.178 dB^2
+      NM iter  20: d=(-48,-97) m  loss=13.7846 dB^2
+     Refined:  (52.51346, 13.34231)  disp=99 m
+     Train MAE (refined): 2.880 dB  NM iters=17
+
+  -- Tower 34210561  [ocid_eci_notac]  n_train=198  n_val=275
+     Init pos: (52.49330, 13.28640)
+    Grid search 5x5...
+    Grid best: offset=(+150,+0) m  loss=44.232 dB^2
+      NM iter  20: d=(+29,+150) m  loss=35.6436 dB^2
+     Refined:  (52.49437, 13.28681)  disp=122 m
+     Train MAE (refined): 3.889 dB  NM iters=21
+
+  -- Tower 29127680  [ocid_exact]  n_train=689  n_val=267
+     Init pos: (52.51360, 13.32290)
+    Grid search 5x5...
+    Grid best: offset=(+0,+300) m  loss=12.712 dB^2
+      NM iter  20: d=(-6,+244) m  loss=10.1160 dB^2
+     Refined:  (52.51583, 13.32280)  disp=248 m
+     Train MAE (refined): 2.337 dB  NM iters=16
+
+  Gate-2 evaluation on val split (21,869 rows)...
+  Val eval tower 26947072: n=1472
+  Val eval tower 28650241: n=1025
+  Val eval tower 26368258: n=1007
+  Val eval tower 26947074: n=994
+  Val eval tower 26356993: n=985
+  Val eval tower 26359554: n=646
+  Val eval tower 26358785: n=607
+  Val eval tower 40782336: n=601
+  Val eval tower 29127682: n=586
+  Val eval tower 26947073: n=553
+  Val eval tower 26349058: n=545
+  Val eval tower 26358784: n=542
+  Val eval tower 26365185: n=529
+  Val eval tower 33802242: n=523
+  Val eval tower 30829824: n=496
+  Val eval tower 29127681: n=438
+  Val eval tower 26365186: n=428
+  Val eval tower 40812800: n=415
+  Val eval tower 28792066: n=406
+  Val eval tower 26369024: n=384
+  Val eval tower 26607105: n=375
+  Val eval tower 26353920: n=369
+  Val eval tower 26795520: n=358
+  Val eval tower 34210562: n=358
+  Val eval tower 30827264: n=352
+  Val eval tower 26367489: n=316
+  Val eval tower 26367744: n=312
+  Val eval tower 33802241: n=304
+  Val eval tower 34210561: n=275
+  Val eval tower 29127680: n=267
+
+  Gate-2 RSRP MAE (refined positions): 15.708 dB
+  WCL baseline MAE                   : 10.866 dB
+  Improvement                        : -4.842 dB
+
+============================================================
+Operator 2  --  Inverse Localization
+============================================================
+  Towers to optimize: 30 (of 181 total, covering 14936 / 22865 val rows)
+
+  -- Tower 2568970  [wcl_fallback]  n_train=2803  n_val=1588
+     Init pos: (52.49181, 13.30466)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=26.441 dB^2
+      NM iter  20: d=(+59,-2) m  loss=20.3428 dB^2
+     Refined:  (52.49175, 13.30548)  disp=56 m
+     Train MAE (refined): 3.033 dB  NM iters=16
+
+  -- Tower 3428105  [wcl_fallback]  n_train=1399  n_val=1254
+     Init pos: (52.49279, 13.29290)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=31.753 dB^2
+      NM iter  20: d=(-32,+34) m  loss=24.1442 dB^2
+     Refined:  (52.49317, 13.29252)  disp=49 m
+     Train MAE (refined): 3.955 dB  NM iters=18
+
+  -- Tower 3499534  [wcl_fallback]  n_train=2737  n_val=1193
+     Init pos: (52.51154, 13.28652)
+    Grid search 5x5...
+    Grid best: offset=(+0,+150) m  loss=45.092 dB^2
+      NM iter  20: d=(-28,+129) m  loss=42.9465 dB^2
+     Refined:  (52.51276, 13.28590)  disp=142 m
+     Train MAE (refined): 4.077 dB  NM iters=17
+
+  -- Tower 2824458  [ocid_exact]  n_train=2603  n_val=1156
+     Init pos: (52.49890, 13.31280)
+    Grid search 5x5...
+    Grid best: offset=(+150,+150) m  loss=82.865 dB^2
+      NM iter  20: d=(+56,+112) m  loss=56.2854 dB^2
+     Refined:  (52.49979, 13.31375)  disp=118 m
+     Train MAE (refined): 5.977 dB  NM iters=18
+
+  -- Tower 2580501  [ocid_exact]  n_train=1237  n_val=588
+     Init pos: (52.51140, 13.29960)
+    Grid search 5x5...
+    Grid best: offset=(+150,+0) m  loss=84.579 dB^2
+      NM iter  20: d=(+99,-16) m  loss=50.2514 dB^2
+     Refined:  (52.51118, 13.30082)  disp=86 m
+     Train MAE (refined): 5.921 dB  NM iters=19
+
+  -- Tower 2819850  [wcl_fallback]  n_train=4047  n_val=510
+     Init pos: (52.50353, 13.33964)
+    Grid search 5x5...
+    Grid best: offset=(-300,-300) m  loss=104.587 dB^2
+      NM iter  20: d=(-306,-296) m  loss=104.5870 dB^2
+     Refined:  (52.50083, 13.33521)  disp=424 m
+     Train MAE (refined): 9.437 dB  NM iters=9
+
+  -- Tower 3499540  [ocid_exact]  n_train=1228  n_val=487
+     Init pos: (52.51000, 13.28530)
+    Grid search 5x5...
+    Grid best: offset=(+0,+150) m  loss=27.897 dB^2
+      NM iter  20: d=(-19,+195) m  loss=26.6630 dB^2
+     Refined:  (52.51164, 13.28489)  disp=185 m
+     Train MAE (refined): 4.185 dB  NM iters=16
+
+  -- Tower 2567188  [ocid_exact]  n_train=812  n_val=479
+     Init pos: (52.51500, 13.32720)
+    Grid search 5x5...
+    Grid best: offset=(+0,-150) m  loss=38.083 dB^2
+      NM iter  20: d=(-76,-140) m  loss=34.5909 dB^2
+     Refined:  (52.51376, 13.32619)  disp=154 m
+     Train MAE (refined): 4.560 dB  NM iters=18
+
+  -- Tower 3684372  [ocid_exact]  n_train=393  n_val=458
+     Init pos: (52.51280, 13.32180)
+    Grid search 5x5...
+    Grid best: offset=(-150,+0) m  loss=18.238 dB^2
+      NM iter  20: d=(-121,-19) m  loss=15.6212 dB^2
+     Refined:  (52.51265, 13.32000)  disp=123 m
+     Train MAE (refined): 3.008 dB  NM iters=17
+
+  -- Tower 3428106  [wcl_fallback]  n_train=419  n_val=450
+     Init pos: (52.49436, 13.28737)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=46.210 dB^2
+      NM iter  20: d=(+17,+3) m  loss=45.2859 dB^2
+     Refined:  (52.49427, 13.28770)  disp=24 m
+     Train MAE (refined): 5.450 dB  NM iters=14
+
+  -- Tower 2818312  [wcl_fallback]  n_train=2524  n_val=439
+     Init pos: (52.50212, 13.27946)
+    Grid search 5x5...
+    Grid best: offset=(-150,-150) m  loss=21.982 dB^2
+      NM iter  20: d=(-97,-122) m  loss=21.1618 dB^2
+     Refined:  (52.50100, 13.27817)  disp=152 m
+     Train MAE (refined): 3.869 dB  NM iters=15
+
+  -- Tower 4080392  [ocid_exact]  n_train=1272  n_val=436
+     Init pos: (52.51580, 13.37070)
+    Grid search 5x5...
+    Grid best: offset=(+0,+0) m  loss=42.210 dB^2
+      NM iter  20: d=(+46,-2) m  loss=36.7635 dB^2
+     Refined:  (52.51581, 13.37141)  disp=48 m
+     Train MAE (refined): 4.508 dB  NM iters=14
+
+  -- Tower 2824469  [ocid_exact]  n_train=1036  n_val=432
+     Init pos: (52.49700, 13.31440)
+    Grid search 5x5...
+    Grid best: offset=(+0,+300) m  loss=20.694 dB^2
+      NM iter  20: d=(-18,+285) m  loss=19.8294 dB^2
+      NM iter  40: d=(-22,+279) m  loss=19.4221 dB^2

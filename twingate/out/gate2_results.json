@@ -1,0 +1,44 @@
+{
+  "method": "inverse_rt_nelder_mead",
+  "loss_function": "variance(measured_RSRP - sionna_power) [MLE log-normal]",
+  "optimizer": "Nelder-Mead, gradient-free",
+  "n_top_towers": 30,
+  "operators": {
+    "1": {
+      "val_mae_db": 18.56100270092665,
+      "val_rmse_db": 39.34753959216361,
+      "val_n_rows": 16468,
+      "val_offset_db": -20.846888862488406,
+      "by_device": {
+        "pc1": {
+          "mae": 17.988257967989757,
+          "n": 8991
+        },
+        "pc4": {
+          "mae": 19.249721156702435,
+          "n": 7477
+        }
+      }
+    },
+    "2": {
+      "val_mae_db": 41.23069525781831,
+      "val_rmse_db": 68.85426658380727,
+      "val_n_rows": 14936,
+      "val_offset_db": -10.285357028287162,
+      "by_device": {
+        "pc2": {
+          "mae": 44.15026131419878,
+          "n": 7282
+        },
+        "pc3": {
+          "mae": 38.45302606229146,
+          "n": 7654
+        }
+      }
+    }
+  },
+  "wcl_baseline": {
+    "1": 10.866130192544071,
+    "2": 12.23780464724777
+  }
+}

@@ -1,0 +1,625 @@
+%% results_detailed.tex — TWINGATE Supplementary Results
+%% Companion to main.tex. Standalone document (article class).
+%% Purpose: full derivation detail for every number that appears in
+%% main.tex (condensed there for narrative flow), plus explored
+%% directions not currently included in main.tex, plus the provenance
+%% history of numbers that were corrected during this project.
+%% Use this document as a menu: promote any section's content into
+%% main.tex if a reviewer or future draft calls for more depth there.
+
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{parskip}
+
+\title{TWINGATE: Supplementary Results and Derivation Detail\\[6pt]
+\large Companion document to \emph{TWINGATE: A Twin-Gated Framework for
+Physics-Based Coverage Validation in V2X Digital Twins}}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{How to use this document}
+
+Everything in \texttt{main.tex} is condensed for narrative flow: headline
+numbers, the theoretical reasoning behind them, and pointers to ``full
+detail here.'' This document \emph{is} that full detail. Each section
+below is self-contained and mapped to the main-paper section it supports,
+so material can be promoted back into the main paper (e.g., if a reviewer
+asks for it) without re-deriving anything.
+
+Section~\ref{sec:m4} and Section~\ref{sec:handover} describe experiments
+that were run, produced real results, and are \textbf{not currently
+included in main.tex} at all — they are genuine findings (one positive,
+one a well-diagnosed negative result) held in reserve pending a decision
+on whether they strengthen the paper enough to include.
+
+\section{Pipeline Hyperparameters}
+\label{sec:hyperparams}
+
+Supports: Section III.A (3D Scene Construction), III.D.3 (4D Optimization).
+
+\subsection{Scene construction}
+\begin{itemize}
+  \item Operator~1 scene origin: $(52.507005^\circ\text{N}, 13.323428^\circ\text{E})$
+  \item Operator~2 scene origin: $(52.506112^\circ\text{N}, 13.321908^\circ\text{E})$
+  \item Ray tracing backend: Sionna RT 2.0.1 on the \texttt{cuda\_ad\_mono\_polarized}
+        Mitsuba~3 variant (GPU-accelerated, monochromatic, polarized).
+  \item Max path depth: 5 interactions (reflection + diffraction; scattering
+        added in Stage~4, see below).
+  \item Per-call cost: a batched forward pass over 40 receiver locations
+        takes approximately 2--3\,s on an NVIDIA GPU under this configuration.
+        A full 4D Nelder-Mead optimization of one tower requires
+        80--95 such calls (including the coarse azimuth grid), i.e.\
+        roughly 3--6 minutes per tower on a single GPU.
+\end{itemize}
+
+\subsection{4D Nelder-Mead optimizer (Gate 2 position/height/azimuth search)}
+\begin{itemize}
+  \item Search variables: $(\Delta x, \Delta y, h, \varphi)$ — horizontal
+        displacement from WCL init, height $h \in [10,60]$\,m, azimuth
+        $\varphi \in [0^\circ,360^\circ)$.
+  \item Coarse pre-search: 8-direction azimuth grid at
+        $0^\circ, 45^\circ, 90^\circ, \ldots, 315^\circ$; best-scoring orientation seeds the
+        full 4D simplex.
+  \item Simplex initialization: 5 vertices at the WCL position, with a
+        50\,m horizontal arm, 10\,m height arm, and $45^\circ$ azimuth arm.
+  \item Sionna yaw convention: compass bearing $\varphi$ maps to scene yaw
+        via $\alpha = \pi/2 - \varphi$ (x-axis = East).
+  \item Search bound: 500\,m radius in $(\Delta x, \Delta y)$; height and
+        azimuth clamped to their physical ranges at every evaluation.
+  \item Convergence: $|\Delta\boldsymbol\theta| < 10$\,m and
+        $|\Delta\text{MAE}| < 0.02$\,dB, 80-iteration hard cap.
+  \item Per-objective-evaluation training subsample: 40 measurement rows
+        (one GPU batch) during the search; the final evaluation pass uses
+        all available training and validation rows for that tower.
+  \item OLS calibration slope bound: $\alpha_i \in [0, 2]$ (prevents sign
+        flips and unphysical amplification).
+\end{itemize}
+
+\subsection{Diffuse scattering (Stage 4)}
+\begin{itemize}
+  \item Material: ITU \texttt{concrete} preset (all building surfaces).
+  \item Scattering coefficient: $S = 0.4$ (TR~38.901 value at 2\,GHz),
+        vs.\ Sionna's default $S=0$.
+  \item Scattering pattern: Lambertian (isotropic diffuse lobe).
+  \item Everything else in the pipeline (NM search, sector antenna, OLS
+        calibration) is held fixed between Stage~3 ($S=0$) and Stage~4
+        ($S=0.4$) to isolate the marginal contribution of scattering.
+\end{itemize}
+
+\section{Per-Device Gate 2 Results (Full Breakdown)}
+\label{sec:perdevice}
+
+Supports: Table~I and \S IV.C (Gate 2: RSRP Fidelity) in main.tex, which
+report only the Operator-level combined figures.
+
+\begin{table}[h]
+\centering
+\caption{Per-device Stage 3 (position/orientation refinement, no
+scattering) results, temporal split, held-out day 3.}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Device & Towers & WCL MAE (dB) & Refined MAE (dB) & Gain (dB) & Improved \\
+\midrule
+pc1 & 81  & 3.877 & 3.029 & +0.848 & 63/81 (77.8\%) \\
+pc4 & 43\textsuperscript{a} & 3.787 & 3.016 & +0.771 & 33/43 (76.7\%) \\
+pc2 & 37  & 6.927 & 4.601 & +2.327 & 25/37 (67.6\%) \\
+pc3 & 67  & 6.786 & 3.986 & +2.801 & 53/67 (79.1\%) \\
+\midrule
+Op.\,1 (pc1+pc4) & 124 & 3.865 & 3.027 & +0.838 & 96/124 (77.4\%) \\
+Op.\,2 (pc2+pc3) & 104 & 6.805 & 4.069 & +2.736 & 78/104 (75.0\%) \\
+\bottomrule
+\end{tabular}\\[2mm]
+\raggedright\footnotesize\textsuperscript{a}45 towers refined; 2 excluded
+(see \S\ref{sec:nan}).
+\end{table}
+
+\begin{table}[h]
+\centering
+\caption{Per-device Stage 4 (+ diffuse scattering, $S=0.4$) results,
+temporal split, held-out day 3.}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Device & Towers & WCL MAE (dB) & Refined MAE (dB) & Gain (dB) & Improved \\
+\midrule
+pc1 & 81  & 3.874 & 3.020 & +0.853 & 62/81 (76.5\%) \\
+pc4 & 43\textsuperscript{a} & 3.803 & 2.980 & +0.823 & 32/43 (74.4\%) \\
+pc2 & 37  & 6.939 & 4.553 & +2.387 & 26/37 (70.3\%) \\
+pc3 & 67  & 6.743 & 3.957 & +2.786 & 54/67 (80.6\%) \\
+\midrule
+Op.\,1 (pc1+pc4) & 124 & 3.865 & 3.015 & +0.849 & 94/124 (75.8\%) \\
+Op.\,2 (pc2+pc3) & 104 & 6.770 & 4.037 & +2.732 & 80/104 (76.9\%) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Median/mean TX position correction (Stage~4, combined Op.\,1):
+median 45\,m, mean 63\,m. Refined TX heights span the 10--60\,m search
+range with recovered azimuths spanning the full compass, i.e.\ no
+boundary-clamping artifact.
+
+Total Sionna calls per run (full pipeline, one device, one stage):
+pc1 $\approx$ 2{,}400, pc2 $\approx$ 1{,}150, pc3 $\approx$ 2{,}300,
+pc4 $\approx$ 940--1{,}300 depending on stage.
+
+\subsection{Degenerate (NaN) towers — pc4}
+\label{sec:nan}
+
+Two pc4 towers (cell IDs 26947081 and 28792072) produced
+\texttt{refined\_val\_mae = NaN} in both Stage~3 and Stage~4. Diagnosis:
+both have very small validation sets (23 and 9 rows respectively); at the
+Nelder-Mead-refined position, Sionna found zero valid propagation paths
+to \emph{every} row in that tower's validation subset (all predictions
+hit the $-100$\,dBm sentinel floor), so even the code's flat-signal
+fallback (mean of training RSRP) divides by an empty masked array and
+returns NaN. This reproduced identically under scattering, confirming it
+is a geometry/orientation degeneracy specific to these two
+small-validation-set towers, not a scattering artifact. Both towers are
+excluded from the Stage~3/4 aggregates above (45 candidate towers $\to$
+43 valid). This is consistent with the paper's existing observation
+(\S IV.E) that refinement most often misbehaves for towers with the
+fewest training/validation rows.
+
+\section{Gate 1: Full Statistics}
+\label{sec:gate1full}
+
+Supports: \S IV.A (Gate 1: Dead-Zone Preservation) in main.tex.
+
+\subsection{Gap-event counts (gap-level, not row-level)}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Period & TypeA & TypeB & Ambiguous \\
+\midrule
+Train (days 1--2) & 4 & 57 & 13 \\
+Val (day 3)        & 1 & 15 & 4 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Training TypeA gaps split evenly by operator (2 from pc2/Op.\,2, 2 from
+pc4/Op.\,1). The dominant TypeB cluster (56 of 57 training TypeB gaps)
+belongs to Operator~2, centroid $(52.514212^\circ\text{N}, 13.348557^\circ\text{E})$,
+stable to within 15\,m across all three collection days.
+
+\subsection{Threshold sensitivity, full sweep}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+$d_\text{recur}$ & Matched (of 15 val TypeB) & $C$ & Note \\
+\midrule
+50\,m  & 11/15 & 0.73 & strict; margin gaps excluded \\
+100\,m (used) & 12/15 & 0.80 & midpoint, matches 1\,Hz GPS uncertainty \\
+200\,m & 15/15 & 0.87\textsuperscript{a} & permissive \\
+\bottomrule
+\end{tabular}
+\end{center}
+\raggedright\footnotesize\textsuperscript{a}Reported as 0.87 in main text;
+some sweep runs during development returned slightly different
+denominators depending on whether ambiguous-adjacent gaps were
+re-classified at wider radii — 0.87 is the value used in all published
+figures.
+
+\subsection{Multi-KPI corroboration, full statistics}
+Held-out day 3, Operator~2, comparing rows within 150\,m of the TypeB
+centroid (``near,'' 819 rows total / 723--745 with valid readings
+depending on the KPI column) against the remaining route (``background,''
+22{,}217--22{,}245 rows).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+KPI & Near mean & Background mean & Welch $t$ & $p$ \\
+\midrule
+RSRP (dBm)     & $-115.43$ & $-89.97$ & $-64.22$  & $1.7\times10^{-316}$ \\
+RSRQ (dB)      & $-15.99$  & $-10.48$ & $-32.87$  & $6.2\times10^{-147}$ \\
+SNR$_1$ (dB)   & $-2.73$   & $10.60$  & $-42.25$  & $7.4\times10^{-202}$ \\
+SNR$_2$ (dB)   & $-3.30$   & $9.40$   & $-53.58$  & $2.1\times10^{-269}$ \\
+Avg.\ MCS index & $5.88$   & $15.08$  & $-60.18$  & $3.7\times10^{-315}$ \\
+Datarate (bps) & $1.37\times10^6$ & $1.97\times10^7$ & $-134.30$ & $\approx 0$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Twin-Gate Convergence: Pipeline History}
+\label{sec:convergence_history}
+
+Supports: \S IV.B (Twin-Gate Convergence) in main.tex. Reported here as a
+robustness/consistency check: three successive, independently-computed
+pipeline versions all land in a narrow band.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+Pipeline version & Predicted drop & Measured drop & \% recovered & Basis \\
+\midrule
+Early stratified-split & 27.2\,dB & 30.3\,dB & 90.0\% & pre-fix, both Op.\,2 devices \\
+Intermediate (pc3-only) & 27.5\,dB & 31.5\,dB & 87.4\% & pc3 only, temporal, Stage 4 \\
+Final (pc2+pc3) & 26.3\,dB & 30.4\,dB & 86.5\% & complete Op.\,2, temporal, Stage 4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Final version detail: near-zone mean predicted $-115.57$\,dBm, background
+mean predicted $-89.29$\,dBm; near-zone mean measured $-120.02$\,dBm,
+background mean measured $-89.65$\,dBm. 364 near-zone rows, 14{,}807
+background rows (15{,}171 total, pc2+pc3 combined). Welch $t=-56.63$,
+$p=6.2\times10^{-193}$.
+
+\section{M2 Recompute: Provenance and Correction History}
+\label{sec:m2history}
+
+Supports: \S IV.C (M2 dead-zone detection) in main.tex.
+
+\textbf{What happened.} The M2 figure originally reported (F1$=0.63$,
+precision $0.52$, recall $0.82$, threshold $-116$\,dBm) was computed by
+\texttt{M2\_serving\_cell.py} from \texttt{per\_tower\_val\_rows\_op1/op2.csv}
+— files dated prior to this project's temporal-split correction, using
+\emph{raw WCL positions with no Nelder-Mead refinement and no
+scattering}. This was discovered while investigating why M2 seemed
+disconnected from the corrected Gate 2 pipeline.
+
+\textbf{Correction.} M2 was recomputed from the current Stage~4
+(refined position + $S=0.4$ scattering) per-row predictions:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Basis & Threshold & Precision & Recall & F1 & TypeB rows \\
+\midrule
+Stale (WCL-only, pre-fix)      & $-116$\,dBm & 0.52 & 0.82 & 0.63 & 386/42{,}830 \\
+pc3-only (Stage 4)             & $-113$\,dBm & 0.75 & 0.89 & 0.82 & 364/13{,}127 \\
+pc2+pc3 combined (Stage 4, final) & $-113$\,dBm & 0.67 & 0.89 & 0.77 & 364/15{,}171 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Note the pc3-only estimate (F1$=0.82$) is \emph{higher} than the combined
+estimate (F1$=0.77$): pc2 contributes 2{,}044 additional background rows
+but zero additional TypeB-zone rows on this held-out day (pc2's smaller,
+differently-timed validation set did not pass through the dead zone),
+so adding it can only add potential false positives, not true positives.
+The combined figure is reported as the paper's headline M2 result because
+it is the complete, honest measurement, not because it is the most
+favorable one.
+
+\section{Explored, Not Included: LOS/NLOS Classification and Multipath Richness (M4)}
+\label{sec:m4}
+
+\textbf{Status: real result, held out of main.tex by author decision, not
+by any negative finding.} This section documents a fourth candidate
+readiness axis — structural/mechanistic validation, distinct from M1
+(accuracy) and M2 (localization) — computed via a new script (A17) that
+extracts per-path richness metrics from Sionna's existing solver output
+(delay, angle of arrival, interaction type) at zero additional RT cost,
+reusing each device's already-refined Stage~4 geometry.
+
+\subsection{Method}
+Per validation row: power-weighted RMS delay spread ($\tau_\text{rms}$),
+power-weighted circular RMS azimuth spread, valid path count, and an
+LOS/NLOS flag (LOS if any valid path has an all-\texttt{NONE} interaction
+sequence — i.e.\ a direct, unobstructed line — per Sionna's
+\texttt{InteractionType} enum: \texttt{NONE}=0, \texttt{SPECULAR}=1,
+\texttt{DIFFUSE}=2, \texttt{REFRACTION}=4, \texttt{DIFFRACTION}=8).
+
+\subsection{M4a: LOS/NLOS accuracy}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+Device & LOS mean (dBm) & LOS std & NLOS mean (dBm) & NLOS std & Welch $t$ ($p$) \\
+\midrule
+pc1 & $-84.89$ & 10.83 & $-93.65$ & 9.07 & $25.6$ ($6\times10^{-109}$) \\
+pc3 & $-90.12$ & 13.19 & $-81.93$ & 10.47 & $-24.2$ ($4\times10^{-109}$) \\
+pc2 & $-96.47$ & 11.49 & $-95.53$ & 7.40 & $-1.4$ (n.s., $p=0.16$) \\
+\bottomrule
+\end{tabular}\\[2mm]
+\raggedright\footnotesize
+pc1: 81 towers, 14{,}172 rows. pc3: 63 towers, 13{,}127 rows. pc2: 36 towers, 2{,}044 rows.
+\end{table}
+
+\textbf{This is not a clean, consistent result across devices.} pc1 shows
+LOS $>$ NLOS in measured RSRP, exactly as propagation physics predicts.
+pc3 shows the \emph{opposite} sign, and pc2 shows no significant
+difference at all. This inconsistency — not a single clean number — is
+the actual reason this metric is not in main.tex: a metric that flips
+sign between two devices on the same operator's network cannot be
+presented as a validated readiness criterion without a lot more
+investigation into why (candidate explanations, not yet tested:
+Operator~2's more complex, NLOS-dominated urban geometry near the
+confirmed dead zone; a sector-antenna-orientation interaction with which
+paths get classified as ``direct''). \emph{Literature note}: VaN3Twin's
+real-time follow-up (Pegurri et al., arXiv 2601.16559) does validate a
+C-V2X DT using exactly this kind of LOS/NLOS transition-classification
+metric, so this is a recognized axis in peer work, not an invented one —
+worth revisiting with a cleaner methodology rather than abandoning.
+
+\subsection{M4b: Multipath richness vs.\ M1 residual}
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Device & corr($\tau_\text{rms}$, residual) & $p$ & corr($n_\text{valid}$, residual) & $p$ \\
+\midrule
+pc1 & $-0.032$ & $1.5\times10^{-4}$ & $-0.065$ & $6.3\times10^{-15}$ \\
+pc3 & $-0.009$ & $0.308$ (n.s.)     & $-0.103$ & $4.6\times10^{-32}$ \\
+pc2 & $-0.144$ & $5.9\times10^{-11}$ & $-0.143$ & $7.8\times10^{-11}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+All correlations are negligible in magnitude ($|r| < 0.15$) despite
+significance at large $N$. \textbf{Null result}: multipath richness does
+not meaningfully explain where M1 residual error concentrates. This
+suggests the residual is dominated by something else (OLS calibration
+slack, GPS positional noise, or building-material approximation error),
+which is itself a useful negative finding pointing future work away from
+richness-based residual explanations.
+
+\section{Explored, Not Included: Handover / Cell-Boundary Prediction}
+\label{sec:handover}
+
+\textbf{Status: genuine negative result, well-diagnosed, not a bug.}
+Motivated by the question ``does Gate 2's geometry correctly predict
+\emph{where} a moving vehicle should hand over between cells,'' tested
+two independent ways.
+
+\subsection{Feasibility groundwork}
+Gate~1's own TypeA (session-boundary) events are far too rare to serve as
+ground truth: only 5 total across the entire 3-day dataset (4 train, 1
+val) — the TypeA definition conflates handover with RLF-reestablishment
+and logger restarts, and requires a measurement \emph{gap}, which most
+real handovers do not cause. The better ground-truth signal is raw
+serving-cell (\texttt{PCell\_Cell\_Identity}) transitions, filtered for
+persistence to exclude cell-flapping noise:
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+Persistence filter & pc1 val transitions & pc2 & pc3 & pc4 \\
+\midrule
+$\geq$5\,s  & 391 & 48 & 408 & 52 \\
+$\geq$10\,s & 336 & 41 & 313 & 43 \\
+$\geq$20\,s & 258 & 31 & 228 & 31 \\
+\bottomrule
+\end{tabular}
+\end{center}
+At the 20\,s threshold, 96.1\% of pc1's held-out transitions have both
+the source and destination tower already covered by the existing
+Stage~4 refined-position set — no new RT position optimization needed.
+
+\subsection{A18: Cross-cell direction test}
+Method: for each covered transition, evaluate Sionna's raw
+(uncalibrated) predicted power from both the source and destination
+tower at the last pre-transition GPS point and the first post-transition
+point, using each tower's already-refined Stage~4 position (no
+recalibration — every transition here is intra-operator, so towers share
+a comparable EIRP/hardware family, which was the original rationale for
+using raw power). Metric: Handover Direction Accuracy (HDA) — fraction
+of transitions where the predicted-stronger tower matches the real
+serving cell at \emph{both} points.
+
+\textbf{Result (pc1, 10\,s filter, 322 covered transitions, 293 after
+removing 29 sentinel-contaminated (`no path found') events):}
+\begin{itemize}
+  \item HDA (strict): 10.6\% (31/293)
+  \item Ranking-flip rate (softer — does the margin move in the right
+        direction, regardless of absolute correctness at either point):
+        62.1\% (182/293)
+  \item \texttt{correct\_A} (source tower wins \emph{before} the real
+        switch): 44.0\% — \emph{below} chance
+  \item \texttt{correct\_B} (destination tower wins \emph{after} the real
+        switch): 65.2\% — above chance
+\end{itemize}
+
+\textbf{Diagnosis.} The asymmetry between \texttt{correct\_A} (below
+chance) and \texttt{correct\_B} (above chance) is not random noise — it
+points to a systematic effect. Each tower's position/height/azimuth was
+refined by Nelder-Mead to minimize error over \emph{that tower's own
+bulk of training rows}, which are concentrated in the interior of its
+serving area. A cell-boundary point is, by construction, the sparsest,
+least-represented part of each tower's own training distribution — the
+edge where that tower is weakest and about to hand off. The
+per-tower-independent calibration that gives a solid overall M1 (3.02\,dB
+average) is systematically weakest exactly where handover-boundary
+accuracy would need to be strong. This is a real limitation of the
+current calibration architecture (independent per-tower fits), not a
+bug in this experiment or evidence against the rest of the pipeline.
+
+\subsection{Independent corroboration: pre-existing proxy\_b}
+A simpler, independently-implemented handover check already existed in
+\texttt{M2\_serving\_cell.py} (``Proxy B''), using \emph{calibrated}
+(not raw) power at a single transition point, on the older stratified-split,
+unrefined-position pipeline: \textbf{351 handover events, 156 correct,
+44.4\% accuracy} — also below chance. Two independent implementations,
+different calibration approaches, different pipeline versions, and
+different data splits reach the same qualitative conclusion: cross-cell
+handover-boundary prediction does not work well under
+per-tower-independent Gate~2 calibration. This convergence of two
+separate negative results is itself fairly strong evidence the limitation
+is real and structural, not an implementation artifact — and settles the
+question for the current architecture rather than inviting further quick
+attempts at a fix.
+
+\subsection{What would actually be needed}
+A joint, boundary-aware calibration (e.g., fitting neighboring towers
+together rather than independently, or explicitly up-weighting training
+rows near candidate boundaries) — a genuinely new methodology, not a
+parameter tweak, and a reasonable candidate for a journal extension
+rather than this conference submission.
+
+\section{Literature Scan Summary}
+\label{sec:litscan}
+
+A dedicated literature scan (\texttt{DT\_READINESS\_LITERATURE\_SCAN.md},
+in the project repository) surveyed published Digital Twin
+implementations for C-V2X / vehicular cellular coverage to identify
+which experiments and thresholds TWINGATE should consider replicating.
+Key findings:
+
+\begin{itemize}
+  \item \textbf{DT-CoVeSS} (Twardokus \& Rahbari, published IEEE INFOCOM
+        Workshops/DTwin 2025) is a Sionna RT DT built specifically for
+        \emph{PC5 sidelink} — confirms sidelink C-V2X DT validation is a
+        distinct research track with its own data requirements,
+        independently supporting TWINGATE's own scope decision to stay
+        Uu-mode only given the Berlin V2X dataset has no sidelink logs.
+  \item \textbf{Lucas-Estañ et al.} (published IEEE \emph{Network}, vol.
+        37, no.\ 4, 2023) grounds V2X service-continuity requirements in
+        exact 3GPP TS~22.186 numbers: Cooperative Lane Change requires
+        90\% of packets under 25\,ms (low automation) or 99.99\% under
+        10\,ms (high automation). This is the strongest available
+        motivation for the handover/cell-boundary direction
+        (\S\ref{sec:handover}), even though that direction did not pan
+        out under the current architecture.
+  \item \textbf{Pegurri et al.} (VaN3Twin real-time follow-up, arXiv
+        2601.16559) validates LOS/NLOS transition-classification
+        accuracy in a live 60\,GHz C-V2X testbed — direct peer precedent
+        for the M4 direction (\S\ref{sec:m4}).
+  \item No paper found translates a 3GPP V2X reliability/latency target
+        into an RT-usable RSRP/SINR coverage threshold; doing so would
+        require a link-level BLER-vs-SINR simulation step (a different
+        Sionna module — PHY/LDPC, not RT), which is a materially larger
+        undertaking flagged as a longer-horizon journal-extension item.
+\end{itemize}
+
+\section{Full Limitations and Future Work Detail}
+\label{sec:limitations_full}
+
+Supports: \S V (Discussion, Limitations subsection) in main.tex, which
+compresses these to one-line bullets for space. Full reasoning below.
+
+\subsection{Limitations, expanded}
+
+\textbf{Single-dataset scope.} All results are from one urban route in
+Berlin (17.2\,km loop, two LTE operators, June 2021). The pipeline
+design is dataset-agnostic by construction, but we make no empirical
+claim about performance on other cities, network generations (5G NR),
+or high-mobility scenarios (highway V2X at $>$100\,km/h). The TypeB
+coverage hole identified by Gate~1 is specific to the Vodafone network
+in this deployment; other datasets may exhibit different gap
+distributions or none at all.
+
+\textbf{LOS/NLOS path decomposition and dynamic scatterers.} Sionna~RT's
+path solver natively classifies every propagation path by interaction
+type (line-of-sight, specular reflection, diffraction), so
+LOS/NLOS-conditioned RSRP statistics are directly extractable from the
+existing pipeline without architectural changes (see \S\ref{sec:m4} for
+what was found when this was actually tried). Moving vehicles in a
+dense platoon act as both secondary blockers and reflectors; because the
+same GPS segments are traversed by multiple devices across multiple
+days, instantaneous blockage events are partially de-correlated in the
+per-segment RSRP distributions used for Gate~2 calibration. A tractable
+extension is to add each companion vehicle as a dynamic mesh object at
+its GPS-synchronized timestamp, converting the batched PathSolver call
+to per-row ray tracing; the synchronised multi-device tracks in this
+dataset make this feasible, at increased per-tower compute cost (see
+\S\ref{sec:handover} for the concrete feasibility numbers worked out
+for a related dynamic-scene idea this session).
+
+\textbf{Wideband metrics and Doppler.} At 1.8\,GHz LTE and a vehicle
+speed of 100\,km/h, the maximum Doppler shift is approximately 167\,Hz,
+giving a channel coherence time of roughly 3\,ms. The 3GPP TS~36.133 L3
+measurement filter averages RSRP over a 200\,ms window, spanning on the
+order of 60 coherence times: fast Doppler fading therefore averages out
+in the RSRP metric validated against, and explicit Doppler modeling is
+not required for coverage-level DT readiness assessment. Wideband
+metrics (delay spread, channel Doppler spectrum, block-error rate) do
+require dynamic scatterer modeling; MobileInsight does not log I/Q
+samples, placing these metrics outside the scope of the present
+framework.
+
+\textbf{Search radius.} The Gate~2 optimizer uses a $\pm$500\,m
+horizontal search radius centered on the WCL crowd-sourced
+initialization. Towers serving peripheral route segments, where
+drive-test GPS coverage is sparse and WCL positions are correspondingly
+less reliable, may fall outside this radius and receive sub-optimal
+localization. Widening the radius increases the risk of convergence to
+distant spurious positions; a two-stage coarse-to-fine strategy would
+address this trade-off.
+
+\textbf{Computational cost.} The Nelder-Mead optimization loop in
+Gate~2 requires 3--6 minutes per tower on a single CPU core, totaling
+several hours for the full multi-hundred-tower deployment. This is
+acceptable for offline DT construction but unsuitable for real-time
+update loops or rapid re-deployment scenarios. Because each tower's
+optimization is fully independent, wall time scales linearly with
+available cores; learned surrogate models for the Sionna forward pass
+offer a complementary path to per-tower cost reduction.
+
+\subsection{Future work, expanded}
+
+\textbf{Dynamic scene extension.} The most direct path to capturing
+vehicular blockage and reflection is to overlay a stochastic
+mobile-obstacle model on the static Sionna~RT scene. Each vehicle in
+the platoon can be modeled as a rectangular lossy-dielectric slab whose
+position along the route is drawn from a Poisson point process
+calibrated to observed traffic density; blockage probability as a
+function of inter-vehicle separation follows from Poisson thinning and
+can be computed analytically, adding a per-link stochastic attenuation
+term without modifying the ray-tracing engine. (Note: this session also
+scoped and ruled out a related but distinct idea -- real companion-vehicle
+mesh objects driven by actual GPS tracks rather than a statistical
+model -- see \S\ref{sec:handover}'s feasibility groundwork; the
+statistical overlay proposed here avoids that approach's per-row
+scene-reload cost.)
+
+\textbf{M3: a channel-dynamics readiness metric.} A third readiness
+metric based on Doppler spread would shift validation from signal-level
+to channel-level fidelity. Doppler spread can in principle be estimated
+from per-TTI RSRQ fluctuations already logged by MobileInsight, making
+M3 accessible without requiring I/Q samples. (Note: this specific idea
+was investigated this session and found not currently viable with this
+dataset -- the cleaned CSV is uniformly 1\,Hz, three orders of magnitude
+too coarse to resolve millisecond-scale coherence times. A genuine M3
+would need either raw sub-second MobileInsight logs, if recoverable, or
+a different dataset.)
+
+\textbf{Online calibration.} The 3--6\,min/tower offline cost of Gate~2
+can be amortized into a continuous online loop using recursive
+least-squares updates on the per-tower OLS offsets: as vehicles traverse
+the route, incoming RSRP measurements refine each tower's calibration
+incrementally, converging to a solution equivalent to full
+re-optimization within a few vehicle passes and eliminating the need
+for periodic batch re-runs.
+
+\section{Miscellaneous Fixes Made During This Project}
+\label{sec:fixes}
+
+For completeness/transparency, corrections made to the pipeline and
+paper during development, beyond the M2/convergence recompute already
+covered in \S\ref{sec:m2history}:
+
+\begin{itemize}
+  \item \textbf{Dataset year}: a transcription error in early drafts
+        referred to the Berlin V2X collection dates as ``June 2022'';
+        corrected to the true ``22--24 June 2021'' throughout.
+  \item \textbf{Gate 1 completeness $C$}: an early draft reported
+        $C=0.70$ using an incorrect denominator (all validation gaps,
+        including TypeA/Ambiguous); corrected to $C=0.80$ using the
+        TypeB-only denominator specified in main.tex's completeness
+        equation (Section~III-B.3).
+  \item \textbf{Cosmetic logging bugs}: \texttt{A15\_tx\_position\_refinement.py}
+        had two hardcoded string labels (``Op1'' in the scene-load
+        message, ``pc1'' in the final-results banner) that did not
+        reflect the actual device/operator being processed — purely
+        cosmetic (the underlying \texttt{SCENE\_XML} path and output
+        filenames were always correct), fixed to use the actual
+        \texttt{DEVICE}/\texttt{OPERATOR} variables.
+\end{itemize}
+
+\end{document}

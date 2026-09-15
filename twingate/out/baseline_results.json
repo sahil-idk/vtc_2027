@@ -1,0 +1,76 @@
+{
+  "1": {
+    "operator": 1,
+    "calibration_offset_db": -34.93899414614077,
+    "calibration_std_db": 17.418069550574874,
+    "calibration_n_train_rows": 2689,
+    "calibration_anchored_to_3gpp": false,
+    "baseline_val_mae_db": 10.866130192544071,
+    "baseline_val_rmse_db": 26.617995668585728,
+    "n_val_rows": 21249,
+    "n_towers": 70,
+    "by_device": {
+      "pc1": {
+        "mae": 11.555187239589378,
+        "rmse": 29.31183563152581,
+        "n": 11759
+      },
+      "pc4": {
+        "mae": 10.01232388946654,
+        "rmse": 22.843563017361223,
+        "n": 9490
+      }
+    },
+    "by_gap_type": {
+      "Ambiguous": {
+        "mae": 7.250190000863548,
+        "n": 14
+      },
+      "TypeB": {
+        "mae": 4.367281662889373,
+        "n": 36
+      },
+      "Unflagged": {
+        "mae": 10.87955449132001,
+        "n": 21199
+      }
+    }
+  },
+  "2": {
+    "operator": 2,
+    "calibration_offset_db": -40.78841865220341,
+    "calibration_std_db": 20.629126041515207,
+    "calibration_n_train_rows": 4271,
+    "calibration_anchored_to_3gpp": false,
+    "baseline_val_mae_db": 12.23780464724777,
+    "baseline_val_rmse_db": 21.92804431210435,
+    "n_val_rows": 22031,
+    "n_towers": 115,
+    "by_device": {
+      "pc2": {
+        "mae": 10.40024766586395,
+        "rmse": 19.667399350783274,
+        "n": 10175
+      },
+      "pc3": {
+        "mae": 13.814824070795371,
+        "rmse": 23.696820011889766,
+        "n": 11856
+      }
+    },
+    "by_gap_type": {
+      "Ambiguous": {
+        "mae": 9.913986197087535,
+        "n": 11
+      },
+      "TypeB": {
+        "mae": 10.250446518298563,
+        "n": 45
+      },
+      "Unflagged": {
+        "mae": 12.243037553675732,
+        "n": 21975
+      }
+    }
+  }
+}

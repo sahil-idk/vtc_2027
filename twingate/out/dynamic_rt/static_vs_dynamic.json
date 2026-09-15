@@ -1,0 +1,6 @@
+{
+  "static_mae_op1": null,
+  "dynamic_mae_all": 12.871464522961226,
+  "dynamic_los_fraction": 0.859642301710731,
+  "note": "dynamic includes companion vehicle blocker; static uses building-only scene"
+}

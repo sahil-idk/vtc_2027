@@ -1,0 +1,31 @@
+# large datasets
+Vienna-full-4G-5G-dataset-v1.0.3/
+Vienna-full-4G-5G-dataset-v1.0.3.zip
+cellular_dataframe_*.csv
+cellular_operator*.csv
+op1_measurements.csv
+op2_measurements.csv
+opencellid_germany.csv.gz
+
+# generated scenes and caches
+scene_operator1/
+scene_operator2/
+osm_cache/
+__pycache__/
+*.pyc
+
+# personal docs and books
+resume.pdf
+SAHIL_CV.pdf
+SAHIL_EVL.pdf
+transcript.pdf
+Employment_Verification_Letter_Sahil*
+*.epub
+*.mobi
+
+# latex build artifacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg

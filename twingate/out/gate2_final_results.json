@@ -1,0 +1,102 @@
+{
+  "per_device": {
+    "pc1": {
+      "device": "pc1",
+      "operator": 1,
+      "split": "stratified_80_20",
+      "sentinel_dBm": -100.0,
+      "min_sionna_std_dBm": 1.0,
+      "n_train": 41255,
+      "n_val": 10275,
+      "n_towers_ols": 104,
+      "n_towers_fallback": 6,
+      "mae_global_offset": 7.4141326301055,
+      "mae_per_tower_mean": 4.372365657841133,
+      "mae_per_tower_ols_combined": 3.8112154774409284,
+      "rmse_per_tower_ols_combined": 7.861553866530749,
+      "mae_ols_towers_only": 3.79554979060514,
+      "spearman_rho_median": 0.6775417068194067,
+      "alpha_mean": 0.8543699640511462,
+      "alpha_std": 0.6072476014713534,
+      "mae_per_tower_ols": 3.8112154774409284
+    },
+    "pc4": {
+      "device": "pc4",
+      "operator": 1,
+      "split": "stratified_80_20",
+      "sentinel_dBm": -100.0,
+      "min_sionna_std_dBm": 1.0,
+      "n_train": 25734,
+      "n_val": 6395,
+      "n_towers_ols": 80,
+      "n_towers_fallback": 8,
+      "mae_global_offset": 8.378113194823134,
+      "mae_per_tower_mean": 4.149157858928038,
+      "mae_per_tower_ols": 3.3889193053322813,
+      "rmse_per_tower_ols": 5.838420998290932,
+      "spearman_rho_median": 0.6744796380090498,
+      "alpha_mean": 0.7336901369344915,
+      "alpha_std": 0.5699444247554192
+    },
+    "pc2": {
+      "device": "pc2",
+      "operator": 2,
+      "split": "stratified_80_20",
+      "sentinel_dBm": -100.0,
+      "min_sionna_std_dBm": 1.0,
+      "n_train": 31106,
+      "n_val": 7825,
+      "n_towers_ols": 106,
+      "n_towers_fallback": 5,
+      "mae_global_offset": 9.780194388772149,
+      "mae_per_tower_mean": 6.703864721320573,
+      "mae_per_tower_ols": 4.184260478359709,
+      "rmse_per_tower_ols": 7.975641144477345,
+      "spearman_rho_median": 0.7802814215819422,
+      "alpha_mean": 0.9821485281518707,
+      "alpha_std": 0.6224241012438959
+    },
+    "pc3": {
+      "device": "pc3",
+      "operator": 2,
+      "split": "stratified_80_20",
+      "sentinel_dBm": -100.0,
+      "min_sionna_std_dBm": 1.0,
+      "n_train": 40920,
+      "n_val": 10259,
+      "n_towers_ols": 116,
+      "n_towers_fallback": 9,
+      "mae_global_offset": 10.474241847026875,
+      "mae_per_tower_mean": 6.957209077319234,
+      "mae_per_tower_ols": 6.72657162056008,
+      "rmse_per_tower_ols": 14.572412354511414,
+      "spearman_rho_median": 0.7902087307796548,
+      "alpha_mean": 1.1345852591504708,
+      "alpha_std": 0.6595163966939489
+    }
+  },
+  "per_operator": {
+    "op1": {
+      "devices": [
+        "pc1",
+        "pc4"
+      ],
+      "n_val": 16670,
+      "mae_global_offset": 7.783938011711335,
+      "mae_per_tower_mean": 4.286737950939559,
+      "mae_per_tower_ols": 3.6492128367309826,
+      "gain_vs_mean": 0.637525114208576
+    },
+    "op2": {
+      "devices": [
+        "pc2",
+        "pc3"
+      ],
+      "n_val": 18084,
+      "mae_global_offset": 10.173925470072483,
+      "mae_per_tower_mean": 6.84758622918334,
+      "mae_per_tower_ols": 5.626506110290344,
+      "gain_vs_mean": 1.2210801188929956
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "1": {
+    "pc1": {
+      "device": "pc1",
+      "n_excl_train_rows": 1756,
+      "baseline_mae": 10.866130192544071,
+      "leaveout_mae": 11.374720983537122,
+      "actual_improvement_db": -0.5085907909930505,
+      "null_mean_improvement": -0.009580850431208533,
+      "null_std_improvement": 0.012438052365453279,
+      "null_percentile": 0.0,
+      "verdict": "FAIL \u2014 wrong direction (exclusion worsens fidelity)"
+    },
+    "pc4": {
+      "device": "pc4",
+      "n_excl_train_rows": 933,
+      "baseline_mae": 10.866130192544071,
+      "leaveout_mae": 10.974687480177307,
+      "actual_improvement_db": -0.10855728763323569,
+      "null_mean_improvement": -0.002767442191934766,
+      "null_std_improvement": 0.005021514792734218,
+      "null_percentile": 0.0,
+      "verdict": "FAIL \u2014 wrong direction (exclusion worsens fidelity)"
+    }
+  },
+  "2": {
+    "pc2": {
+      "device": "pc2",
+      "n_excl_train_rows": 1531,
+      "baseline_mae": 12.23780464724777,
+      "leaveout_mae": 11.894898147015237,
+      "actual_improvement_db": 0.3429065002325338,
+      "null_mean_improvement": -0.008848808120890688,
+      "null_std_improvement": 0.06448643487531058,
+      "null_percentile": 100.0,
+      "verdict": "PASS \u2014 significant improvement, correct direction"
+    },
+    "pc3": {
+      "device": "pc3",
+      "n_excl_train_rows": 2740,
+      "baseline_mae": 12.23780464724777,
+      "leaveout_mae": 13.150513054382614,
+      "actual_improvement_db": -0.9127084071348435,
+      "null_mean_improvement": 0.0020563476994336495,
+      "null_std_improvement": 0.11716115578186449,
+      "null_percentile": 0.0,
+      "verdict": "FAIL \u2014 wrong direction (exclusion worsens fidelity)"
+    }
+  }
+}

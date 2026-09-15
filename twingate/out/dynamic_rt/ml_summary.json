@@ -1,0 +1,14 @@
+{
+  "total_val_rows": 2598,
+  "total_train_rows": 4380,
+  "los_fraction_val": 0.8610469591993841,
+  "baseline_raw_mae": 13.305096811677593,
+  "ols_mae": 5.230264911090444,
+  "ols_rmse": 15.710436099565865,
+  "xgb_mae": 6.064970824251994,
+  "xgb_rmse": 9.290082818500508,
+  "xgb_mae_los": 5.691690837340582,
+  "xgb_mae_nlos": 8.509759011122739,
+  "snr_mae_xgb": 5.514531817523391,
+  "noise_floor_dbm": -97.0
+}

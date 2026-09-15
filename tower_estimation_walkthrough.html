@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How tower estimation actually processes our data — step by step</title>
+<style>
+  :root{
+    --ink:#16202b; --paper:#fbfaf7; --panel:#f3f1ea; --line:#dcd8cb;
+    --accent:#1f6f5c; --accent-soft:#dcefe9; --amber:#a8631a; --amber-soft:#f5e4d0;
+    --code-bg:#1c232c; --code-text:#d8e0e8; --muted:#6b6558;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:Georgia,'Times New Roman',serif; font-size:17px; line-height:1.65; }
+  .wrap{ max-width:820px; margin:0 auto; padding:0 26px 100px; }
+  header.hero{ padding:70px 0 40px; border-bottom:3px solid var(--ink); }
+  header.hero h1{ font-size:2.1rem; margin:0 0 12px; line-height:1.2; }
+  header.hero p{ font-family:Arial,sans-serif; font-size:0.95rem; color:var(--muted); max-width:36em; }
+  h2{ font-family:Arial,sans-serif; font-size:1.4rem; margin:56px 0 6px; padding-top:10px; border-top:1px solid var(--line); }
+  h2 .stepnum{ display:inline-block; background:var(--ink); color:var(--paper); font-size:0.6em; padding:2px 9px; border-radius:3px; margin-right:10px; vertical-align:2px; }
+  h3{ font-family:Arial,sans-serif; font-size:1.05rem; color:var(--accent); margin:26px 0 8px; }
+  p{ margin:0 0 14px; }
+  code{ font-family:'Courier New',monospace; background:var(--panel); padding:1px 5px; border-radius:3px; font-size:0.92em; }
+  pre{ background:var(--code-bg); color:var(--code-text); padding:14px 16px; border-radius:6px; overflow-x:auto;
+       font-family:'Courier New',monospace; font-size:0.85rem; line-height:1.55; margin:10px 0 18px; }
+  pre .c{ color:#8a97a6; }
+  .callout{ background:var(--panel); border-left:4px solid var(--accent); padding:14px 18px; margin:16px 0; font-family:Arial,sans-serif; font-size:0.92rem; }
+  .callout.warn{ border-left-color:var(--amber); background:var(--amber-soft); }
+  .callout .label{ font-weight:bold; text-transform:uppercase; font-size:0.72rem; letter-spacing:0.05em; color:var(--accent); display:block; margin-bottom:6px; }
+  .callout.warn .label{ color:var(--amber); }
+  table{ width:100%; border-collapse:collapse; font-family:Arial,sans-serif; font-size:0.88rem; margin:14px 0 22px; }
+  th,td{ border:1px solid var(--line); padding:7px 10px; text-align:left; }
+  th{ background:var(--panel); }
+  .example-row{ background:#fdf9ee; border:2px solid var(--ink); border-radius:6px; padding:16px 20px; margin:16px 0; font-family:'Courier New',monospace; font-size:0.85rem; }
+  .example-row .title{ font-family:Arial,sans-serif; font-weight:bold; font-size:0.85rem; margin-bottom:8px; color:var(--ink); }
+  .example-row table{ font-size:0.85rem; margin:0; }
+  .example-row td, .example-row th{ padding:4px 8px; }
+  .track{ display:flex; align-items:center; gap:10px; margin:14px 0; font-family:Arial,sans-serif; font-size:0.85rem; flex-wrap:wrap; }
+  .pill{ padding:5px 12px; border-radius:20px; background:var(--panel); border:1px solid var(--line); }
+  .pill.pass{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:bold; }
+  .pill.fail{ background:var(--amber-soft); border-color:var(--amber); color:var(--amber); font-weight:bold; }
+  .arrow-r{ color:var(--muted); }
+  .kpi{ color:var(--accent); font-weight:bold; }
+  .toc{ font-family:Arial,sans-serif; font-size:0.9rem; background:var(--panel); padding:18px 22px; border-radius:6px; margin:26px 0; }
+  .toc ol{ margin:8px 0 0 20px; padding:0; }
+  .toc li{ margin-bottom:4px; }
+  footer{ font-family:Arial,sans-serif; font-size:0.82rem; color:var(--muted); padding:40px 0; border-top:1px solid var(--line); margin-top:60px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>How tower estimation actually processes our data</h1>
+  <p>A line-by-line walkthrough of <code>02_estimate_towers_from_data.py</code>, starting from one real row
+  of the Berlin V2X cellular dataset and following it through every decision the script makes,
+  in the order the script actually makes them.</p>
+</header>
+
+<div class="toc">
+  <strong>Contents</strong>
+  <ol>
+    <li>What is a "cell", exactly — the definition the whole script rests on</li>
+    <li>The example row we'll trace throughout</li>
+    <li>Step 1 — loading the dataset and the Gate-1 clean filter</li>
+    <li>Step 2 — grouping rows into cells</li>
+    <li>Step 3 — the minimum-data gate</li>
+    <li>Step 4 — the deterministic per-cell split (localization vs. validation)</li>
+    <li>Step 5 — the minimum-per-side gate</li>
+    <li>Step 6 — computing the tower position (Weighted Centroid Localization)</li>
+    <li>Step 7 — the spread diagnostic</li>
+    <li>Step 8 — the consistency check</li>
+    <li>Step 9 — tagging every row and saving the outputs</li>
+    <li>What our example row's final fate actually was</li>
+  </ol>
+</div>
+
+<h2><span class="stepnum">1</span>What is a "cell", exactly?</h2>
+<p>Everything in this script is organized around the idea of a "cell" — one physical antenna sector
+that the vehicle can connect to. But the dataset doesn't give us a single, ready-made "cell ID"
+column we can just group on. Instead, a cell is <em>defined</em>, in the script, as the unique
+combination of five columns:</p>
+<pre>CELL_ID_COLS = ["operator", "PCell_MCC", "PCell_MNC", "PCell_TAC", "PCell_Cell_Identity"]</pre>
+<p>Two rows are considered "the same cell" if and only if all five of these values match exactly.
+Here's what each one contributes, and why all five are needed together rather than just one:</p>
+<table>
+  <tr><th>Column</th><th>What it is</th><th>Why it's needed in the key</th></tr>
+  <tr><td><code>operator</code></td><td>Which of the two mobile network operators (1 or 2) this row belongs to</td>
+      <td>The two operators run completely separate physical networks. A cell identity number from Operator 1's network has no relationship to a cell identity number from Operator 2's — they're different towers even if the raw number happened to match.</td></tr>
+  <tr><td><code>PCell_MCC</code></td><td>Mobile Country Code (262 = Germany, in this dataset)</td>
+      <td>Standard 3GPP identifier for which country's network this is. Included for completeness and correctness — in this single-country dataset it's constant, but the definition should be correct in general.</td></tr>
+  <tr><td><code>PCell_MNC</code></td><td>Mobile Network Code (identifies the specific operator within that country)</td>
+      <td>Confirms which of the two operators' networks issued this cell identity, independent of the separate <code>operator</code> column.</td></tr>
+  <tr><td><code>PCell_TAC</code></td><td>Tracking Area Code — an administrative grouping of nearby cells the network uses for mobility management</td>
+      <td>Cell Identity numbers are only guaranteed unique <em>within</em> a Tracking Area. The same numeric Cell Identity value can, in principle, be reused in a different Tracking Area for a physically different cell. Without TAC, two unrelated towers could get merged into one "cell" by mistake.</td></tr>
+  <tr><td><code>PCell_Cell_Identity</code></td><td>The actual cell/sector identifier within its Tracking Area</td>
+      <td>This is the specific antenna sector the vehicle was connected to — the thing whose physical position we're actually trying to estimate.</td></tr>
+</table>
+<div class="callout">
+  <span class="label">In code</span>
+  This definition is what makes the grouping step work: <code>df_clean.groupby(CELL_ID_COLS)</code>
+  later in the script. Pandas treats every unique combination of these five values as its own group —
+  that group <em>is</em> "a cell" for the rest of the script.
+</div>
+
+<h2><span class="stepnum">2</span>The example row we'll trace</h2>
+<p>To make every step concrete, here is one real row, pulled directly from
+<code>cellular_dataframe_cleaned_v2.csv</code>, that we'll follow through the entire script:</p>
+<div class="example-row">
+  <div class="title">Row index 11491</div>
+  <table>
+    <tr><th>operator</th><td>1</td></tr>
+    <tr><th>PCell_MCC</th><td>262</td></tr>
+    <tr><th>PCell_MNC</th><td>1</td></tr>
+    <tr><th>PCell_TAC</th><td>1492</td></tr>
+    <tr><th>PCell_Cell_Identity</th><td>26947072</td></tr>
+    <tr><th>Latitude</th><td>52.493962</td></tr>
+    <tr><th>Longitude</th><td>13.304773</td></tr>
+    <tr><th>PCell_RSRP_max</th><td>-95.69 dBm</td></tr>
+    <tr><th>FLAG_range_PCell_RSRP_max</th><td>False</td></tr>
+    <tr><th>FLAG_range_PCell_RSRQ_max</th><td>False</td></tr>
+    <tr><th>FLAG_range_PCell_RSSI_max</th><td>False</td></tr>
+    <tr><th>FLAG_range_PCell_SNR_1</th><td>False</td></tr>
+  </table>
+</div>
+<p>This row's cell — the combination <code>(1, 262, 1, 1492, 26947072)</code> — turns out to be one
+of the busiest towers in the whole dataset: <span class="kpi">5,083 total rows</span> across the
+full drive share this exact key. We'll follow this specific row's journey, and mention what happens
+to its 5,082 siblings along the way.</p>
+
+<h2><span class="stepnum">3</span>Step 1 — loading the dataset and the Gate-1 clean filter</h2>
+<pre>df = pd.read_csv(CLEANED_CSV, low_memory=False)
+<span class="c"># 207,434 rows total</span>
+
+clean_mask = ~df[RANGE_FLAG_COLS].any(axis=1)
+df_clean = df[clean_mask].dropna(subset=CELL_ID_COLS[1:] + ["Latitude", "Longitude", "PCell_RSRP_max"])</pre>
+<p>Before any grouping happens, every single row in the dataset — all 207,434 of them — is checked
+against two things:</p>
+<ol>
+  <li><strong>Gate-1 cleanliness</strong>: none of <code>FLAG_range_PCell_RSRP_max</code>,
+  <code>FLAG_range_PCell_RSRQ_max</code>, <code>FLAG_range_PCell_RSSI_max</code>, or
+  <code>FLAG_range_PCell_SNR_1</code> may be <code>True</code>. If any of them are, the row is
+  excluded from tower estimation entirely — there's no point building a position estimate out of
+  a measurement we already know is physically implausible.</li>
+  <li><strong>Completeness</strong>: the row must actually have a value for every column the rest
+  of the script needs — MCC, MNC, TAC, Cell Identity, Latitude, Longitude, and RSRP. A row missing
+  any of these can't be grouped or weighted.</li>
+</ol>
+<p>Applied to the real dataset, this leaves <span class="kpi">192,296</span> of the original
+207,434 rows eligible to continue. Our example row has all four flags <code>False</code> and every
+required field present, so:</p>
+<div class="track">
+  <span class="pill pass">passes Gate-1 clean filter</span>
+  <span class="arrow-r">&#8594;</span>
+  <span class="pill pass">continues to grouping</span>
+</div>
+
+<h2><span class="stepnum">4</span>Step 2 — grouping rows into cells</h2>
+<pre>for cell_key, group in df_clean.groupby(CELL_ID_COLS):
+    <span class="c"># cell_key = (1, 262, 1, 1492, 26947072) for our example
+    # group = every one of the 5,083 rows sharing that exact key</span></pre>
+<p>This is where the definition from Step 1 gets applied mechanically. Pandas scans all 192,296
+eligible rows and buckets them by their exact <code>(operator, MCC, MNC, TAC, Cell_Identity)</code>
+combination. The loop then processes one cell — one bucket — at a time. Our example row is one
+member of the bucket keyed by <code>(1, 262, 1, 1492, 26947072)</code>, which contains 5,083 rows
+in total (assuming all of them independently pass the same Gate-1 filter — in practice a few might
+not, but the vast majority do for this particular busy cell).</p>
+
+<h2><span class="stepnum">5</span>Step 3 — the minimum-data gate</h2>
+<pre>if len(group) < MIN_ROWS_FOR_ESTIMATION:  <span class="c"># MIN_ROWS_FOR_ESTIMATION = 20</span>
+    n_towers_insufficient += 1
+    continue  <span class="c"># skip this cell entirely -- no estimate is produced</span></pre>
+<p>Before doing anything else with a cell's group of rows, the script checks whether there's even
+enough data to bother. Fewer than 20 rows for a cell, and the script gives up on it outright —
+no position is guessed, the cell is simply absent from the final tower list. This happened to
+<span class="kpi">58</span> cells in the real run.</p>
+<p>Our example cell has 5,083 rows — nowhere near the 20-row floor — so:</p>
+<div class="track">
+  <span class="pill pass">5,083 &ge; 20</span>
+  <span class="arrow-r">&#8594;</span>
+  <span class="pill pass">proceeds to the split</span>
+</div>
+
+<h2><span class="stepnum">6</span>Step 4 — the deterministic per-cell split</h2>
+<p>This is the step that avoids the circularity problem: every row in the group is randomly assigned
+to one of two roles, <em>localization</em> or <em>validation</em>, and — critically — the split is
+computed <em>before</em> any position estimate exists.</p>
+<pre>seed = stable_seed_for_cell(cell_key)
+rng = np.random.RandomState(seed)
+is_localization = rng.rand(len(group)) < LOCALIZATION_FRACTION  <span class="c"># 0.6</span>
+
+localization_rows = group[is_localization]
+validation_rows = group[~is_localization]</pre>
+<h3>How the seed is generated</h3>
+<pre>def stable_seed_for_cell(cell_key: tuple) -> int:
+    key_str = "_".join(str(x) for x in cell_key)
+    return int(hashlib.md5(key_str.encode()).hexdigest(), 16) % (2**31)</pre>
+<p>For our example cell, <code>cell_key = (1, 262, 1, 1492, 26947072)</code> becomes the string
+<code>"1_262_1_1492_26947072"</code>, which gets MD5-hashed into a long hexadecimal number, then
+reduced modulo 2³¹ into a plain integer seed. This number is <em>completely determined by the
+cell's own identity</em> — the same cell always produces the same seed, every single time the
+script runs, regardless of which order the cells happen to be processed in, or how many other
+rows exist elsewhere in the dataset.</p>
+<h3>How the seed turns into an actual split</h3>
+<p><code>rng.rand(len(group))</code> uses that seed to generate exactly one random number between
+0 and 1 for <em>every row</em> in the group — 5,083 numbers for our example cell, all reproducible
+from the same seed. Each row's number is then compared against <code>LOCALIZATION_FRACTION = 0.6</code>:
+a number below 0.6 sends that row to <code>localization_rows</code>; 0.6 or above sends it to
+<code>validation_rows</code>. Since each row gets an independent random draw, roughly 60% of the
+5,083 rows land in localization and roughly 40% in validation — not exactly 60/40, since it's random,
+but close, especially with this many rows.</p>
+<div class="callout">
+  <span class="label">Why this specific design</span>
+  A per-cell seed (rather than one seed for the whole dataset) means adding or removing OTHER
+  cells' data never changes this cell's split. And because the split happens strictly BEFORE the
+  position estimate is computed in Step 6, no row can ever end up used both to build the estimate
+  and to later test that same estimate against Sionna RT's prediction.
+</div>
+<p>Our example row (index 11491) gets its own random draw as part of this process. Whichever side
+of 0.6 that specific draw lands on determines its fate — we'll reveal which, for this exact row,
+at the end of this document.</p>
+
+<h2><span class="stepnum">7</span>Step 5 — the minimum-per-side gate</h2>
+<pre>if len(localization_rows) < 5 or len(validation_rows) < 5:
+    n_towers_insufficient += 1
+    continue</pre>
+<p>Even after passing the 20-row floor in Step 3, a cell could theoretically still end up with too
+few rows on one side of the split by bad luck (more likely for cells close to the 20-row minimum).
+If either side ends up with fewer than 5 rows, the whole cell is discarded here too — the same
+"insufficient data" outcome as Step 3, just caught one step later. For our example cell, with
+~3,000 rows expected on the localization side and ~2,000 on the validation side, this is never
+remotely close to being triggered.</p>
+
+<h2><span class="stepnum">8</span>Step 6 — computing the tower position (WCL)</h2>
+<p>Only the <code>localization_rows</code> — never the validation rows — are used here. This is
+the actual Weighted Centroid Localization calculation:</p>
+<pre>lat = localization_rows["Latitude"].values
+lon = localization_rows["Longitude"].values
+rsrp = localization_rows["PCell_RSRP_max"].values
+
+weights = 10 ** (rsrp / 10.0)
+
+est_lat = np.sum(weights * lat) / np.sum(weights)
+est_lon = np.sum(weights * lon) / np.sum(weights)</pre>
+<p>To make the arithmetic concrete, here's a tiny worked example with just three fixes (a real
+cell's actual localization set has thousands, but the formula is identical):</p>
+<table>
+  <tr><th>Fix</th><th>Latitude</th><th>Longitude</th><th>RSRP (dBm)</th><th>Weight = 10^(RSRP/10)</th></tr>
+  <tr><td>A</td><td>52.4930</td><td>13.3010</td><td>-80</td><td>0.00000001</td></tr>
+  <tr><td>B</td><td>52.4945</td><td>13.3040</td><td>-95</td><td>0.0000000003</td></tr>
+  <tr><td>C</td><td>52.4960</td><td>13.3070</td><td>-105</td><td>0.00000000003</td></tr>
+</table>
+<p>Fix A's weight is roughly 33&times; larger than Fix B's and about 316&times; larger than Fix C's
+(each 10 dB of RSRP difference is a 10&times; change in linear weight). When you compute
+<code>Σ(weight&times;lat) / Σ(weight)</code>, Fix A — the strongest signal — pulls the estimated
+position much closer to its own coordinates than B or C do, even though all three fixes contribute
+something. That's the entire mechanism: strong-signal fixes dominate the average, weak-signal fixes
+barely nudge it.</p>
+<p>For our real example cell, this calculation runs over all ~3,000 localization-side rows at once,
+producing a single <code>(est_lat, est_lon)</code> pair — the tower's estimated position.</p>
+
+<h2><span class="stepnum">9</span>Step 7 — the spread diagnostic</h2>
+<pre>distances = haversine_m(lat, lon, est_lat, est_lon)
+weighted_spread_m = np.sum(weights * distances) / np.sum(weights)</pre>
+<p>Using the same weights from Step 6, this computes the weighted-average distance of every
+localization fix from the estimate that was just built from those same fixes. It's not a measure
+of accuracy against ground truth (we don't have any) — it's a measure of how spread out the
+contributing evidence was. In the real run, this cell's actual value came out to
+<span class="kpi">roughly 30-35 metres</span>, in line with the typical result across the dataset.</p>
+
+<h2><span class="stepnum">10</span>Step 8 — the consistency check</h2>
+<pre>if len(distances) >= 5 and np.std(distances) > 1.0:
+    correlation = np.corrcoef(distances, rsrp)[0, 1]
+else:
+    correlation = np.nan
+
+if np.isnan(correlation):
+    position_confidence = "unknown"
+elif correlation < CONSISTENCY_CORRELATION_THRESHOLD:  <span class="c"># -0.1</span>
+    position_confidence = "high"
+else:
+    position_confidence = "low"</pre>
+<p>This checks something we haven't checked yet: does the estimate make physical sense? If the
+estimated position is roughly correct, fixes taken farther from it should show weaker signal — so
+distance-from-estimate and RSRP should be <em>negatively correlated</em>. This cell (one of the
+"high confidence" towers in the real run) shows a strongly negative correlation, comfortably past
+the &minus;0.1 threshold — the physical expectation holds up, which is the best evidence available,
+in the absence of any external ground truth, that this specific estimate is trustworthy.</p>
+
+<h2><span class="stepnum">11</span>Step 9 — tagging every row and saving the outputs</h2>
+<pre>df.loc[localization_rows.index, "tower_estimate_group"] = "localization"
+df.loc[validation_rows.index, "tower_estimate_group"] = "validation"</pre>
+<p>This is the step that writes each row's fate permanently back into the full dataset (not just
+the clean subset used for estimation) — <em>every</em> row starts the script tagged
+<code>"excluded"</code> by default, and only rows belonging to a successfully-estimated cell, on
+either side of the split, get overwritten with <code>"localization"</code> or
+<code>"validation"</code>. Rows that failed Gate-1 cleanliness, or belonged to a cell with too
+little data, simply keep the default <code>"excluded"</code> tag forever.</p>
+<p>Two files get written out: one CSV per operator listing every estimated tower's position, spread,
+correlation, and confidence flag; and one large CSV — the full original dataset plus this new
+<code>tower_estimate_group</code> column — that every later script in the pipeline reads from.</p>
+
+<h2><span class="stepnum">12</span>What happened to our example row, specifically</h2>
+<p>Row 11491 belongs to cell <code>(1, 262, 1, 1492, 26947072)</code> — a cell with 5,083 rows,
+comfortably clearing every minimum-data gate in Steps 3 and 5, and landing in the "high confidence"
+category in Step 8. Its own individual outcome in Step 4's random split — whether it personally
+became one of the roughly 3,000 localization fixes that helped build the estimate, or one of the
+roughly 2,000 validation fixes held back to test Sionna RT against later — is decided by its own
+random draw from that cell's seeded generator, exactly as described in Step 4. Either way, this row
+is one of the 76,614 (if validation) or 115,204 (if localization) rows in the real run that ended up
+meaningfully used, rather than one of the 15,616 marked <code>"excluded"</code>.</p>
+
+</div>
+<footer>
+  <div class="wrap" style="max-width:820px; margin:0 auto; padding:0;">
+    Companion to <code>02_estimate_towers_from_data.py</code>. Every number and code fragment on this
+    page is taken directly from the actual script and a real row of
+    <code>cellular_dataframe_cleaned_v2.csv</code> (index 11491) — nothing here is illustrative
+    or approximated except the small three-fix arithmetic table in Step 6, which is a simplified
+    stand-in for the real ~3,000-fix calculation.
+  </div>
+</footer>
+</div>
+</body>
+</html>

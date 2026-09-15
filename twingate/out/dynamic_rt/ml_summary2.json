@@ -1,0 +1,14 @@
+{
+  "val_rows": 2598,
+  "train_rows": 4380,
+  "los_fraction_val": 0.8610469591993841,
+  "raw_sionna_mae": 13.305096811677597,
+  "ols_mae": 5.230264911090445,
+  "ols_rmse": 15.710436099565863,
+  "xgb_ols_residual_mae": 5.604333937536997,
+  "xgb_ols_residual_rmse": 13.756241409642513,
+  "xgb_mae_los": 3.9880888642130934,
+  "xgb_mae_nlos": 16.116221377406504,
+  "snr_mae_xgb": 7.6825155151746145,
+  "snr_mae_ols": 7.601342038414377
+}

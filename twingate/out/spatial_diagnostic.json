@@ -1,0 +1,28 @@
+{
+  "1": {
+    "global_spearman_val": 0.5070824074368404,
+    "global_pval": 0.0,
+    "global_pearson_val": 0.32197971300029976,
+    "per_tower_median_spearman": 0.6756757508165065,
+    "per_tower_p25_spearman": 0.3054734599702557,
+    "per_tower_p75_spearman": 0.8145957394189243,
+    "per_tower_median_slope": 0.8865514047858096,
+    "frac_towers_positive_rho": 0.9428571428571428,
+    "frac_towers_rho_gt_02": 0.8428571428571429,
+    "n_towers_analyzed": 70,
+    "verdict": "SIONNA SPATIAL HAS SIGNAL. Linear calibration may help."
+  },
+  "2": {
+    "global_spearman_val": 0.6758093372269794,
+    "global_pval": 0.0,
+    "global_pearson_val": 0.4369210064729028,
+    "per_tower_median_spearman": 0.7242365972599892,
+    "per_tower_p25_spearman": 0.503101820643765,
+    "per_tower_p75_spearman": 0.8842335907707002,
+    "per_tower_median_slope": 1.2580267556731863,
+    "frac_towers_positive_rho": 0.9304347826086956,
+    "frac_towers_rho_gt_02": 0.8782608695652174,
+    "n_towers_analyzed": 115,
+    "verdict": "SIONNA SPATIAL HAS SIGNAL. Linear calibration may help."
+  }
+}

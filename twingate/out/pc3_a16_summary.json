@@ -1,0 +1,11 @@
+{
+  "device": "pc3",
+  "experiment": "A16",
+  "n_towers": 115,
+  "wcl_val_mae_weighted": 9.927089717975328,
+  "a16_val_mae_weighted": 3.0384859532743906,
+  "gain_db": 6.888603764700937,
+  "n_improved": 109,
+  "height_mean": 29.322405916344657,
+  "sionna_calls": 10755
+}
