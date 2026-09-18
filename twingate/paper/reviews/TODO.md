@@ -20,16 +20,22 @@ Severity key:
 
 ## Methodology
 
-- [ ] 🟠 **M1 — "Independent metrics" claim contradicted by the paper's own text**
-  Contribution #1 says $C$, M1, M2 "independently assess" three readiness
+- [x] ✅ **M1 — "Independent metrics" claim contradicted by the paper's own text** *(fixed)*
+  Contribution #1 said $C$, M1, M2 "independently assess" three readiness
   layers; §IV-C says "the same geometric corrections that reduce M1 also
   improve M2" — they move together by construction (both derive from the
   same calibrated Sionna prediction surface, Eq. 3). Only $C$ is genuinely
-  independent.
+  independent — which is exactly what "twin-gate" (two gates) already
+  implies, so this was a wording issue, not a methodology flaw.
   📄 Detailed writeup: [`M1_metric_independence.md`](./M1_metric_independence.md)
-  **Fix:** reframe independence claim to the two *evidence sources*
-  (empirical recurrence vs. physics-based ray tracing), not three metrics;
-  add one sentence at §IV-C acknowledging the expected correlation.
+  **Applied fix:** Contribution #1 (§I) now reads "...drawn from two
+  independent evidence sources, empirical recurrence and physics-based ray
+  tracing, that jointly assess..." instead of claiming three independent
+  metrics. §IV-C now has one added sentence after the M1/M2-correlation
+  observation, explaining why it's expected (both derive from the same
+  calibrated Sionna surface, Eq.~\eqref{eq:ols}) and naming $C$ as the one
+  metric with genuinely independent evidence. No numbers, tables, or other
+  sections touched.
 
 - [ ] 🔴 **M2 — "Ambiguous" gap class used in Results but never defined in Methods**
   §III-A defines TypeA/TypeB as if exhaustive. §IV-A reports "13 ambiguous

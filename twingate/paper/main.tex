@@ -146,9 +146,11 @@ Our main contributions are summarized as follows:
 
 \begin{enumerate}
   \item Development of a DT readiness framework: three quantitative
-        metrics ($C$, M1, M2) that independently assess measurement
-        quality, geometric fidelity, and functional coverage accuracy,
-        each validated on a held-out temporal split.
+        metrics ($C$, M1, M2), drawn from two independent evidence
+        sources, empirical recurrence and physics-based ray tracing,
+        that jointly assess measurement quality, geometric fidelity, and
+        functional coverage accuracy, each validated on a held-out
+        temporal split.
   \item Design of a typed gap classifier (Gate~1), spatially aware and
         separating protocol interruptions (TypeA) from true coverage
         dead zones (TypeB) from MobileInsight logs, achieving
@@ -685,7 +687,11 @@ in the twin-gate convergence analysis below. The same geometric
 corrections that reduce M1 also improve M2 (unrefined, non-scattering
 geometry yields materially lower precision), confirming Gate~2's
 corrections improve functional coverage accuracy, not merely average
-signal-level error.
+signal-level error. This correlation is expected, since M1 and M2 are
+both computed from the same calibrated Sionna prediction surface
+(Eq.~\eqref{eq:ols}); it is $C$, computed independently from RSRP gap
+recurrence alone, that supplies evidence from a source Gate~2 never
+observes.
 
 This predicted dip's practical significance is confirmed by the
 multi-KPI corroboration in Section~\ref{sec:gate1results}: the same
