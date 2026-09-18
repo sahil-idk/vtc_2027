@@ -115,27 +115,19 @@ Severity key:
   published 26.3 dB). Confirms the mechanism the fix describes genuinely
   works, not just that it's correctly coded.
 
-- [ ] 🟠 **M6 — Conclusion's opening claim overclaims generalization** *(documented, fix not yet applied)*
+- [x] ✅ **M6 — Conclusion's opening claim overclaims generalization** *(fixed)*
   "TWINGATE demonstrates that a physics-accurate digital twin... can be
-  constructed and validated end-to-end" — actual evidence is one route,
-  temporal-only holdout, single deployment. Sharper than originally
-  scoped: this isn't just an outside objection, it's a same-paragraph
-  self-contradiction — four sentences later, the same paragraph says
-  "these results are established on a single urban deployment...
-  generalization... not yet confirmed," with no paragraph break between
-  the two.
+  constructed and validated end-to-end" had zero scope marker, contradicting
+  the same paragraph's later "these results are established on a single
+  urban deployment... not yet confirmed" four sentences on, with no
+  paragraph break between the two.
   📄 Detailed writeup: [`M6_conclusion_overclaim.md`](./M6_conclusion_overclaim.md)
-  **Proposed fix (not applied), preferred version:** name the dataset
-  rather than spell out the protocol — "Using the Berlin V2X dataset,
-  TWINGATE demonstrates that a physics-accurate digital twin... can be
-  constructed and validated end-to-end..." — lighter and more standard
-  than heavier hedging, and sufficient to remove the contradiction since
-  the later "single urban deployment" sentence then reads as elaboration
-  rather than a first-time scope reveal. Heavier alternative (spelling
-  out "single Berlin deployment under a strict temporal holdout" in the
-  topic sentence itself) kept in the writeup as a fallback. The
-  "validated" → "evaluated" word-choice question (same pattern as C2) is
-  noted as a separate, independent decision either way.
+  **Applied fix:** opening sentence now reads "Using the Berlin V2X
+  dataset, TWINGATE demonstrates that a physics-accurate digital twin...
+  can be constructed and validated end-to-end..." — the dataset-naming
+  version, per author decision. "Validated" left as-is (not swapped to
+  "evaluated"). The "validated" → "evaluated" word-choice question remains
+  open and independent, same pattern as still-open curation finding C2.
 
 - [ ] 🟠 **M7 — No deployment ever satisfies all three criteria; Table I's binary "No" fights the body text's noise-floor argument**
   Op1 fails $C$; both operators fail M1. The paper never shows what a
