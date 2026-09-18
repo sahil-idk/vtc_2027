@@ -37,12 +37,19 @@ Severity key:
   metric with genuinely independent evidence. No numbers, tables, or other
   sections touched.
 
-- [ ] 🔴 **M2 — "Ambiguous" gap class used in Results but never defined in Methods**
-  §III-A defines TypeA/TypeB as if exhaustive. §IV-A reports "13 ambiguous
-  gaps whose session context is inconclusive" with no prior definition.
-  **Fix:** add to §III-A: gaps that are neither session-boundary-aligned
-  nor cross-vehicle-corroborated are labeled Ambiguous — insufficient
-  evidence either way, reported but not used to certify or reject a zone.
+- [x] ✅ **M2 — "Ambiguous" gap class used in Results but never defined in Methods** *(fixed)*
+  §III-A defined TypeA/TypeB as if exhaustive. §IV-A reported "13 ambiguous
+  gaps whose session context is inconclusive" with no prior definition —
+  and that description was itself inaccurate (Ambiguous gaps are defined
+  by *lack of cross-vehicle corroboration*, not by session-context
+  ambiguity; a gap's session-boundary status is never in doubt by the time
+  it's labeled Ambiguous). Phrasing-only, same category as M1 — the
+  classifier code was already correct and consistent.
+  📄 Detailed writeup: [`M2_ambiguous_gap_class.md`](./M2_ambiguous_gap_class.md)
+  **Applied fix:** §III-A now has an explicit "Ambiguous" definition
+  paragraph after TypeB. §IV-A's "whose session context is inconclusive"
+  was corrected to "lacking cross-vehicle corroboration." No numbers,
+  tables, or other sections touched.
 
 - [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence**
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."

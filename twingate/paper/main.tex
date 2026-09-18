@@ -309,6 +309,12 @@ cell-state-specific and rarely reproduce across vehicles on different
 serving cells, while coverage holes persist deterministically at fixed
 positions regardless of which vehicle or cell passes through.
 
+\textbf{Ambiguous:} A gap that is neither TypeA (not session-boundary-
+aligned) nor TypeB (not corroborated by another vehicle within
+$d_\text{recur}$) is labeled Ambiguous: insufficient evidence to classify
+it as either a protocol interruption or a coverage hole. Ambiguous gaps
+are reported but never used to certify or reject a dead zone.
+
 \subsubsection{Classifier and Validation}
 
 The two criteria above define a hard-threshold rule with two
@@ -504,7 +510,7 @@ convergence, all evaluated exclusively on the held-out day~3.
 Over training days~1--2 combined, the gap classifier finds 4~TypeA gaps
 (session-boundary-aligned, distributed equally across both operators),
 57~TypeB gaps (two distinct geographic clusters), and 13~ambiguous gaps
-whose session context is inconclusive.
+lacking cross-vehicle corroboration.
 
 TypeA gaps align with lap transitions in the \texttt{measurement}
 session index, confirming they reflect LTE mobility procedures rather
