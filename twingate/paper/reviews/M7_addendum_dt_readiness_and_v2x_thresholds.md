@@ -1,6 +1,25 @@
 # M7 Addendum — DT-Readiness Framing Audit & V2X-Specific Threshold Search (4-Agent Synthesis)
 
-**Status:** research complete, synthesis below, **not yet applied** to `main.tex` · **Feeds into:** M7 (`M7_no_deployment_fully_passes.md`), and introduces four new candidate findings (M9–M12)
+**Status:** ✅ applied to `main.tex` (M7, M9, M10, M12) · M11 remains open (needs analysis work) · **Feeds into:** M7 (`M7_no_deployment_fully_passes.md`)
+
+**Resolution note:** the recommended plan in §1.4 below was refined once
+more before applying, per author direction: rather than keeping ~3dB as
+a self-imposed stretch target alongside the 6dB hard bound, the 3dB
+framing was dropped from the paper entirely. The narrative now leads
+with digital-twin replication fidelity (recovered geometry,
+standards-derived material properties, diffuse scattering) with M1 as a
+tracked indicator of that fidelity against the 6dB standards bound, not
+a number to chase. The MART-6G citation was independently re-verified
+by reading the actual paper text (not just the earlier search summary)
+before use — it is a general 6G ray-tracing DT platform, not V2X-specific,
+and its one V2V case study uses a similarity-index metric, not a dB
+figure; the "power errors below 6dB" line is a general engineering
+design guideline stated separately from that case study. Cited precisely
+as "a comparable ray-tracing digital twin platform" with its actual
+achieved figures (4.99dB calibrated PL RMSE vs. 8.11dB uncalibrated),
+not as a validated V2X threshold. `main.tex` was verified to compile
+cleanly end-to-end (a full TeX toolchain was installed in this session
+specifically for this check).
 
 This document synthesizes four independent research passes commissioned to answer two questions: (1) is Gate 2's staged pipeline honestly framed as digital-twin *replication* rather than *accuracy-chasing*, and (2) does a better, V2X-specific citable RSRP accuracy threshold exist in the literature than the generic 3GPP UE-measurement spec TWINGATE currently uses? Two agents worked the literature-search question independently so their conclusions could be cross-checked rather than trusted from a single pass.
 
