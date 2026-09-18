@@ -129,13 +129,29 @@ Severity key:
   "evaluated"). The "validated" → "evaluated" word-choice question remains
   open and independent, same pattern as still-open curation finding C2.
 
-- [ ] 🟠 **M7 — No deployment ever satisfies all three criteria; Table I's binary "No" fights the body text's noise-floor argument**
+- [ ] 🟠 **M7 — No deployment ever satisfies all three criteria; Table I's binary "No" fights the body text's noise-floor argument** *(documented, fix not yet applied)*
   Op1 fails $C$; both operators fail M1. The paper never shows what a
   "pass" looks like under its own framework, and Table I's bolded "No" for
-  M1 sits in tension with prose arguing 3.02 dB is within measurement noise.
-  **Fix:** either add an explicit uncertainty band to the M1 threshold so
-  table and prose agree, or add a sentence owning that no deployment yet
-  reaches full "ready" status and that this is the target of future work.
+  M1 sits in tension with prose arguing 3.02 dB is within measurement
+  noise. Sharper than originally scoped — three compounding issues, not
+  one: (a) the forgiving noise-floor argument is only made for Op.1's
+  3.02 dB (0.02 dB over); Op.2's 4.04 dB (1.04 dB over — an order of
+  magnitude further off) gets no comparable defense, yet the Conclusion's
+  "close to but not yet crossing... for either operator" treats both as
+  symmetric near-misses; (b) calling the self-chosen 3 dB threshold "the
+  fading floor" borrows credibility from a different, actually-cited
+  number (TR 38.901's 4-6 dB shadow-fading σ); (c) the meta-point that no
+  deployment here ever satisfies $C$, M1, and M2 simultaneously is never
+  stated plainly anywhere.
+  📄 Detailed writeup: [`M7_no_deployment_fully_passes.md`](./M7_no_deployment_fully_passes.md)
+  **Option A (not applied):** add an explicit uncertainty band to the M1
+  threshold so Table I and the prose agree.
+  **Option B (not applied, recommended):** keep Table I's hard "No" as-is
+  (more defensible than a post-hoc band); fix the Conclusion's symmetric
+  phrasing to distinguish Op.1's near-miss from Op.2's real gap; add an
+  explicit sentence owning that no deployment yet reaches full "ready"
+  status; optionally soften "fading floor" wording. Awaiting review of
+  both options before touching `main.tex`.
 
 - [ ] 🟠 **M8 — Limitations section lists only distant weaknesses, not the nearest ones**
   Current bullets: dataset scope, dynamic scatterers, Doppler, search
