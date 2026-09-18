@@ -51,27 +51,44 @@ Severity key:
   was corrected to "lacking cross-vehicle corroboration." No numbers,
   tables, or other sections touched.
 
-- [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence**
+- [x] ✅ **M3 — "Threshold sensitivity" paragraph is one unsupported sentence** *(fixed)*
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."
-  — no sweep, table, or figure backs this. Unlike M1/M2, not a pure
-  wording issue: the *strong* fix requires actually rerunning
-  `G1_completeness.py` at a few $d_\text{recur}$ values, not just a
-  sentence edit.
-  📄 Detailed writeup: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
-  **Path A (recommended):** rerun `G1_completeness.py` with
-  `RECUR_DIST_M` swept (e.g. 50/75/100/125/150m), report how $C$ moves.
-  **Path B (text-only fallback):** replace the robustness claim with an
-  honest design-choice justification — $d_\text{recur}=100$m was fixed
-  a priori to GPS uncertainty, not tuned or swept. Awaiting a decision
-  between the two before editing `main.tex`.
+  — no sweep, table, or figure backed this. Sweep run with the
+  author-provided dataset: $C$ = 0.00 / 0.50 / **0.80** / 0.875 / 1.00 at
+  $d_\text{recur}$ = 50 / 75 / **100** / 125 / 150\,m. The "robust" claim
+  was false — $C$ swings the full 0–1 range — but the mechanism is
+  defensible: a larger radius mechanically makes matching easier, so
+  $C \to 1$ at 150m is the metric saturating (trivial), not validation;
+  the paper's 100m was fixed a priori from GPS uncertainty, well short of
+  that ceiling, not chosen to maximize $C$.
+  📄 Detailed writeup + full table: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
+  Raw sweep outputs: `twingate/out/g1_summary_d{50,75,100,125,150}.json`.
+  **Applied fix:** replaced the paragraph in §IV-A with the real five-point
+  sweep stated inline (no dedicated table — judged disproportionate for a
+  secondary robustness check next to two headline results tables, and a
+  standalone "C=1.00" cell risks a bad first read before the explanation
+  lands). The new text gives the numbers, immediately explains the
+  monotonic trend as the metric's expected saturation behavior rather than
+  a red flag, and states explicitly that 100m was fixed a priori rather
+  than chosen to maximize $C$.
 
 - [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
   Table I reports held-out MAE only per stage; a stage that overfits more
   free parameters (height, azimuth, scattering) to training data wouldn't
   be distinguishable from genuine geometric recovery using this table alone.
-  **Fix:** add one sentence stating the evaluation protocol already guards
-  against this (train-fit, val-eval-once, no further tuning) so monotonic
-  held-out improvement is itself evidence against overfitting.
+  The good news: the paper's own "train-fit, evaluate exactly once, no
+  further tuning" protocol (§III-C-6) is already a real defense against
+  this, it's just never stated as one. Also found: Stage 3/4's
+  training-fit MAE (`refined_opt_mae`) is already sitting, unused, in
+  `twingate/out/{device}_gate2_final.csv` right next to the held-out MAE
+  that made it into the paper — partially free to surface.
+  📄 Detailed writeup: [`M4_overfitting_risk_ablation_table.md`](./M4_overfitting_risk_ablation_table.md)
+  **Path B (cheap, do regardless):** add a sentence making the existing
+  protocol's implicit anti-overfitting argument explicit.
+  **Path A (partially free):** add a Train MAE column/footnote to Table I
+  for Stage 3/4 using data that already exists; Stages 0-2 would need a
+  small rerun. Awaiting a decision on scope (B only, or B + partial A)
+  before editing `main.tex`.
 
 - [ ] 🔴 **M5 — Twin-gate independence is asserted, not explained**
   §III-D: "using no information about those locations during optimization"

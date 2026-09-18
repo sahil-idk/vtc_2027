@@ -1,0 +1,14 @@
+{
+  "train_typea_gaps": 4,
+  "train_typeb_gaps": 58,
+  "train_ambiguous_gaps": 12,
+  "typeb_clusters": 2,
+  "val_total_gaps": 20,
+  "val_typeb_gaps": 16,
+  "val_typeb_matched": 16,
+  "val_typeb_unmatched": 0,
+  "completeness_C": 1.0,
+  "completeness_C_formula": "16/16",
+  "cluster_recall": 0.5,
+  "d_recur_m": 150.0
+}
