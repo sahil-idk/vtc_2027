@@ -1,6 +1,6 @@
 # Review Finding M7 — No Deployment Ever Fully "Passes," and the Table Doesn't Agree With Its Own Prose
 
-**Status:** open — problem documented, fix options proposed below, **not yet applied** to `main.tex` · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), the "M1 acceptance threshold" paragraph (§IV-C), and the Conclusion (§VI)
+**Status:** open — problem documented, fix options proposed below, a citeable threshold found for Option A (needs verification, see §7), **not yet applied** to `main.tex` · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), the "M1 acceptance threshold" paragraph (§IV-C), and the Conclusion (§VI)
 
 ---
 
@@ -156,5 +156,66 @@ any of the underlying MAE figures — this finding is entirely about how
 the existing M1 numbers are framed in prose and in the table's verdict
 column, not about the numbers themselves.
 
-**Not yet applied.** This document is the problem statement and fix
-options only, for review before any edit to `main.tex`.
+## 7. Literature check: is there a citeable number for the uncertainty band, instead of an invented one?
+
+Searched for whether 3 dB has any direct standards backing beyond "half
+of the already-cited ±6 dB absolute RSRP accuracy bound." Found something
+relevant: **3GPP TS 36.133 separately specifies a *relative* RSRP
+accuracy of approximately ±2–3 dB** for intra-frequency measurements
+(comparing RSRP between two cells on the same carrier at a given point) —
+distinct from, and tighter than, the ±6–8 dB *absolute* accuracy figure
+already cited in the paper (§III-C-6, `\cite{3gpp36133}`).
+
+**Why this is relevant to M1 specifically:** the paper's current
+derivation of "M1 < 3 dB" is a self-derived heuristic — "half of the
+±6 dB absolute bound" — not a number taken directly from the standard.
+Since M1 compares a calibrated *prediction* against a *measurement* at
+the same point (closer in spirit to a relative comparison than an
+absolute one), the relative-accuracy figure (2–3 dB) is arguably the more
+directly applicable spec value, and it happens to bracket the paper's
+chosen 3 dB threshold at its upper edge — i.e., 3 dB may not be an
+arbitrary self-imposed number at all, but close to (or at) a real,
+separately-specified 3GPP accuracy bound for exactly this kind of
+comparison.
+
+**Confidence and caveat — read before citing this.** This was found via
+web search summaries (multiple independent search results consistently
+distinguishing "±2–3 dB relative" from "±6–8 dB absolute"), not by
+directly reading the 3GPP TS 36.133 PDF text. Direct fetches of the
+primary specification (arib.or.jp, etsi.org, sharetechnote.com) were all
+blocked by this session's network egress proxy, so **the exact clause
+number, exact value, and the conditions it applies under (bandwidth,
+band, normal vs. extreme test conditions) have not been directly
+verified against the spec itself.** Before this goes into a citation,
+whoever finalizes the fix should pull the actual TS 36.133 PDF (a recent
+release, e.g. via 3gpp.org's spec archive) and confirm clause number,
+exact dB value, and applicability conditions.
+
+**How this changes the fix options above, if verified:**
+
+- **Resolves problem (c) outright.** Once cited properly, "3 dB" has its
+  own direct standards backing — no more borrowing credibility from the
+  4–6 dB shadow-fading figure via loose "fading floor" language.
+- **Substantially strengthens Option A.** The uncertainty band no longer
+  needs to be invented post-hoc (the original objection to Option A) — it
+  can cite a real number: "M1 ≤ 3 dB, matching 3GPP TS 36.133's relative
+  RSRP accuracy specification of ~2–3 dB for intra-frequency comparisons."
+  This turns Option A from "a band that could look like moving the
+  goalposts" into "a band grounded in the same standard already cited
+  elsewhere in the paper for the absolute-accuracy argument."
+- **Does NOT resolve problems (a) or (d).** Operator 2's 4.04 dB is still
+  roughly 1 dB over even the loose end of a 2–3 dB band — this citation
+  doesn't rescue that number. The Op.1/Op.2 asymmetry and the "no
+  deployment passes all three" meta-point still need Option B's fixes
+  (the Conclusion phrasing fix, and the explicit ownership sentence)
+  regardless of what happens with Option A.
+
+**Revised recommendation:** pursue Option A for Operator 1 specifically
+(now defensible with a real citation, pending verification), combined
+with Option B's Conclusion-phrasing fix and ownership sentence to handle
+Operator 2 and the meta-point honestly. Not an either/or anymore — the
+two options address different parts of the same finding.
+
+**Not yet applied.** This document is the problem statement, fix options,
+and supporting literature check only, for review before any edit to
+`main.tex`.
