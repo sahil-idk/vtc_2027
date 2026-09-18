@@ -108,6 +108,12 @@ Severity key:
   before the final OLS calibration fit, so the refined tower geometry is
   derived entirely from rows outside the zone under test. No numbers,
   tables, or other sections touched.
+  **Empirically verified, not just asserted** (writeup §7): computed the
+  near-TypeB-vs-background comparison directly from `pc2`/`pc3`'s actual
+  zone-exclusion-applied predictions — drop is real and significant
+  (24.18 dB, Welch $p=8.8\times10^{-52}$, same direction as the paper's
+  published 26.3 dB). Confirms the mechanism the fix describes genuinely
+  works, not just that it's correctly coded.
 
 - [ ] 🟠 **M6 — Conclusion's opening claim overclaims generalization**
   "TWINGATE demonstrates that a physics-accurate digital twin... can be
