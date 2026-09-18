@@ -53,10 +53,17 @@ Severity key:
 
 - [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence**
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."
-  — no sweep, table, or figure backs this.
-  **Fix (text-only, no new experiment):** replace the robustness claim with
-  an honest design-choice justification — $d_\text{recur}=100$m was fixed
-  a priori to GPS uncertainty, not tuned or swept.
+  — no sweep, table, or figure backs this. Unlike M1/M2, not a pure
+  wording issue: the *strong* fix requires actually rerunning
+  `G1_completeness.py` at a few $d_\text{recur}$ values, not just a
+  sentence edit.
+  📄 Detailed writeup: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
+  **Path A (recommended):** rerun `G1_completeness.py` with
+  `RECUR_DIST_M` swept (e.g. 50/75/100/125/150m), report how $C$ moves.
+  **Path B (text-only fallback):** replace the robustness claim with an
+  honest design-choice justification — $d_\text{recur}=100$m was fixed
+  a priori to GPS uncertainty, not tuned or swept. Awaiting a decision
+  between the two before editing `main.tex`.
 
 - [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
   Table I reports held-out MAE only per stage; a stage that overfits more
