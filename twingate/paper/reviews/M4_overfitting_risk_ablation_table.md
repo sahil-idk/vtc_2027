@@ -1,6 +1,14 @@
 # Review Finding M4 — The Ablation Table Can't Rule Out "More Knobs, Not Better Physics"
 
-**Status:** open · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), §IV-C (Gate 2 Results)
+**Status:** Path B fixed; Path A blocked (see §7) · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), §IV-C (Gate 2 Results)
+
+**Resolution note:** Path B (§5) is applied — a new "Overfitting check"
+paragraph now sits in §IV-C, right after the stage-by-stage pattern is
+described. Path A (adding real train-MAE numbers to Table I) was
+attempted but is currently blocked: the checked-in per-tower output files
+that would supply those numbers do not match the run that produced
+Table I's published numbers. See §7 for the exact discrepancy found and
+what's needed to unblock it.
 
 ---
 
@@ -126,5 +134,47 @@ an argued one. Stages 0–2's training MAE is a nice-to-have, not essential
 — the overfitting risk is concentrated in the later stages anyway, since
 that's where the free parameters (height, azimuth) are actually added.
 
-**Not yet applied.** Waiting on a decision on how far to take this
-(Path B only, or B + partial A) before touching `main.tex`.
+## 7. Path B applied. Path A attempted, then blocked — here's exactly why
+
+Path B is now applied verbatim in `main.tex` §IV-C, as a new "Overfitting
+check" paragraph right after the stage-by-stage pattern discussion.
+
+Path A was attempted next: pull `refined_opt_mae` (training MAE) from
+`twingate/out/{device}_gate2_final.csv`, weight it by `n_train` the same
+way the paper weights `refined_val_mae` by `n_val`, and add it to Table I.
+Before writing anything into the paper, the held-out MAE from these same
+files was recomputed as a sanity check against Table I's published
+numbers — **and it does not match**:
+
+| | Paper (Table I, Stage 4) | Recomputed from checked-in `out/*.csv` |
+|---|---|---|
+| Op.\,1 (pc1+pc4) towers | 124 | pc1: 30 towers; **pc4 file does not exist** |
+| Op.\,1 val MAE | 3.02 dB | pc1 alone: 2.33 dB (not comparable — pc4 missing) |
+| Op.\,2 (pc2+pc3) towers | 104 | 101 (pc2: 37, pc3: 65, 1 dropped for NaN) |
+| Op.\,2 val MAE | 4.04 dB | **3.36 dB** |
+
+The gap for Operator 2 (3.36 dB recomputed vs. 4.04 dB published, on 101
+towers vs. 104) is too large to be rounding or a minor row-count
+difference. Combined with `pc4_gate2_final.csv` not existing in the repo
+at all, this confirms the checked-in per-tower files are **not** the same
+run that produced Table I — they're an earlier, partial, or otherwise
+mismatched run (consistent with a gap flagged separately in this
+project's codebase-mapping notes: `A19_gate2_final.py`, the script meant
+to produce Table I's Stage 3/4 numbers correctly, had not been confirmed
+to have completed a full, consistent run across all four devices).
+
+**Why Path A was not applied anyway:** inserting a "Train MAE" column
+sourced from data that doesn't reproduce the paper's own val-MAE column
+would silently introduce a *new*, worse inconsistency — a reviewer or a
+co-author re-deriving Table I later would find the train-MAE column
+doesn't correspond to the same run as the rest of the table. That is a
+bigger problem than the one this fix is trying to solve. No Sionna/GPU
+environment is available in this session to rerun `A19_gate2_final.py`
+and regenerate matching numbers.
+
+**What would actually unblock Path A:** rerun `A19_gate2_final.py` for
+all four devices to completion (needs a GPU + Sionna environment, not
+available here), confirm the resulting weighted val MAE matches Table I's
+3.02/4.04 dB within rounding, and only then pull the corresponding
+`refined_opt_mae` into the paper. Until that rerun happens, Path B is the
+paper's only honest defense against the overfitting question.

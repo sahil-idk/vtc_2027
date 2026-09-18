@@ -676,6 +676,17 @@ show this pattern for both operators: each added source of geometric
 information reduces error more than either calibration or scattering,
 exactly as Section~\ref{sec:4dnm}'s identifiability argument predicts.
 
+\textbf{Overfitting check.} Each stage adds free parameters (height,
+azimuth, scattering), which raises the question of whether later stages
+merely fit training-day noise rather than recovering real geometry.
+The evaluation protocol above guards against this directly: parameters
+are optimized only against training-day MAE and evaluated exactly once
+on day~3 with no further tuning, so a stage that mainly fit training
+noise would show flat or worsening held-out error, not the improving
+error every stage actually shows. The monotonic held-out improvement in
+Table~\ref{tab:gate2} is therefore itself evidence that the added
+geometric freedom captures real structure rather than training noise.
+
 \textbf{M1 acceptance threshold.}
 3GPP TS~36.133 specifies UE absolute RSRP measurement accuracy of
 $\pm$6\,dB~\cite{3gpp36133}; separately, TR~38.901 assigns a
