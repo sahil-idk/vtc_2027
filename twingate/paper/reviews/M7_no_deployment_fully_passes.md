@@ -1,6 +1,22 @@
 # Review Finding M7 — No Deployment Ever Fully "Passes," and the Table Doesn't Agree With Its Own Prose
 
-**Status:** open — problem documented, fix options proposed below, a citeable threshold found for Option A (needs verification, see §7), **not yet applied** to `main.tex` · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), the "M1 acceptance threshold" paragraph (§IV-C), and the Conclusion (§VI)
+**Status:** ✅ fixed · **Severity:** Weakens-the-paper · **Section(s) affected:** Table I (`tab:gate2`), the "M1 acceptance threshold" paragraph (§IV-C), and the Conclusion (§VI)
+
+**Final resolution note:** neither Option A nor Option B as originally
+scoped here was applied as-is. After the 4-agent research documented in
+`M7_addendum_dt_readiness_and_v2x_thresholds.md`, and author direction
+to stop centering the paper's narrative on the self-imposed 3dB target
+and instead lead with the digital twin's replication fidelity (recovered
+geometry, standards-derived material properties, diffuse scattering),
+the actual fix taken was: drop the "M1<3dB?" column from Table I
+entirely, reframe M1 as a fidelity indicator rather than a pass/fail
+gate, and cite 3GPP TS 36.133's already-used ±6dB absolute accuracy bound
+(which every stage clears, for both operators) as the real standards
+citation, with MART-6G added as verified corroborating context. This
+also dissolves the original Op.1/Op.2 asymmetry concern (finding (a))
+since neither operator is a "miss" under the new framing. See the
+addendum doc for the full citation verification and exact wording
+applied to `main.tex`.
 
 ---
 
