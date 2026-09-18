@@ -115,12 +115,22 @@ Severity key:
   published 26.3 dB). Confirms the mechanism the fix describes genuinely
   works, not just that it's correctly coded.
 
-- [ ] 🟠 **M6 — Conclusion's opening claim overclaims generalization**
+- [ ] 🟠 **M6 — Conclusion's opening claim overclaims generalization** *(documented, fix not yet applied)*
   "TWINGATE demonstrates that a physics-accurate digital twin... can be
   constructed and validated end-to-end" — actual evidence is one route,
-  temporal-only holdout, single deployment.
-  **Fix:** scope the sentence: "...on a single Berlin deployment under a
-  strict temporal holdout..."
+  temporal-only holdout, single deployment. Sharper than originally
+  scoped: this isn't just an outside objection, it's a same-paragraph
+  self-contradiction — four sentences later, the same paragraph says
+  "these results are established on a single urban deployment...
+  generalization... not yet confirmed," with no paragraph break between
+  the two.
+  📄 Detailed writeup: [`M6_conclusion_overclaim.md`](./M6_conclusion_overclaim.md)
+  **Proposed fix (not applied):** scope the opening sentence — "TWINGATE
+  demonstrates, on a single Berlin deployment under a strict temporal
+  holdout, that a physics-accurate digital twin... can be constructed and
+  *evaluated* end-to-end..." — bundling in the same "validated" →
+  "evaluated" correction already identified for C2, since it's the same
+  overclaim pattern in a second location.
 
 - [ ] 🟠 **M7 — No deployment ever satisfies all three criteria; Table I's binary "No" fights the body text's noise-floor argument**
   Op1 fails $C$; both operators fail M1. The paper never shows what a
