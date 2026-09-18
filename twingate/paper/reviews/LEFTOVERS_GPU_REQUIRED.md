@@ -61,3 +61,58 @@ doesn't unblock Path A on its own — the MAE mismatch and missing pc4
 file are still real — but it's a reason to expect the eventual full
 rerun will land close to the published numbers rather than surface a
 new surprise.
+
+---
+
+## M11 — Per-tower OSM building-plausibility check
+
+**Status:** blocked, compound cause. See `M11_osm_plausibility_check.md`
+for the full writeup.
+
+**One-line summary:** nothing in the pipeline checks whether an
+optimized tower's *position* lands anywhere physically plausible (near
+an actual building/mast) rather than just wherever numerically minimizes
+training error. Fix needs the per-tower optimized coordinates plus the
+OSM building-footprint layer used to build the Sionna scene.
+
+**Why it's blocked — two independent causes, not one:**
+1. **Same tower-coordinate gap as M4 above** — `pc4_gate2_final.csv` is
+   missing, and pc1/pc2/pc3 don't reproduce Table I's published numbers.
+2. **OSM building geometry is unreachable from this sandbox,
+   independent of the GPU question.** `scene_operator{1,2}/` (the
+   generated Sionna scene, gitignored) isn't present in this checkout,
+   and the natural fallback — fetching the same public Overpass API data
+   `03_build_sionna_scene.py` uses — is blocked outright: tested six
+   hosts directly (`overpass-api.de`, `overpass.kumi.systems`,
+   `overpass.openstreetmap.ru`, `overpass.private.coffee`,
+   `www.openstreetmap.org`, `download.geofabrik.de`), all returned
+   organization-policy connection rejections. This is a domain-family
+   block, not a single flaky host.
+
+**What's needed to unblock (in addition to M4's GPU rerun above):**
+1. Complete M4's `A19_gate2_final.py` rerun for all four devices first —
+   M11 needs the same complete, correct per-tower coordinates.
+2. In that same environment, either (a) keep the generated
+   `scene_operator1/scene.xml` and `scene_operator2/scene.xml` files
+   after the rerun (they already contain the OSM-derived building mesh
+   actually used for ray tracing — more faithful than a fresh OSM pull,
+   since it's the exact geometry Sionna traced against), or (b) confirm
+   that environment has outbound access to the public Overpass API.
+3. For each tower's final `(refined_lat, refined_lon)`, compute distance
+   to the nearest building footprint/mesh vertex; report per operator
+   the fraction of towers within a plausible siting distance, and
+   whether that correlates with per-tower MAE improvement.
+4. Lower-cost companion, needs only step 1 (no OSM/network access):
+   extend the existing Operator 1 aggregate height/azimuth plausibility
+   check (already in `main.tex` after the M9 fix) to Operator 2.
+
+**Relationship to M4:** M11 and M4 Path A unblock together — both need
+the same completed GPU rerun. M11 additionally needs OSM building data
+(or the retained scene files), so don't assume M4's rerun alone finishes
+M11 too; the person running that rerun should be told to keep
+`scene_operator1/` and `scene_operator2/` around afterward rather than
+letting them get cleaned up as generated/gitignored artifacts.
+
+**Not attempted:** any analysis using substitute/approximated building
+geometry in place of the real OSM data — would produce numbers with no
+real evidentiary value.
