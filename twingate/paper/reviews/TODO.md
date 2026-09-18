@@ -72,23 +72,26 @@ Severity key:
   a red flag, and states explicitly that 100m was fixed a priori rather
   than chosen to maximize $C$.
 
-- [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
+- [~] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper** *(Path B fixed, Path A blocked)*
   Table I reports held-out MAE only per stage; a stage that overfits more
   free parameters (height, azimuth, scattering) to training data wouldn't
   be distinguishable from genuine geometric recovery using this table alone.
-  The good news: the paper's own "train-fit, evaluate exactly once, no
-  further tuning" protocol (§III-C-6) is already a real defense against
-  this, it's just never stated as one. Also found: Stage 3/4's
-  training-fit MAE (`refined_opt_mae`) is already sitting, unused, in
-  `twingate/out/{device}_gate2_final.csv` right next to the held-out MAE
-  that made it into the paper — partially free to surface.
   📄 Detailed writeup: [`M4_overfitting_risk_ablation_table.md`](./M4_overfitting_risk_ablation_table.md)
-  **Path B (cheap, do regardless):** add a sentence making the existing
-  protocol's implicit anti-overfitting argument explicit.
-  **Path A (partially free):** add a Train MAE column/footnote to Table I
-  for Stage 3/4 using data that already exists; Stages 0-2 would need a
-  small rerun. Awaiting a decision on scope (B only, or B + partial A)
-  before editing `main.tex`.
+  **Path B — applied.** `main.tex` §IV-C now has a new "Overfitting check"
+  paragraph explaining why the train-fit/evaluate-once protocol already
+  defends against this.
+  **Path A — attempted, blocked.** Tried pulling `refined_opt_mae` from
+  `twingate/out/{device}_gate2_final.csv` for a real Train MAE column, but
+  a sanity check against Table I's own published numbers failed first:
+  recomputing Op.2's weighted val MAE from those same files gives
+  **3.36 dB on 101 towers**, not the paper's **4.04 dB on 104 towers** —
+  and `pc4_gate2_final.csv` doesn't exist in the repo at all. The
+  checked-in per-tower files are not the run that produced Table I, so
+  using them for a "Train MAE" column would introduce a new, worse
+  inconsistency rather than fixing this one. Needs a full `A19_gate2_final.py`
+  rerun (all 4 devices, GPU + Sionna required, not available in this
+  session) that reproduces 3.02/4.04 dB before Path A can be honestly
+  applied. Full numbers and reasoning in the writeup, §7.
 
 - [ ] 🔴 **M5 — Twin-gate independence is asserted, not explained**
   §III-D: "using no information about those locations during optimization"
