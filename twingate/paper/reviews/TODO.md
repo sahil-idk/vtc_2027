@@ -80,18 +80,18 @@ Severity key:
   **Path B — applied.** `main.tex` §IV-C now has a new "Overfitting check"
   paragraph explaining why the train-fit/evaluate-once protocol already
   defends against this.
-  **Path A — attempted, blocked.** Tried pulling `refined_opt_mae` from
-  `twingate/out/{device}_gate2_final.csv` for a real Train MAE column, but
-  a sanity check against Table I's own published numbers failed first:
-  recomputing Op.2's weighted val MAE from those same files gives
-  **3.36 dB on 101 towers**, not the paper's **4.04 dB on 104 towers** —
-  and `pc4_gate2_final.csv` doesn't exist in the repo at all. The
-  checked-in per-tower files are not the run that produced Table I, so
-  using them for a "Train MAE" column would introduce a new, worse
-  inconsistency rather than fixing this one. Needs a full `A19_gate2_final.py`
-  rerun (all 4 devices, GPU + Sionna required, not available in this
-  session) that reproduces 3.02/4.04 dB before Path A can be honestly
-  applied. Full numbers and reasoning in the writeup, §7.
+  **Path A — attempted, blocked, moved to leftovers.** Tried pulling
+  `refined_opt_mae` from `twingate/out/{device}_gate2_final.csv` for a
+  real Train MAE column, but a sanity check against Table I's own
+  published numbers failed first: recomputing Op.2's weighted val MAE
+  from those same files gives **3.36 dB on 101 towers**, not the paper's
+  **4.04 dB on 104 towers** — and `pc4_gate2_final.csv` doesn't exist in
+  the repo at all. Needs a full `A19_gate2_final.py` rerun across all 4
+  devices in a GPU + Sionna environment, not available in this session.
+  Tracked as its own leftover item, kept separate from the rest of this
+  review (which is entirely text-only or CPU-only) so it doesn't block
+  progress: 📄 [`LEFTOVERS_GPU_REQUIRED.md`](./LEFTOVERS_GPU_REQUIRED.md).
+  Full numbers and reasoning also in the original writeup, §7.
 
 - [x] ✅ **M5 — Twin-gate independence is asserted, not explained** *(fixed)*
   §III-D: "using no information about those locations during optimization"
