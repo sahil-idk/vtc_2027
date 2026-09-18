@@ -490,7 +490,11 @@ measurement statistics, Gate~2 reconstructs the radio environment
 the same anomalies. Concretely, we evaluate Gate~2's refined
 predictions at the GPS locations Gate~1 identified as TypeB, using no
 information about those locations during optimization, which was
-fitted purely to minimize training RSRP MAE. A signal drop at these
+fitted purely to minimize training RSRP MAE: for Operator~2, training
+rows within 150\,m of the Gate~1 TypeB centroid are excluded before WCL
+initialization, before the Nelder-Mead search, and before the final OLS
+calibration fit, so the refined tower geometry is derived entirely from
+rows outside the zone under test. A signal drop at these
 locations means the DT has reproduced the dead zone from first
 principles; if not, the OSM scene is likely missing the physical
 blocker. Section~\ref{sec:discussion} develops why this coupling is a

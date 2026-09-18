@@ -93,14 +93,21 @@ Severity key:
   session) that reproduces 3.02/4.04 dB before Path A can be honestly
   applied. Full numbers and reasoning in the writeup, §7.
 
-- [ ] 🔴 **M5 — Twin-gate independence is asserted, not explained**
+- [x] ✅ **M5 — Twin-gate independence is asserted, not explained** *(fixed)*
   §III-D: "using no information about those locations during optimization"
   — the actual mechanism (training rows within 150m of the TypeB centroid
-  excluded before WCL/NM/OLS, per the Op2 zone-exclusion logic) is never
+  excluded before WCL/NM/OLS, per the Op2 zone-exclusion logic) was never
   described in the text, leaving the obvious "of course they converge,
-  that's where the data is" objection unanswered on the page.
-  **Fix:** state the training-row exclusion explicitly in §III-D or wherever
-  it's implemented.
+  that's where the data is" objection unanswered on the page — even
+  though the mechanism in `A19_gate2_final.py` genuinely defends against
+  it, it just wasn't surfaced.
+  📄 Detailed writeup: [`M5_twin_gate_independence_unexplained.md`](./M5_twin_gate_independence_unexplained.md)
+  **Applied fix:** §III-D now states the exclusion explicitly: for
+  Operator 2, training rows within 150m of the Gate 1 TypeB centroid are
+  excluded before WCL initialization, before the Nelder-Mead search, and
+  before the final OLS calibration fit, so the refined tower geometry is
+  derived entirely from rows outside the zone under test. No numbers,
+  tables, or other sections touched.
 
 - [ ] 🟠 **M6 — Conclusion's opening claim overclaims generalization**
   "TWINGATE demonstrates that a physics-accurate digital twin... can be
