@@ -91,8 +91,32 @@ revision" comments in a review report — cheap to fix, easy to notice.
 
 ## 5. Proposed fix (not applied — for review only)
 
-Scope the opening sentence to state up front what was actually tested,
-matching the pattern the Abstract already uses correctly:
+**Preferred version — name the dataset, don't spell out the protocol.**
+The specific defect is that the opening sentence has *zero* scope marker
+at all, which is what creates the contradiction with "these results are
+established on a single urban deployment..." four sentences later. That
+defect is fully fixed just by giving the opening sentence *some* scope —
+it doesn't need to front-load the full temporal-holdout/single-route
+detail, which already lives later in the same paragraph and again in the
+Limitations section. Naming the evaluation dataset is the standard,
+non-hedgy way papers do this (cf. "evaluated on the KITTI benchmark, we
+show..."):
+
+> "Using the Berlin V2X dataset, TWINGATE demonstrates that a
+> physics-accurate digital twin for urban V2X coverage can be constructed
+> and validated end-to-end from publicly available data alone: no
+> operator network configuration, no site surveys, no proprietary tower
+> coordinates."
+
+This reads naturally, matches how the Abstract already scopes the same
+claim ("Applied to a real two-operator LTE drive-test corpus from
+Berlin..."), and once the opening sentence has *any* scope marker, the
+later "single urban deployment... not yet confirmed" sentence becomes a
+natural elaboration (more detail on the same scope) instead of a
+contradiction (introducing scope for the first time, several sentences
+after an unscoped claim).
+
+**Heavier alternative, if more explicit hedging is wanted:**
 
 > "TWINGATE demonstrates, on a single Berlin deployment under a strict
 > temporal holdout, that a physics-accurate digital twin for urban V2X
@@ -100,28 +124,28 @@ matching the pattern the Abstract already uses correctly:
 > available data alone: no operator network configuration, no site
 > surveys, no proprietary tower coordinates."
 
-Two changes, bundled into one sentence edit:
+This spells out the temporal-holdout/single-route detail directly in the
+topic sentence rather than deferring it — more defensive against a
+nitpicking reviewer, but reads more hedgy for a paper's closing section.
+The preferred version above is the recommendation; this is here as the
+fallback if reviewers specifically push back on the lighter version.
 
-1. **Add the scope clause** — "on a single Berlin deployment under a
-   strict temporal holdout." This alone removes the contradiction with
-   the later "single urban deployment... not yet confirmed" sentence,
-   since the opening now states the same scope up front instead of only
-   admitting it four sentences later.
-2. **"validated" → "evaluated"** — "validated" implies a pass/fail
-   judgment was made and passed; M1 (RSRP MAE) doesn't cross its own
-   stated threshold for either operator, a fact the very same paragraph
-   openly acknowledges two sentences later ("geometric fidelity close to
-   but not yet crossing its threshold for either operator"). "Evaluated"
-   is the accurate word — the paper measured and reported these criteria,
-   it didn't confirm the DT passed all of them. This is the same
-   overclaim pattern already identified for Contribution #1 in the
-   still-open curation finding C2 ("each *validated* on a held-out
-   temporal split" → "each *computed*..."); worth fixing consistently in
-   both places, though it's a separable, optional part of this edit if a
-   narrower fix is preferred here.
+**Separate, optional consideration — not part of either version above:**
+"validated" → "evaluated." "Validated" implies a pass/fail judgment was
+made and passed; M1 (RSRP MAE) doesn't cross its own stated threshold for
+either operator, a fact the very same paragraph openly acknowledges two
+sentences later ("geometric fidelity close to but not yet crossing its
+threshold for either operator"). "Evaluated" is the more accurate word —
+the paper measured and reported these criteria, it didn't confirm the DT
+passed all of them. This is the same overclaim pattern already identified
+for Contribution #1 in the still-open curation finding C2 ("each
+*validated* on a held-out temporal split" → "each *computed*..."); it's
+independent of the dataset-scoping question above, so it can be applied
+to both locations together, to neither, or to just one — a separate
+decision from which scoping phrasing gets used.
 
-This is a small, localized, two-clause edit to a single sentence. No new
-data, no rerun, no other part of the Conclusion touched — the C/M1/M2
+Whichever combination is chosen, this stays a single-sentence edit. No
+new data, no rerun, no other part of the Conclusion touched — the C/M1/M2
 summary, the twin-gate convergence description, and the existing "single
 urban deployment" caveat all stay exactly as they are.
 

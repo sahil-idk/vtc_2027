@@ -125,12 +125,17 @@ Severity key:
   generalization... not yet confirmed," with no paragraph break between
   the two.
   📄 Detailed writeup: [`M6_conclusion_overclaim.md`](./M6_conclusion_overclaim.md)
-  **Proposed fix (not applied):** scope the opening sentence — "TWINGATE
-  demonstrates, on a single Berlin deployment under a strict temporal
-  holdout, that a physics-accurate digital twin... can be constructed and
-  *evaluated* end-to-end..." — bundling in the same "validated" →
-  "evaluated" correction already identified for C2, since it's the same
-  overclaim pattern in a second location.
+  **Proposed fix (not applied), preferred version:** name the dataset
+  rather than spell out the protocol — "Using the Berlin V2X dataset,
+  TWINGATE demonstrates that a physics-accurate digital twin... can be
+  constructed and validated end-to-end..." — lighter and more standard
+  than heavier hedging, and sufficient to remove the contradiction since
+  the later "single urban deployment" sentence then reads as elaboration
+  rather than a first-time scope reveal. Heavier alternative (spelling
+  out "single Berlin deployment under a strict temporal holdout" in the
+  topic sentence itself) kept in the writeup as a fallback. The
+  "validated" → "evaluated" word-choice question (same pattern as C2) is
+  noted as a separate, independent decision either way.
 
 - [ ] 🟠 **M7 — No deployment ever satisfies all three criteria; Table I's binary "No" fights the body text's noise-floor argument**
   Op1 fails $C$; both operators fail M1. The paper never shows what a
