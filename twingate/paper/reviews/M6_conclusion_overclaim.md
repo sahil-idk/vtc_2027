@@ -1,6 +1,14 @@
 # Review Finding M6 — The Conclusion's Opening Sentence Contradicts Its Own Closing Caveat
 
-**Status:** open — problem documented, fix proposed below, **not yet applied** to `main.tex` (per instruction) · **Severity:** Weakens-the-paper · **Section(s) affected:** §VI Conclusion
+**Status:** ✅ fixed · **Severity:** Weakens-the-paper · **Section(s) affected:** §VI Conclusion
+
+**Resolution note:** applied the preferred (dataset-naming) version from
+§5. The opening sentence now reads "Using the Berlin V2X dataset,
+TWINGATE demonstrates that a physics-accurate digital twin for urban V2X
+coverage can be constructed and validated end-to-end from publicly
+available data alone..." — "validated" was left as-is per author
+decision; the "validated" → "evaluated" question remains open and
+independent (tracked separately, same pattern as curation finding C2).
 
 ---
 
