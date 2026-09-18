@@ -1,6 +1,6 @@
 # Review Finding M3 — "Threshold Sensitivity" Is Asserted, Never Shown
 
-**Status:** open · **Severity:** Reviewer-would-reject-on-this · **Section(s) affected:** §IV-A (Gate 1 Results)
+**Status:** sweep run, `main.tex` edit pending a table-vs-prose decision · **Severity:** Reviewer-would-reject-on-this · **Section(s) affected:** §IV-A (Gate 1 Results)
 
 ---
 
@@ -61,12 +61,49 @@ that's actually true:
 This removes the false claim without requiring new numbers, at the cost
 of no longer being able to say "robust."
 
-## 5. Recommendation
+## 5. Path A was run — actual results
 
-Path A is cheap enough (one existing script, five reruns) that it's worth
-doing if there's any time before submission — it would let the paper keep
-a real sensitivity claim instead of retreating from one. Path B is the
-fallback if there isn't time: it's honest and defensible, just weaker.
+Dataset provided by the author (`cellular_dataframe_2.parquet`, converted
+to `cellular_dataframe_cleaned.csv`, gitignored, not committed). Baseline
+run first confirmed an exact match to the paper (4 TypeA / 57 TypeB / 13
+Ambiguous / $C=12/15=0.80$) before sweeping `RECUR_DIST_M` over
+$\{50, 75, 100, 125, 150\}$\,m:
 
-**Not yet applied.** Waiting on a decision between Path A and Path B
-before touching `main.tex`.
+| $d_\text{recur}$ (m) | train TypeB | train Ambiguous | val TypeB (denom.) | matched | $C$ |
+|---:|---:|---:|---:|---:|---:|
+| 50  | 56 | 14 | 5  | 0  | 0.000 |
+| 75  | 57 | 13 | 10 | 5  | 0.500 |
+| **100** | **57** | **13** | **15** | **12** | **0.800** (paper's value) |
+| 125 | 58 | 12 | 16 | 14 | 0.875 |
+| 150 | 58 | 12 | 16 | 16 | 1.000 |
+
+Raw per-radius outputs saved to
+`twingate/out/g1_summary_d{50,75,100,125,150}.json`.
+
+**Finding: the "robust" claim was false.** $C$ moves monotonically across
+the full 0–1 range over a 100\,m window — the opposite of robust.
+
+**But the mechanism explains why, and it's a usable, honest story.** A
+larger radius can only make cross-vehicle matching easier, so $C \to 1$ is
+a trivial ceiling as $d_\text{recur} \to \infty$ (confirmed: exactly that
+happens at 150\,m — every held-out gap matches, which is the metric
+saturating, not the DT being validated). The authors did not pick the
+radius that maximizes $C$; they fixed $d_\text{recur}=100$\,m from an
+independent physical argument (GPS centroid uncertainty at 1\,Hz),
+well short of the saturation point. That is a stronger anti-cherry-picking
+argument than the original false "robustness" sentence.
+
+## 6. Recommended replacement text
+
+> "**Threshold sensitivity.** $C$ increases monotonically with
+> $d_\text{recur}$, from 0.00 at 50\,m to 1.00 at 150\,m (Table
+> [sensitivity]), since a larger matching radius can only make
+> corroboration easier; $C \to 1$ is a trivial ceiling, not evidence of
+> validation. We fix $d_\text{recur}=100$\,m *a priori* from GPS centroid
+> uncertainty at 1\,Hz sampling, well short of this ceiling, rather than
+> selecting it to maximize $C$."
+
+Open decision: present the sweep as a small inline table (more convincing
+to a reviewer, costs a few lines of layout) or as prose only summarizing
+the two endpoints and the 100\,m value. **Not yet applied to `main.tex`**
+pending that choice.

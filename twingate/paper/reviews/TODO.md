@@ -51,19 +51,21 @@ Severity key:
   was corrected to "lacking cross-vehicle corroboration." No numbers,
   tables, or other sections touched.
 
-- [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence**
+- [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence** *(sweep run, edit pending)*
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."
-  — no sweep, table, or figure backs this. Unlike M1/M2, not a pure
-  wording issue: the *strong* fix requires actually rerunning
-  `G1_completeness.py` at a few $d_\text{recur}$ values, not just a
-  sentence edit.
-  📄 Detailed writeup: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
-  **Path A (recommended):** rerun `G1_completeness.py` with
-  `RECUR_DIST_M` swept (e.g. 50/75/100/125/150m), report how $C$ moves.
-  **Path B (text-only fallback):** replace the robustness claim with an
-  honest design-choice justification — $d_\text{recur}=100$m was fixed
-  a priori to GPS uncertainty, not tuned or swept. Awaiting a decision
-  between the two before editing `main.tex`.
+  — no sweep, table, or figure backed this. Sweep now run with the
+  author-provided dataset: $C$ = 0.00 / 0.50 / **0.80** / 0.875 / 1.00 at
+  $d_\text{recur}$ = 50 / 75 / **100** / 125 / 150\,m. The "robust" claim
+  was false — $C$ swings the full 0–1 range — but the mechanism is
+  defensible: a larger radius mechanically makes matching easier, so
+  $C \to 1$ at 150m is the metric saturating (trivial), not validation;
+  the paper's 100m was fixed a priori from GPS uncertainty, well short of
+  that ceiling, not chosen to maximize $C$.
+  📄 Detailed writeup + full table + recommended replacement text:
+  [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
+  Raw sweep outputs: `twingate/out/g1_summary_d{50,75,100,125,150}.json`.
+  **Remaining decision:** present the sweep in `main.tex` as a small
+  inline table or as prose-only — pick one, then apply.
 
 - [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
   Table I reports held-out MAE only per stage; a stage that overfits more
