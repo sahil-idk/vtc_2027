@@ -144,14 +144,23 @@ Severity key:
   deployment here ever satisfies $C$, M1, and M2 simultaneously is never
   stated plainly anywhere.
   📄 Detailed writeup: [`M7_no_deployment_fully_passes.md`](./M7_no_deployment_fully_passes.md)
-  **Option A (not applied):** add an explicit uncertainty band to the M1
-  threshold so Table I and the prose agree.
-  **Option B (not applied, recommended):** keep Table I's hard "No" as-is
-  (more defensible than a post-hoc band); fix the Conclusion's symmetric
-  phrasing to distinguish Op.1's near-miss from Op.2's real gap; add an
-  explicit sentence owning that no deployment yet reaches full "ready"
-  status; optionally soften "fading floor" wording. Awaiting review of
-  both options before touching `main.tex`.
+  **Update — citeable threshold found (§7 of writeup):** 3GPP TS 36.133
+  appears to separately specify a *relative* RSRP accuracy of ~2-3 dB for
+  intra-frequency comparisons (distinct from, and tighter than, the
+  already-cited ±6dB absolute figure) — meaning the paper's "M1 < 3dB"
+  may not be a self-derived heuristic ("half of 6dB") at all, but close
+  to a real, separately-specified 3GPP bound. **Not primary-source
+  verified** — found via web search summaries; direct PDF fetches
+  (arib.or.jp, etsi.org, sharetechnote.com) were blocked by network
+  egress in this session, so exact clause/value/conditions need
+  confirming before citing. If verified, this resolves problem (c)
+  outright and makes Option A defensible with a real citation instead of
+  an invented band — but does **not** rescue Op.2's 4.04 dB (still ~1dB
+  over even the loose end of 2-3dB) or the "no deployment passes all
+  three" meta-point, so Option B's Conclusion-phrasing fix and ownership
+  sentence are still needed regardless. Revised plan: Option A for Op.1
+  (pending verification) + Option B for Op.2 and the meta-point — not an
+  either/or. Awaiting review before touching `main.tex`.
 
 - [ ] 🟠 **M8 — Limitations section lists only distant weaknesses, not the nearest ones**
   Current bullets: dataset scope, dynamic scatterers, Doppler, search
