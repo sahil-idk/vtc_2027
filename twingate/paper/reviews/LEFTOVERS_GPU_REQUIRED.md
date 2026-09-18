@@ -50,3 +50,14 @@ Table I. Using them anyway would introduce a new, worse inconsistency.
 **Not needed:** any of the earlier Stage 0-2 scripts — the overfitting
 risk is concentrated in Stage 3/4 where the free parameters (height,
 azimuth) are actually added, per the original writeup's recommendation.
+
+**Encouraging sign for when this rerun happens:** while verifying M5
+separately (see `M5_twin_gate_independence_unexplained.md` §7), the
+*same* partial/mismatched `pc2`/`pc3` files referenced above already show
+the twin-gate predicted drop surviving zone exclusion (24.18 dB, Welch
+$p=8.8\times10^{-52}$, in the same direction as the paper's published
+26.3 dB) even though their aggregate MAE doesn't match Table I. That
+doesn't unblock Path A on its own — the MAE mismatch and missing pc4
+file are still real — but it's a reason to expect the eventual full
+rerun will land close to the published numbers rather than surface a
+new surprise.

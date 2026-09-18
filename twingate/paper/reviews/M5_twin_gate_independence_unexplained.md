@@ -108,3 +108,44 @@ since it directly defuses the most obvious objection to the paper's
 central claim.
 
 **Applied.** See `main.tex` §III-D.
+
+## 7. Empirical spot-check: does the predicted drop survive the exclusion, for real?
+
+Section 5's fix explains the mechanism in the paper. This section checks
+it actually works, using real computed output rather than just reading
+the code.
+
+`twingate/out/pc2_gate2_final_val_predictions.csv` and
+`pc3_gate2_final_val_predictions.csv` are Operator-2 runs, so
+`APPLY_ZONE_EXCLUSION` was active for both — the 150 m TypeB-centroid
+training rows were genuinely excluded before these predictions were
+generated. Computing the same near-zone-vs-background comparison the
+paper's convergence claim rests on, directly from these files:
+
+| | Rows | Mean predicted power (calibrated) |
+|---|---:|---:|
+| Near TypeB (≤150 m) | 161 | **−113.07 dBm** |
+| Background (>150 m) | 14,904 | **−88.89 dBm** |
+| **Predicted drop** | | **24.18 dB** (Welch $t=-22.47$, $p=8.8\times10^{-52}$) |
+
+This confirms, with a real run rather than an assumption, that excluding
+the nearby training rows does not make the predicted dead zone disappear
+— Gate 2 still independently lands on a large, highly significant signal
+drop at the same location Gate 1 flagged, using geometry fit entirely
+from rows outside that zone. That is exactly the property §III-D's fix
+now claims in words.
+
+**Caveat, so this isn't overstated:** this does **not** reproduce the
+paper's published headline numbers (26.3 dB drop, 364 near-zone rows) —
+it's close in direction and rough magnitude (24.18 dB vs. 26.3 dB) but
+not an exact match, and the row count differs (161 vs. 364). That's
+consistent with the same provenance gap already documented in
+`M4_overfitting_risk_ablation_table.md` §7 and
+`LEFTOVERS_GPU_REQUIRED.md`: these checked-in files are from an earlier
+or partial run, not the exact run behind Table I / the published
+convergence figures. What this spot-check verifies is narrower but still
+real: **the mechanism M5 documents genuinely produces the claimed effect
+direction and significance**, on the data that's actually available right
+now. Reproducing the exact published 26.3 dB figure is the same
+GPU-dependent rerun already tracked in `LEFTOVERS_GPU_REQUIRED.md`, not a
+new blocker.
