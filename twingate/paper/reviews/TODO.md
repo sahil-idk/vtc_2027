@@ -51,9 +51,9 @@ Severity key:
   was corrected to "lacking cross-vehicle corroboration." No numbers,
   tables, or other sections touched.
 
-- [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence** *(sweep run, edit pending)*
+- [x] ✅ **M3 — "Threshold sensitivity" paragraph is one unsupported sentence** *(fixed)*
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."
-  — no sweep, table, or figure backed this. Sweep now run with the
+  — no sweep, table, or figure backed this. Sweep run with the
   author-provided dataset: $C$ = 0.00 / 0.50 / **0.80** / 0.875 / 1.00 at
   $d_\text{recur}$ = 50 / 75 / **100** / 125 / 150\,m. The "robust" claim
   was false — $C$ swings the full 0–1 range — but the mechanism is
@@ -61,11 +61,16 @@ Severity key:
   $C \to 1$ at 150m is the metric saturating (trivial), not validation;
   the paper's 100m was fixed a priori from GPS uncertainty, well short of
   that ceiling, not chosen to maximize $C$.
-  📄 Detailed writeup + full table + recommended replacement text:
-  [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
+  📄 Detailed writeup + full table: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
   Raw sweep outputs: `twingate/out/g1_summary_d{50,75,100,125,150}.json`.
-  **Remaining decision:** present the sweep in `main.tex` as a small
-  inline table or as prose-only — pick one, then apply.
+  **Applied fix:** replaced the paragraph in §IV-A with the real five-point
+  sweep stated inline (no dedicated table — judged disproportionate for a
+  secondary robustness check next to two headline results tables, and a
+  standalone "C=1.00" cell risks a bad first read before the explanation
+  lands). The new text gives the numbers, immediately explains the
+  monotonic trend as the metric's expected saturation behavior rather than
+  a red flag, and states explicitly that 100m was fixed a priori rather
+  than chosen to maximize $C$.
 
 - [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
   Table I reports held-out MAE only per stage; a stage that overfits more

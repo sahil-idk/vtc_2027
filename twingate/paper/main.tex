@@ -564,8 +564,14 @@ own $(C,\text{M1},\text{M2})$ triple calibrated to its own radio
 environment and fleet density.
 
 \textbf{Threshold sensitivity.}
-Completeness is robust to the matching radius $d_\text{recur}$, chosen
-to match GPS centroid uncertainty at 1\,Hz sampling.
+$C$ rises monotonically with $d_\text{recur}$: 0.00, 0.50, 0.80, 0.875,
+and 1.00 at 50, 75, 100, 125, and 150\,m respectively. This is expected,
+not concerning: a larger radius can only make cross-vehicle corroboration
+easier, so $C\to1$ as $d_\text{recur}$ grows reflects the metric
+saturating, not the DT being validated. We fix $d_\text{recur}=100$\,m
+\emph{a priori} from GPS centroid uncertainty at 1\,Hz sampling
+(Section~\ref{sec:gate1}), well short of this saturation point, rather
+than selecting the value that maximizes $C$.
 
 \subsection{Twin-Gate Convergence}
 \label{sec:convergence_result}

@@ -1,6 +1,14 @@
 # Review Finding M3 — "Threshold Sensitivity" Is Asserted, Never Shown
 
-**Status:** sweep run, `main.tex` edit pending a table-vs-prose decision · **Severity:** Reviewer-would-reject-on-this · **Section(s) affected:** §IV-A (Gate 1 Results)
+**Status:** ✅ fixed · **Severity:** Reviewer-would-reject-on-this · **Section(s) affected:** §IV-A (Gate 1 Results)
+
+**Resolution note:** applied as prose, not a dedicated table. Reasoning:
+this paper already carries two headline results tables (Gate 2 pipeline,
+M2 detection); a third table for a secondary robustness check on one
+parameter reads as disproportionate and risks a reviewer's eye landing on
+"$C=1.00$" before reaching the explanation of why that's expected. Inline
+prose lets the sentence give the real numbers and the saturation
+explanation in the same breath, in a controlled order.
 
 ---
 
