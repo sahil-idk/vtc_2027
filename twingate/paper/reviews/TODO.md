@@ -197,20 +197,29 @@ Severity key:
   held-out protocol and blind dead-zone prediction as the additional
   evidence. Text-only, no new experiment.
 
-- [ ] 🟠 **M11 — Missing per-tower / OSM-grounded position plausibility check**
+- [~] 🟠 **M11 — Missing per-tower / OSM-grounded position plausibility check** *(attempted, blocked — compound gap, moved to leftovers)*
   Nothing in the pipeline checks whether optimized tower positions land
   near a plausible physical siting location (an OSM building/mast) rather
   than wherever numerically minimizes MAE. The existing plausibility
   check (height/azimuth ranges) is aggregate-only and computed only for
   Operator 1 — Operator 2, which carries the paper's entire headline
   convergence result, doesn't get even that weaker check.
-  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M11")
-  **Proposed fix (not applied, requires actual analysis, not just prose):**
-  compute each tower's distance to the nearest OSM building footprint
-  (data already exists — building layer + optimized coordinates), check
-  correlation with per-tower MAE improvement; extend the existing Op.1
-  aggregate check to Op.2 as a cheap companion fix. Track separately from
-  the text-only items — don't let it block them.
+  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M11"),
+  [`M11_osm_plausibility_check.md`](./M11_osm_plausibility_check.md)
+  **Attempted, blocked by two independent gaps.** (a) The same incomplete
+  tower-coordinate data already blocking M4 Path A (pc4 missing entirely;
+  pc1/pc2/pc3 don't reproduce Table I's published numbers). (b) Real OSM
+  building-footprint data is entirely unreachable from this sandbox —
+  tested directly against six Overpass/OSM hosts (`overpass-api.de`,
+  `overpass.kumi.systems`, `overpass.openstreetmap.ru`,
+  `overpass.private.coffee`, `www.openstreetmap.org`,
+  `download.geofabrik.de`), every one blocked by organization network
+  policy, confirming a domain-family-level block rather than a transient
+  issue. No substitute/approximated geometry was used — same
+  don't-fabricate-data principle applied for M4. Tracked as a compound
+  leftover alongside M4 (they unblock together, see
+  [`LEFTOVERS_GPU_REQUIRED.md`](./LEFTOVERS_GPU_REQUIRED.md)), not a
+  separate independent item. **Not applied.** No changes to `main.tex`.
 
 - [x] ✅ **M12 — "Physics, Not Curve-Fitting" discussion defends itself using MAE deltas, risking circularity** *(fixed)*
   §V's anti-curve-fitting argument partly relied on an MAE-delta
@@ -278,6 +287,6 @@ Severity key:
 1. M2, M3, M5 (🔴 — cheapest, most reviewer-visible, all text-only fixes) — ✅ done
 2. M1, C2, C7 (framing/claim-calibration cluster — do together, they interact) — M1 ✅ done; C2, C7 still open
 3. ~~M7 + M10 together~~ — ✅ done, plus M9 and M12 folded into the same pass (all four interact: M10 reframes what M1 is *for*, M7 reframes what the table *shows*, M9 connects it to the paper's strongest evidence, M12 is a one-sentence companion). Verified end-to-end with a real LaTeX compile.
-4. M4, M6, M8 (remaining methodology honesty passes)
-5. M11 (requires actual analysis work, not just prose — don't let it block the text-only items above)
+4. M8 (remaining methodology honesty pass; M6 ✅ done)
+5. ~~M11~~ — attempted, blocked (compound gap: stale tower coordinates + no OSM network access), tracked with M4 in `LEFTOVERS_GPU_REQUIRED.md`; both unblock together once a GPU environment with the full rerun is available
 6. C1, C3, C4, C5, C6, C8 (polish pass, do last so it doesn't get overwritten by the fixes above)
