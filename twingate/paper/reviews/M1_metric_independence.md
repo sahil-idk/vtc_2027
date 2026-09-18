@@ -1,6 +1,17 @@
 # Review Finding M1 — The "Three Independent Metrics" Claim Is Not Supported by the Paper's Own Text
 
-**Status:** open · **Severity:** Weakens-the-paper · **Section(s) affected:** §I (Contributions), §IV-C (Gate 2 Results / M2 discussion), abstract
+**Status:** ✅ fixed · **Severity:** Weakens-the-paper · **Section(s) affected:** §I (Contributions), §IV-C (Gate 2 Results / M2 discussion), abstract
+
+**Resolution note:** the abstract already framed this correctly ("two
+signals of coverage failure that come from completely independent
+sources") — the mismatch was isolated to Contribution #1's wording and a
+missing clarifying sentence in §IV-C. Applied Option A (§6 below) exactly
+as written: Contribution #1 now attributes independence to the two
+evidence sources rather than the three metrics, and §IV-C now states
+explicitly why M1/M2 correlation is expected and that $C$ is the metric
+with genuinely independent evidence. Option B (showing a case where M1
+and M2 diverge) was not pursued — the "twin-gate" (two gates) framing
+already justifies the two-source claim without needing new analysis.
 
 ---
 

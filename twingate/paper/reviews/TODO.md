@@ -20,30 +20,50 @@ Severity key:
 
 ## Methodology
 
-- [ ] 🟠 **M1 — "Independent metrics" claim contradicted by the paper's own text**
-  Contribution #1 says $C$, M1, M2 "independently assess" three readiness
+- [x] ✅ **M1 — "Independent metrics" claim contradicted by the paper's own text** *(fixed)*
+  Contribution #1 said $C$, M1, M2 "independently assess" three readiness
   layers; §IV-C says "the same geometric corrections that reduce M1 also
   improve M2" — they move together by construction (both derive from the
   same calibrated Sionna prediction surface, Eq. 3). Only $C$ is genuinely
-  independent.
+  independent — which is exactly what "twin-gate" (two gates) already
+  implies, so this was a wording issue, not a methodology flaw.
   📄 Detailed writeup: [`M1_metric_independence.md`](./M1_metric_independence.md)
-  **Fix:** reframe independence claim to the two *evidence sources*
-  (empirical recurrence vs. physics-based ray tracing), not three metrics;
-  add one sentence at §IV-C acknowledging the expected correlation.
+  **Applied fix:** Contribution #1 (§I) now reads "...drawn from two
+  independent evidence sources, empirical recurrence and physics-based ray
+  tracing, that jointly assess..." instead of claiming three independent
+  metrics. §IV-C now has one added sentence after the M1/M2-correlation
+  observation, explaining why it's expected (both derive from the same
+  calibrated Sionna surface, Eq.~\eqref{eq:ols}) and naming $C$ as the one
+  metric with genuinely independent evidence. No numbers, tables, or other
+  sections touched.
 
-- [ ] 🔴 **M2 — "Ambiguous" gap class used in Results but never defined in Methods**
-  §III-A defines TypeA/TypeB as if exhaustive. §IV-A reports "13 ambiguous
-  gaps whose session context is inconclusive" with no prior definition.
-  **Fix:** add to §III-A: gaps that are neither session-boundary-aligned
-  nor cross-vehicle-corroborated are labeled Ambiguous — insufficient
-  evidence either way, reported but not used to certify or reject a zone.
+- [x] ✅ **M2 — "Ambiguous" gap class used in Results but never defined in Methods** *(fixed)*
+  §III-A defined TypeA/TypeB as if exhaustive. §IV-A reported "13 ambiguous
+  gaps whose session context is inconclusive" with no prior definition —
+  and that description was itself inaccurate (Ambiguous gaps are defined
+  by *lack of cross-vehicle corroboration*, not by session-context
+  ambiguity; a gap's session-boundary status is never in doubt by the time
+  it's labeled Ambiguous). Phrasing-only, same category as M1 — the
+  classifier code was already correct and consistent.
+  📄 Detailed writeup: [`M2_ambiguous_gap_class.md`](./M2_ambiguous_gap_class.md)
+  **Applied fix:** §III-A now has an explicit "Ambiguous" definition
+  paragraph after TypeB. §IV-A's "whose session context is inconclusive"
+  was corrected to "lacking cross-vehicle corroboration." No numbers,
+  tables, or other sections touched.
 
 - [ ] 🔴 **M3 — "Threshold sensitivity" paragraph is one unsupported sentence**
   §IV-A: "Completeness is robust to the matching radius $d_\text{recur}$..."
-  — no sweep, table, or figure backs this.
-  **Fix (text-only, no new experiment):** replace the robustness claim with
-  an honest design-choice justification — $d_\text{recur}=100$m was fixed
-  a priori to GPS uncertainty, not tuned or swept.
+  — no sweep, table, or figure backs this. Unlike M1/M2, not a pure
+  wording issue: the *strong* fix requires actually rerunning
+  `G1_completeness.py` at a few $d_\text{recur}$ values, not just a
+  sentence edit.
+  📄 Detailed writeup: [`M3_threshold_sensitivity.md`](./M3_threshold_sensitivity.md)
+  **Path A (recommended):** rerun `G1_completeness.py` with
+  `RECUR_DIST_M` swept (e.g. 50/75/100/125/150m), report how $C$ moves.
+  **Path B (text-only fallback):** replace the robustness claim with an
+  honest design-choice justification — $d_\text{recur}=100$m was fixed
+  a priori to GPS uncertainty, not tuned or swept. Awaiting a decision
+  between the two before editing `main.tex`.
 
 - [ ] 🟠 **M4 — Ablation table shows no train-vs-val gap, so overfitting risk is unverifiable from the paper**
   Table I reports held-out MAE only per stage; a stage that overfits more
