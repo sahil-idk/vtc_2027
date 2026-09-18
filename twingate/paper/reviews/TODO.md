@@ -144,23 +144,32 @@ Severity key:
   deployment here ever satisfies $C$, M1, and M2 simultaneously is never
   stated plainly anywhere.
   📄 Detailed writeup: [`M7_no_deployment_fully_passes.md`](./M7_no_deployment_fully_passes.md)
-  **Update — citeable threshold found (§7 of writeup):** 3GPP TS 36.133
-  appears to separately specify a *relative* RSRP accuracy of ~2-3 dB for
-  intra-frequency comparisons (distinct from, and tighter than, the
-  already-cited ±6dB absolute figure) — meaning the paper's "M1 < 3dB"
-  may not be a self-derived heuristic ("half of 6dB") at all, but close
-  to a real, separately-specified 3GPP bound. **Not primary-source
-  verified** — found via web search summaries; direct PDF fetches
-  (arib.or.jp, etsi.org, sharetechnote.com) were blocked by network
-  egress in this session, so exact clause/value/conditions need
-  confirming before citing. If verified, this resolves problem (c)
-  outright and makes Option A defensible with a real citation instead of
-  an invented band — but does **not** rescue Op.2's 4.04 dB (still ~1dB
-  over even the loose end of 2-3dB) or the "no deployment passes all
-  three" meta-point, so Option B's Conclusion-phrasing fix and ownership
-  sentence are still needed regardless. Revised plan: Option A for Op.1
-  (pending verification) + Option B for Op.2 and the meta-point — not an
-  either/or. Awaiting review before touching `main.tex`.
+  📄 **Final threshold synthesis (4-agent research, 2 independent literature
+  searches + 1 primary-source-confirmed standards find):**
+  [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md)
+  — the earlier "relative RSRP accuracy ~2-3dB" lead was superseded (it
+  measured the wrong comparison type, as originally flagged pending
+  verification). Two independent agents confirmed no V2X/C-V2X DT paper
+  states a borrowable acceptance threshold for TWINGATE's exact
+  comparison type — a real literature gap, not a search failure. A third
+  agent found something better: 3GPP TS 36.133 §9.10 ("V2X sidelink
+  communication") has its own **primary-source-confirmed** absolute
+  RSRP-type accuracy figures (PSSCH-RSRP ±5dB, S-RSRP ±4.5dB, normal
+  condition) — right comparison type, genuinely V2X-scoped, from the same
+  spec already cited. Caveat: scoped to PC5 sidelink, not TWINGATE's
+  actual Uu-mode measurement — usable as corroborating context (shows the
+  accuracy figure isn't an interface artifact), not as a direct
+  derivation. **Final recommended plan:** (1) keep 3GPP TS36.133's generic
+  Uu ±6dB as the primary standards-cited hard-pass bar (already correctly
+  cited, correct comparison type, every stage clears it for both
+  operators — resolves problem (c) and the "no deployment passes"
+  meta-point at a stroke); (2) add the §9.10 V2X-specific figure as
+  explicitly-labeled corroborating context; (3) keep ~3dB (or revise
+  toward ~2.5dB) as an explicitly self-imposed stretch target, since 6dB
+  alone is trivial (even Stage 0's no-physics baseline clears it — zero
+  discrimination across the ablation); (4) fix the Conclusion's symmetric
+  Op.1/Op.2 phrasing regardless (Option B, unchanged). Awaiting review
+  before touching `main.tex`.
 
 - [ ] 🟠 **M8 — Limitations section lists only distant weaknesses, not the nearest ones**
   Current bullets: dataset scope, dynamic scatterers, Doppler, search
@@ -168,6 +177,64 @@ Severity key:
   base for $C$ and convergence; classifier thresholds never cross-validated
   against a second confirmed dead zone; M1 not crossing its own threshold.
   **Fix:** add two bullets covering these (see full review for exact text).
+
+- [ ] 🟠 **M9 — Gate 2's narrative reads as accuracy-chasing; the paper's best replication evidence is filed elsewhere and never cross-referenced**
+  Table I and its prose narrate every stage in MAE terms only. The one
+  physical-plausibility sentence for Op.1 ("realistic rooftop/mast
+  heights") is immediately followed, same paragraph, by a pivot back to
+  the MAE number, with no connection stated. Meanwhile the paper's
+  strongest replication evidence — the twin-gate blind prediction of a
+  26.3dB drop at a location the optimizer never saw — sits in the
+  Discussion section and is never referenced from Table I's discussion,
+  where a skeptical reader is actually forming their opinion.
+  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M9")
+  **Proposed fix (not applied):** soften "realistic rooftop/mast heights"
+  to what was actually checked (not boundary-clamped); add a
+  forward-reference from §IV-C to the twin-gate blind-prediction evidence,
+  explicitly ranking it as primary fidelity evidence with M1 as
+  supporting statistic only.
+
+- [ ] 🔴 **M10 — The optimizer's MAE-minimization objective is never stated as a proxy for the paper's actual geometric-recovery goal** *(highest leverage, lowest cost of this batch)*
+  Confirmed in code (`A19_gate2_final.py`'s Nelder-Mead objective):
+  literally and exclusively minimizes calibrated training-day MAE.
+  Defensible (RSRP is the only observable when tower topology isn't
+  released) but never stated as a proxy relationship anywhere in the
+  paper — the reader has to infer it from scattered pieces (NeRF analogy,
+  "Physics, Not Curve-Fitting" discussion, overfitting-check paragraph),
+  none of which actually asserts "MAE is the proxy; geometric fidelity is
+  the goal."
+  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M10")
+  **Proposed fix (not applied):** one paragraph inserted in §III-C-3 after
+  Eq. 4, stating the proxy relationship explicitly and flagging the
+  known multi-modality caveat (already admitted elsewhere in the paper)
+  as the reason MAE improvement is necessary but not sufficient evidence
+  of correct geometry. No new experiment required — text-only.
+
+- [ ] 🟠 **M11 — Missing per-tower / OSM-grounded position plausibility check**
+  Nothing in the pipeline checks whether optimized tower positions land
+  near a plausible physical siting location (an OSM building/mast) rather
+  than wherever numerically minimizes MAE. The existing plausibility
+  check (height/azimuth ranges) is aggregate-only and computed only for
+  Operator 1 — Operator 2, which carries the paper's entire headline
+  convergence result, doesn't get even that weaker check.
+  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M11")
+  **Proposed fix (not applied, requires actual analysis, not just prose):**
+  compute each tower's distance to the nearest OSM building footprint
+  (data already exists — building layer + optimized coordinates), check
+  correlation with per-tower MAE improvement; extend the existing Op.1
+  aggregate check to Op.2 as a cheap companion fix. Track separately from
+  the text-only items — don't let it block them.
+
+- [ ] ⚪ **M12 — "Physics, Not Curve-Fitting" discussion defends itself using MAE deltas, risking circularity**
+  §V's anti-curve-fitting argument partly relies on an MAE-delta
+  (removing Sionna costs 1.81dB) — logically valid but rhetorically
+  self-referential given M10's gap.
+  📄 Detailed writeup: [`M7_addendum_dt_readiness_and_v2x_thresholds.md`](./M7_addendum_dt_readiness_and_v2x_thresholds.md) (§2, "M12")
+  **Proposed fix (not applied):** one added sentence noting this argument
+  only rules out calibration-alone explaining the accuracy, and pointing
+  to the twin-gate blind prediction as the evidence that independently
+  supports the *specific* recovered geometry being correct. Minor
+  companion fix, best applied alongside M9/M10.
 
 ---
 
@@ -223,5 +290,8 @@ Severity key:
 
 1. M2, M3, M5 (🔴 — cheapest, most reviewer-visible, all text-only fixes)
 2. M1, C2, C7 (framing/claim-calibration cluster — do together, they interact)
-3. M4, M6, M7, M8 (remaining methodology honesty passes)
-4. C1, C3, C4, C5, C6, C8 (polish pass, do last so it doesn't get overwritten by the fixes above)
+3. **M7 + M10 together** (🔴/🟠 — the threshold fix and the "MAE is a proxy, not the goal" fix directly interact: M10 reframes what Table I's M1 column is *for*, M7 reframes what its verdict *means*; do in the same pass)
+4. M9, M12 (cheap, text-only, complementary to M10 — same pass or immediately after)
+5. M4, M6, M8 (remaining methodology honesty passes)
+6. M11 (requires actual analysis work, not just prose — don't let it block the text-only items above)
+7. C1, C3, C4, C5, C6, C8 (polish pass, do last so it doesn't get overwritten by the fixes above)
