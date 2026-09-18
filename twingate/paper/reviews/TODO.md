@@ -76,9 +76,19 @@ Severity key:
   Table I reports held-out MAE only per stage; a stage that overfits more
   free parameters (height, azimuth, scattering) to training data wouldn't
   be distinguishable from genuine geometric recovery using this table alone.
-  **Fix:** add one sentence stating the evaluation protocol already guards
-  against this (train-fit, val-eval-once, no further tuning) so monotonic
-  held-out improvement is itself evidence against overfitting.
+  The good news: the paper's own "train-fit, evaluate exactly once, no
+  further tuning" protocol (§III-C-6) is already a real defense against
+  this, it's just never stated as one. Also found: Stage 3/4's
+  training-fit MAE (`refined_opt_mae`) is already sitting, unused, in
+  `twingate/out/{device}_gate2_final.csv` right next to the held-out MAE
+  that made it into the paper — partially free to surface.
+  📄 Detailed writeup: [`M4_overfitting_risk_ablation_table.md`](./M4_overfitting_risk_ablation_table.md)
+  **Path B (cheap, do regardless):** add a sentence making the existing
+  protocol's implicit anti-overfitting argument explicit.
+  **Path A (partially free):** add a Train MAE column/footnote to Table I
+  for Stage 3/4 using data that already exists; Stages 0-2 would need a
+  small rerun. Awaiting a decision on scope (B only, or B + partial A)
+  before editing `main.tex`.
 
 - [ ] 🔴 **M5 — Twin-gate independence is asserted, not explained**
   §III-D: "using no information about those locations during optimization"
