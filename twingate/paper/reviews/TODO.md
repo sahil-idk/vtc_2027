@@ -265,20 +265,26 @@ Severity key:
   isn't.
   **Fix:** trim the redundant recap, lead straight into the new argument.
 
-- [~] 🟠 **C7 — The paper's best thesis sentence is buried in the Conclusion** *(documented, awaiting decision)*
+- [x] ✅ **C7 — The paper's best thesis sentence is buried in the Conclusion** *(fixed)*
   "...two methods built from entirely different evidence... converge on the
   same anomaly is stronger validation than either metric alone, and is this
-  paper's central claim" — first appears on the last page. §I's
-  Contributions bullet 4 states the same *result* (twin-gate convergence,
-  26.3dB vs 30.4dB) but never states the *claim* (why that convergence is
-  stronger evidence than either signal alone) — a reader who stops after
-  §I never gets the thesis.
+  paper's central claim" — originally appeared only on the last page. §I's
+  Contributions bullet 4 stated the same *result* (twin-gate convergence,
+  26.3dB vs 30.4dB) but never stated the *claim* (why that convergence is
+  stronger evidence than either signal alone) — a reader who stopped after
+  §I never got the thesis.
   📄 Detailed writeup: [`C7_buried_thesis_statement.md`](./C7_buried_thesis_statement.md)
-  **Proposed fix (drafted, not applied):** insert a new sentence in the §I
-  Contributions preamble (before the enumerated list) stating the thesis
-  directly, mirroring the Conclusion's wording; optional companion clause
-  appended to bullet 4 tying it back explicitly. Four options laid out in
-  the writeup (apply both / preamble only / reword for space / decline).
+  **Applied fix (Option A — both changes):** new sentence added to the §I
+  Contributions preamble, before the enumerated list, stating the thesis
+  directly ("The central claim underlying the contributions below is
+  that when two independently derived signals... converge on the same
+  physical anomaly... that agreement is stronger evidence of
+  digital-twin readiness than either signal could establish on its
+  own."); bullet 4 now ends with a callback clause ("...the strongest
+  single piece of evidence for the claim above"). Conclusion's version
+  left untouched — it now reads as confirmation, not first encounter.
+  Verified: `main.tex` compiles cleanly end-to-end, zero errors/undefined
+  references. No numbers, tables, or other sections touched.
 
 - [ ] ⚪ **C8 — Op1's "one training TypeB gap, observed by a single vehicle" reads in tension with the ≥2-vehicle TypeB definition**
   **Fix:** clarify as "(corroborated by exactly one other vehicle, the

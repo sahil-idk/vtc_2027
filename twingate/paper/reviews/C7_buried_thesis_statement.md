@@ -1,8 +1,8 @@
 # Review Finding C7 — The Paper's Best Thesis Sentence Is Buried in the Conclusion
 
-**Status:** documented, not yet applied · **Severity:** 🟠 Weakens-the-paper ·
-**Section(s) affected:** §I "Contributions" (where it should also appear),
-§VI "Conclusion" (where it currently, and only, appears)
+**Status:** ✅ fixed (Option A applied) · **Severity:** 🟠 Weakens-the-paper ·
+**Section(s) affected:** §I "Contributions" (now also states it),
+§VI "Conclusion" (where it originally, and still, appears)
 
 ---
 
@@ -155,5 +155,26 @@ fourth, coequal bullet next to it.
   doesn't surface a new weakness, it just relocates an existing
   strength), but included since the final call is the author's.
 
-**Not applied.** No changes to `main.tex` — this document only lays out
-the finding and drafted fix text for review.
+## 8. Resolution
+
+**Applied: Option A (both changes).** `main.tex` §I now reads, right
+after the Contributions lead-in and before the enumerated list:
+
+> The central claim underlying the contributions below is that when two
+> independently derived signals, statistical recurrence across vehicle
+> laps and physics-based ray tracing from map geometry alone, converge
+> on the same physical anomaly without either ever seeing the other's
+> output, that agreement is stronger evidence of digital-twin readiness
+> than either signal could establish on its own.
+
+Bullet 4 now ends with the callback clause:
+
+> ...validating the DT without ground-truth tower coordinates---the
+> strongest single piece of evidence for the claim above.
+
+The Conclusion's original thesis sentence (§VI) was left untouched, per
+§6's "what NOT to change" — it now reads as confirmation of a claim the
+reader was already told to expect, rather than the reader's first
+encounter with it. Verified: `main.tex` compiles cleanly end-to-end
+(pdflatex+bibtex+2×pdflatex), zero errors, zero undefined
+references/citations. No numbers, tables, or other sections touched.

@@ -142,6 +142,12 @@ In this article, we present TWINGATE, a framework that addresses all
 three readiness layers on the Berlin V2X dataset~\cite{schiegg2022berlin}
 using only GPS-tagged RSRP logs and freely available map data, with no
 operator topology required.
+The central claim underlying the contributions below is that when two
+independently derived signals, statistical recurrence across vehicle
+laps and physics-based ray tracing from map geometry alone, converge on
+the same physical anomaly without either ever seeing the other's
+output, that agreement is stronger evidence of digital-twin readiness
+than either signal could establish on its own.
 Our main contributions are summarized as follows:
 
 \begin{enumerate}
@@ -166,7 +172,8 @@ Our main contributions are summarized as follows:
         signal in which both gates independently localize the same
         dead zone, with physics predicting a 26.3\,dB depth against a
         measured 30.4\,dB, validating the DT without ground-truth
-        tower coordinates.
+        tower coordinates---the strongest single piece of evidence for
+        the claim above.
 \end{enumerate}
 
 The remainder of this article is organized as follows.
