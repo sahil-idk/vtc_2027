@@ -249,13 +249,21 @@ Severity key:
 - [ ] ⚪ **C3 — Abstract's final sentence is one ~70-word run-on stacking four results**
   **Fix:** split into two sentences (see full review for the exact rewrite).
 
-- [ ] 🟠 **C4 — Beyraghi/Rauf citations set up a contrast in the intro that's never paid off in Discussion**
+- [~] 🟠 **C4 — Beyraghi/Rauf citations set up a contrast in the intro that's never paid off in Discussion** *(documented, awaiting decision)*
   Intro: Beyraghi's calibration "assumes known tower positions, a luxury
   public V2X datasets do not have" — foreshadows a comparison that never
-  arrives.
-  **Fix:** add one sentence in §V-A explicitly contrasting TWINGATE's
-  higher residual MAE (unknown geometry) against Beyraghi's 0.32 dB
-  (known geometry, calibration-only).
+  arrives; `\cite{beyraghi2025ris}` and `\cite{rauf2026kpi}` each appear
+  exactly once, both in §I, never referenced again. §V-A closes with a
+  *different* comparison (held-out discipline vs. `teh2023dt`/
+  `partani2025qos`) instead of the one the intro set up.
+  📄 Detailed writeup: [`C4_beyraghi_contrast_unpaid.md`](./C4_beyraghi_contrast_unpaid.md)
+  **Proposed fix (drafted, not applied):** one sentence appended to §V-A
+  explicitly contrasting TWINGATE's higher residual MAE (3.02/4.04dB,
+  unknown geometry recovered from RSRP alone) against Beyraghi's 0.32dB
+  (known geometry, calibration-only), framing the gap as reflecting a
+  strictly harder inverse problem rather than a weaker calibration. Four
+  options in the writeup (apply as drafted / move earlier in §V-A /
+  shorter version / decline).
 
 - [ ] ⚪ **C5 — "Coupling" (method) vs. "Convergence" (result) terminology split never flagged as intentional**
   **Fix:** one clause at the start of §III-D noting method vs. outcome framing.
