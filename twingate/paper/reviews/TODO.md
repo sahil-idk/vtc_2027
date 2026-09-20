@@ -257,13 +257,16 @@ Severity key:
   *different* comparison (held-out discipline vs. `teh2023dt`/
   `partani2025qos`) instead of the one the intro set up.
   📄 Detailed writeup: [`C4_beyraghi_contrast_unpaid.md`](./C4_beyraghi_contrast_unpaid.md)
-  **Proposed fix (drafted, not applied):** one sentence appended to §V-A
-  explicitly contrasting TWINGATE's higher residual MAE (3.02/4.04dB,
-  unknown geometry recovered from RSRP alone) against Beyraghi's 0.32dB
-  (known geometry, calibration-only), framing the gap as reflecting a
-  strictly harder inverse problem rather than a weaker calibration. Four
-  options in the writeup (apply as drafted / move earlier in §V-A /
-  shorter version / decline).
+  **Proposed fix (drafted, not applied):** original draft appended one
+  sentence to §V-A explicitly contrasting TWINGATE's residual MAE
+  (3.02/4.04dB) against Beyraghi's 0.32dB. Author flagged this hands a
+  reviewer a ready-made "our number is 10x worse" quote regardless of
+  the favorable reasoning behind it — writeup revised with three
+  lower-risk alternatives: (E) payoff sentence in §V-A without ever
+  stating both numbers together, (F, recommended) drop the specific
+  "5.69 to 0.32dB" figures from the §I citation itself so no numeric
+  payoff is needed anywhere, (G) drop the Beyraghi citation from this
+  contrast entirely. Seven options total in the writeup.
 
 - [ ] ⚪ **C5 — "Coupling" (method) vs. "Convergence" (result) terminology split never flagged as intentional**
   **Fix:** one clause at the start of §III-D noting method vs. outcome framing.
