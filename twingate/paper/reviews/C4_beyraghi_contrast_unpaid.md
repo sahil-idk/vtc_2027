@@ -1,6 +1,7 @@
 # Review Finding C4 — Beyraghi/Rauf Citations Set Up a Contrast in the Intro That's Never Paid Off in Discussion
 
-**Status:** documented, not yet applied · **Severity:** 🟠 Weakens-the-paper ·
+**Status:** documented, not yet applied — revised after author flagged
+numeric-comparison risk, see §5b · **Severity:** 🟠 Weakens-the-paper ·
 **Section(s) affected:** §I "Geometric fidelity" subsection (where the
 setup currently lives), §V-A "Why TWINGATE Is Physics, Not
 Curve-Fitting" (where the payoff should, but currently doesn't, land)
@@ -103,11 +104,85 @@ and 0.32dB are already stated elsewhere in the paper — Table I and §I
 respectively), and directly closes the setup/payoff loop using the
 paper's own already-established reasoning.
 
+## 5b. Author concern: does stating the numbers side by side put us at a disadvantage?
+
+Raised after the first draft above: even though the *reasoning* favors
+TWINGATE (harder problem, known-vs-unknown geometry), spelling out
+"3.02/4.04dB is an order of magnitude larger than 0.32dB" in plain text
+hands a reviewer a ready-made soundbite — "the authors' own paper says
+their number is 10x worse" — that can be quoted out of the explanation
+that justifies it. This is a fair concern independent of whether the
+underlying logic is sound: a number comparison, once stated, can be
+lifted out of context in a way a qualitative statement cannot. Three
+lower-risk ways to close the same setup/payoff gap, without creating
+that soundbite:
+
+**Option E — pay off the citation without restating TWINGATE's own
+number.** Keep the sentence in §V-A, but drop the explicit "order of
+magnitude" / side-by-side figures and state only the qualitative
+relationship:
+
+> Because TWINGATE recovers tower geometry from RSRP alone rather than
+> starting from known, surveyed positions as
+> Beyraghi~et~al.~\cite{beyraghi2025ris} do, its residual error reflects
+> the added burden of joint geometry-and-material inference, not a
+> weaker material calibration.
+
+This closes the loop (Beyraghi is referenced again, the "why" is given)
+without ever placing TWINGATE's number next to theirs in the same
+sentence. A reader who wants to compute the ratio still can (both
+numbers are elsewhere in the paper — Table I and §I), but the paper
+itself never hands a reviewer the "10x" framing pre-packaged.
+
+**Option F — remove the specific numbers from the Introduction's
+citation, so nothing needs a numeric payoff at all.** The actual
+argument the Introduction needs is qualitative: material calibration
+works well *when geometry is known*, and TWINGATE can't assume that.
+The specific "5.69 to 0.32dB" figures aren't load-bearing for that
+argument — they're what create the implicit high-water mark a reader
+later measures TWINGATE against. Reword §I to:
+
+> ...and city-scale calibration~\cite{beyraghi2025ris} shows material
+> optimization alone can substantially reduce RSRP error when tower
+> positions are known, but that result assumes known tower positions, a
+> luxury public V2X datasets do not have.
+
+With no number quoted in the setup, there is no specific figure for
+§V-A to be measured against, and no explicit sentence is needed there
+at all — the citation still does its job (motivating why geometry
+recovery, not just material calibration, is TWINGATE's prerequisite)
+without ever inviting a head-to-head comparison anywhere in the paper.
+This is the option that most directly matches "use it without taking
+the numbers."
+
+**Option G — drop the Beyraghi citation from this contrast entirely.**
+Keep Rauf~et~al.~\cite{rauf2026kpi} alone to motivate the "material
+mismatch is a primary error source" point (it makes that point without
+citing a specific competing accuracy figure at all), and cut
+`\cite{beyraghi2025ris}` from §I. This fully removes the setup, so there
+is nothing left to pay off, and removes this finding (C4) from the
+review entirely rather than fixing it. Costs the paper a specific,
+concrete, currently-well-written motivating detail (the 5.69→0.32dB
+number is genuinely a strong, real result that supports "material
+calibration matters"); the framework's `known-positions` motivation
+still stands on Rauf's qualitative point alone, just less vividly.
+
+**Recommendation given the concern:** Option F is the best fit — it
+directly addresses "can we use the citation without taking the numbers"
+by removing the number from where it's first introduced, rather than
+trying to neutralize a comparison after committing to state it. It
+keeps the citation and the intended motivating logic, produces no
+quotable "our number is worse" sentence anywhere in the paper, and
+needs no compensating sentence in §V-A (though Option E's softer
+qualitative sentence could still be added there too, for extra
+closure, if desired — the two are not mutually exclusive).
+
 ## 6. What NOT to change
 
-- Don't touch the Introduction's setup sentence — it's already well
-  written and doesn't need to name the exact payoff location; the gap is
-  entirely on the Discussion side.
+- If applying Option A or E (payoff in §V-A), don't touch the
+  Introduction's setup sentence — it's already well written and doesn't
+  need to name the exact payoff location. (Option F changes the
+  Introduction sentence itself, by design — see §5b.)
 - Don't try to make the comparison sound better than it is (e.g.,
   don't imply the numbers are "close" or "comparable" — they aren't,
   and the paper's own point is *why* they shouldn't be expected to be).
@@ -130,10 +205,25 @@ paper's own already-established reasoning.
   Beyraghi~et~al.'s~\cite{beyraghi2025ris} 0.32\,dB reflects a strictly
   harder inverse problem: recovering geometry from RSRP alone, not
   calibrating materials against known positions."
-- **D — decline.** Not recommended — this is a low-risk, single-sentence
-  fix that only strengthens an already-favorable framing already
-  implicit in the paper's own text, but included since the final call is
-  the author's.
+- **D — decline.** Leaves the setup/payoff gap and the numeric-figure
+  risk both unresolved; not recommended now that lower-risk options
+  exist.
+- **E — payoff without restating TWINGATE's number** (§5b). Keeps both
+  citation and a §V-A callback sentence, but never places TWINGATE's
+  figure next to Beyraghi's in the same sentence, so there's no
+  ready-made "our number is worse" quote.
+- **F — remove the numbers from the Introduction's citation itself**
+  (§5b). Recommended. Directly answers "can we use the citation without
+  taking the numbers" — keeps `\cite{beyraghi2025ris}` and its
+  motivating logic, drops "5.69 to 0.32dB" from §I, and needs no
+  compensating sentence in §V-A at all (E's qualitative sentence is an
+  optional addition on top, not required).
+- **G — drop the citation from this contrast entirely** (§5b). Removes
+  the setup (and this finding) altogether by cutting
+  `\cite{beyraghi2025ris}` from §I and relying on Rauf's qualitative
+  point alone; costs the paper a concrete, currently well-written
+  motivating detail.
 
 **Not applied.** No changes to `main.tex` — this document only lays out
-the finding and drafted fix text for review.
+the finding, the original drafted fix, the numeric-comparison concern
+raised after drafting it, and lower-risk alternatives, for review.
