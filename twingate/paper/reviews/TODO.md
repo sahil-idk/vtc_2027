@@ -249,24 +249,29 @@ Severity key:
 - [ ] ⚪ **C3 — Abstract's final sentence is one ~70-word run-on stacking four results**
   **Fix:** split into two sentences (see full review for the exact rewrite).
 
-- [~] 🟠 **C4 — Beyraghi/Rauf citations set up a contrast in the intro that's never paid off in Discussion** *(documented, awaiting decision)*
+- [x] ✅ **C4 — Beyraghi/Rauf citations set up a contrast in the intro that's never paid off in Discussion** *(fixed — Option F)*
   Intro: Beyraghi's calibration "assumes known tower positions, a luxury
-  public V2X datasets do not have" — foreshadows a comparison that never
-  arrives; `\cite{beyraghi2025ris}` and `\cite{rauf2026kpi}` each appear
-  exactly once, both in §I, never referenced again. §V-A closes with a
-  *different* comparison (held-out discipline vs. `teh2023dt`/
-  `partani2025qos`) instead of the one the intro set up.
+  public V2X datasets do not have" — foreshadowed a comparison that
+  never arrived; `\cite{beyraghi2025ris}` and `\cite{rauf2026kpi}` each
+  appeared exactly once, both in §I, never referenced again. Original
+  fix draft (one sentence in §V-A stating TWINGATE's MAE is "an order
+  of magnitude larger" than Beyraghi's 0.32dB) was flagged by the author
+  as handing a reviewer a ready-made "our number is worse" quote.
+  Verified the actual Beyraghi paper (arXiv 2510.09478) directly before
+  settling on a fix: confirmed known BS positions and the 5.69/0.32dB
+  figures are accurate, but found an additional uncredited nuance — the
+  0.32dB figure is a region-averaged number over 70 filtered regions
+  (outliers excluded), not a per-point no-exclusions MAE like M1.
   📄 Detailed writeup: [`C4_beyraghi_contrast_unpaid.md`](./C4_beyraghi_contrast_unpaid.md)
-  **Proposed fix (drafted, not applied):** original draft appended one
-  sentence to §V-A explicitly contrasting TWINGATE's residual MAE
-  (3.02/4.04dB) against Beyraghi's 0.32dB. Author flagged this hands a
-  reviewer a ready-made "our number is 10x worse" quote regardless of
-  the favorable reasoning behind it — writeup revised with three
-  lower-risk alternatives: (E) payoff sentence in §V-A without ever
-  stating both numbers together, (F, recommended) drop the specific
-  "5.69 to 0.32dB" figures from the §I citation itself so no numeric
-  payoff is needed anywhere, (G) drop the Beyraghi citation from this
-  contrast entirely. Seven options total in the writeup.
+  **Applied fix (Option F):** removed the specific "5.69 to 0.32dB"
+  figures from the §I citation itself; reworded to state the
+  qualitative point only (material calibration alone, given known
+  positions, substantially narrows the gap to region-averaged measured
+  coverage) plus the newly-verified region-averaging caveat. No numeric
+  anchor remains anywhere in the paper for comparison against TWINGATE's
+  own M1 figures, and no compensating sentence was needed in §V-A
+  (unchanged). Verified: `main.tex` compiles cleanly end-to-end, zero
+  errors/undefined references.
 
 - [ ] ⚪ **C5 — "Coupling" (method) vs. "Convergence" (result) terminology split never flagged as intentional**
   **Fix:** one clause at the start of §III-D noting method vs. outcome framing.

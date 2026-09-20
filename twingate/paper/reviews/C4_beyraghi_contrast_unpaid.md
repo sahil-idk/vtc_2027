@@ -1,7 +1,7 @@
 # Review Finding C4 — Beyraghi/Rauf Citations Set Up a Contrast in the Intro That's Never Paid Off in Discussion
 
-**Status:** documented, not yet applied — revised after author flagged
-numeric-comparison risk, see §5b · **Severity:** 🟠 Weakens-the-paper ·
+**Status:** ✅ fixed (Option F applied, verified against the cited
+paper's actual text first) · **Severity:** 🟠 Weakens-the-paper ·
 **Section(s) affected:** §I "Geometric fidelity" subsection (where the
 setup currently lives), §V-A "Why TWINGATE Is Physics, Not
 Curve-Fitting" (where the payoff should, but currently doesn't, land)
@@ -224,6 +224,61 @@ closure, if desired — the two are not mutually exclusive).
   point alone; costs the paper a concrete, currently well-written
   motivating detail.
 
-**Not applied.** No changes to `main.tex` — this document only lays out
-the finding, the original drafted fix, the numeric-comparison concern
-raised after drafting it, and lower-risk alternatives, for review.
+## 8. Verification against the cited paper's actual text
+
+Before applying Option F, read the actual Beyraghi et al. paper
+(arXiv 2510.09478, "Site-Specific RIS Deployment in Cellular Networks
+via Calibrated Ray Tracing") directly rather than trusting the bib
+entry's summary alone. Findings:
+
+- The paper's real subject is **RIS deployment optimization**; material
+  calibration is the first of four listed contributions, a supporting
+  step toward a usable digital twin, not the paper's own headline
+  result.
+- Base-station positions are confirmed **known and given by the MNO**
+  ("BS coordinates... determined by the MNO," 12 BSs, UK commercial
+  deployment) — the "known tower positions" framing already in
+  `main.tex` is accurate, not an assumption on TWINGATE's part.
+- The numbers are correctly cited: mean RSRP error **$-5.69$dB
+  $\to -0.32$dB** after calibration (std dev 5.71$\to$2.57dB).
+- **New nuance found, not previously in the review:** the $-0.32$dB
+  figure is computed over **70 representative $10\times10$m regions,
+  each aggregating $\geq$20 samples**, with outlier regions and
+  "persistent mismatch" areas explicitly excluded before scoring. It is
+  a region-averaged, filtered number, not a per-point, no-exclusions
+  MAE over an entire held-out day the way TWINGATE's M1 is measured.
+  This is a second, independent reason the two numbers aren't directly
+  comparable, beyond the known/unknown-geometry point already in the
+  paper's text — and it's a legitimate citable fact about the source
+  paper, not spin.
+
+This second caveat directly strengthens Option F's qualitative rewrite
+(§5b) — "region-averaged measured coverage" is now stated as a fact
+verified from the source, not just a hedge.
+
+## 9. Resolution
+
+**Applied: Option F.** `main.tex` §I "Geometric fidelity" now reads:
+
+> Rauf et al.~\cite{rauf2026kpi} similarly identify material mismatch
+> and near-field effects as primary Sionna~RT error sources, and
+> city-scale calibration~\cite{beyraghi2025ris} shows that, given known
+> base-station coordinates, optimizing material properties alone can
+> substantially narrow the gap between simulated and region-averaged
+> measured coverage. That result, however, assumes known tower
+> positions---a luxury public V2X datasets do not have. Recovering
+> accurate tower geometry from RSRP alone is therefore a prerequisite,
+> not an optional refinement.
+
+No specific numbers ("5.69 to 0.32dB") remain in this sentence, so
+there is no numeric anchor anywhere in the paper for a reviewer to
+compare against TWINGATE's own M1 figures, and — per Option F's design
+— no compensating sentence was needed in §V-A; that section is
+unchanged. The citation and its motivating logic (material calibration
+alone presupposes known geometry; TWINGATE doesn't have that luxury)
+are both preserved, now with an added, source-verified nuance
+(region-averaged vs. per-point measurement) that makes the "these
+numbers aren't comparable" case even stronger without ever stating a
+number comparison. Verified: `main.tex` compiles cleanly end-to-end
+(pdflatex+bibtex+2×pdflatex), zero errors, zero undefined
+references/citations. No numbers, tables, or other sections touched.
