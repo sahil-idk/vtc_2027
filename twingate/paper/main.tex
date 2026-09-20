@@ -119,11 +119,13 @@ median positional errors of 50--150\,m in dense urban
 areas~\cite{del2017survey}, which makes them poor scene
 initializations. Rauf~et~al.~\cite{rauf2026kpi} similarly identify
 material mismatch and near-field effects as primary Sionna~RT error
-sources, and city-scale calibration~\cite{beyraghi2025ris} reduces
-RSRP error from 5.69 to 0.32\,dB through material optimization alone,
-but that result assumes known tower positions, a luxury public V2X
-datasets do not have. Recovering accurate tower geometry from RSRP
-alone is therefore a prerequisite, not an optional refinement.
+sources, and city-scale calibration~\cite{beyraghi2025ris} shows that,
+given known base-station coordinates, optimizing material properties
+alone can substantially narrow the gap between simulated and
+region-averaged measured coverage. That result, however, assumes known
+tower positions---a luxury public V2X datasets do not have. Recovering
+accurate tower geometry from RSRP alone is therefore a prerequisite,
+not an optional refinement.
 
 \subsection*{Functional coverage accuracy}
 Even after cleaning the measurements and recovering the geometry, the
