@@ -242,9 +242,19 @@ Severity key:
   **Fix:** one bridging sentence at the start of §III mapping each layer to
   its gate.
 
-- [ ] 🟠 **C2 — "each validated on a held-out temporal split" overclaims**
-  "Validated" implies a pass; neither operator cleanly passes all three.
-  **Fix:** change to "each computed on a held-out temporal split."
+- [~] 🟠 **C2 — "each validated on a held-out temporal split" overclaims** *(documented, awaiting decision)*
+  "Validated" implies a pass; neither operator cleanly passes all three
+  ($C=0.00$ for Operator~1; M1 isn't a pass/fail metric post-M7 fix).
+  Direct companion to M6 (already fixed) — M6's resolution note
+  explicitly left this word-choice question open for this second,
+  independent location.
+  📄 Detailed writeup: [`C2_validated_overclaim.md`](./C2_validated_overclaim.md)
+  **Proposed fix (drafted, not applied):** Option A — "computed"
+  (original suggestion); Option B (recommended) — "evaluated," which
+  matches the paper's own already-established wording for this exact
+  three-metric claim elsewhere (§IV-B, Conclusion: "TWINGATE evaluates
+  all three readiness criteria..."). Full revised paragraphs for both
+  in the writeup.
 
 - [ ] ⚪ **C3 — Abstract's final sentence is one ~70-word run-on stacking four results**
   **Fix:** split into two sentences (see full review for the exact rewrite).
