@@ -255,6 +255,15 @@ expanded to show each pipeline's internal stages: gap detection and
 classification for Gate~1, scene construction and 4D optimization for
 Gate~2. Both pipelines run in parallel on the same RSRP logs, neither
 told what the other found until the final convergence check.
+Concretely, the three readiness layers introduced in
+Section~\ref{sec:intro} map onto this architecture as follows: Gate~1
+alone produces the measurement-quality metric $C$; Gate~2 alone
+produces the geometric-fidelity metric M1; and the
+functional-coverage-accuracy metric M2 is computed jointly, by
+evaluating Gate~2's calibrated predictions against the dead-zone
+locations Gate~1 identifies---already a first, narrower instance of the
+twin-gate cross-checking developed further in
+Section~\ref{sec:coupling}.
 
 \begin{figure*}[t]
 \centering
