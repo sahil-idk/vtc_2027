@@ -302,8 +302,17 @@ Severity key:
   (unchanged). Verified: `main.tex` compiles cleanly end-to-end, zero
   errors/undefined references.
 
-- [ ] ⚪ **C5 — "Coupling" (method) vs. "Convergence" (result) terminology split never flagged as intentional**
-  **Fix:** one clause at the start of §III-D noting method vs. outcome framing.
+- [~] ⚪ **C5 — "Coupling" (method) vs. "Convergence" (result) terminology split never flagged as intentional** *(documented, awaiting decision)*
+  §III-D (Method) is titled "Twin-Gate Coupling"; §IV-B (Results) is
+  titled "Twin-Gate Convergence." Nothing states these name the same
+  underlying mechanism (design vs. measured outcome) — a reader could
+  wonder if they're distinct concepts.
+  📄 Detailed writeup: [`C5_coupling_convergence_terminology.md`](./C5_coupling_convergence_terminology.md)
+  **Proposed fix (drafted, not applied):** Option A (recommended) — two
+  sentences added to §III-D's opening paragraph explicitly bridging the
+  two terms; Option B — a lighter "(Method)" parenthetical on the
+  §III-D section title instead; Option C — both. Full revised passages
+  for all three in the writeup.
 
 - [ ] ⚪ **C6 — §V-A re-derives numbers already stated in §IV-B before making its new argument**
   The falsifiability framing is genuinely new; the numeric recap before it
