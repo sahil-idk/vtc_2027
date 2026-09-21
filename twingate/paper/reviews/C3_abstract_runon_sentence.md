@@ -1,6 +1,6 @@
 # Review Finding C3 — Abstract's Final Sentence Is One ~70-Word Run-On Stacking Four Results
 
-**Status:** documented, not yet applied · **Severity:** ⚪ Polish ·
+**Status:** ✅ fixed (Option B applied) · **Severity:** ⚪ Polish ·
 **Section(s) affected:** Abstract (final sentence)
 
 ---
@@ -101,6 +101,23 @@ estate to leave in its current form.
   (framing, the two-signal cross-check description, the twin-gate
   coupling explanation) aren't run-ons and aren't in scope for C3.
 
-**Not applied.** No changes to `main.tex` — this document only lays out
-the finding and drafted fix text (Options A and B, full passages) for
-review.
+## 5. Resolution
+
+**Applied: Option B.** The Abstract's closing sentence is now split
+into two sentences, grouped by the single-gate-vs-joint-metric
+distinction:
+
+> Applied to a real two-operator LTE drive-test corpus from Berlin,
+> TWINGATE reaches a dead-zone completeness of $C=0.80$ and reduces
+> RSRP error to 3.02\,dB and 4.04\,dB across the two operators (well
+> within the 3GPP~TS~36.133 accuracy bound). It also independently
+> flags the same dead zone with F1\,$=$\,0.77 and recovers 86.5\,\% of
+> a measured 30.4\,dB coverage collapse purely from ray-traced
+> geometry, showing that DT readiness can be established directly from
+> drive-test data, with no ground-truth infrastructure needed.
+
+No numbers or qualifiers changed — only the sentence boundary and the
+added "It also" transition. Verified: `main.tex` compiles cleanly
+end-to-end (pdflatex+bibtex+2×pdflatex), zero errors, zero undefined
+references. No other part of the Abstract or any other section
+touched.
