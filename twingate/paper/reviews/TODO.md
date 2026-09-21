@@ -265,19 +265,18 @@ Severity key:
   sentence (M6's scope) left untouched. Verified: `main.tex` compiles
   cleanly end-to-end, zero errors/undefined references.
 
-- [~] ⚪ **C3 — Abstract's final sentence is one ~70-word run-on stacking four results** *(documented, awaiting decision)*
+- [x] ✅ **C3 — Abstract's final sentence is one ~70-word run-on stacking four results** *(fixed)*
   Five coordinated clauses ($C=0.80$; RSRP 3.02/4.04dB; F1$=0.77$; 86.5%
-  recovery; a closing "showing that..." payoff) chained into one ~73-word
-  sentence closing the Abstract — the highest-traffic, least-carefully-read
-  sentence in the paper.
+  recovery; a closing "showing that..." payoff) were chained into one
+  ~73-word sentence closing the Abstract — the highest-traffic,
+  least-carefully-read sentence in the paper.
   📄 Detailed writeup: [`C3_abstract_runon_sentence.md`](./C3_abstract_runon_sentence.md)
-  **Proposed fix (drafted, not applied):** Option A — split off the
-  closing takeaway clause as its own short sentence (57/19-word split);
-  Option B (recommended) — split the four results into two natural
-  pairs (single-gate results vs. joint/cross-gate results), keeping the
-  takeaway attached to the joint-evidence sentence, echoing the
-  already-applied C7 thesis fix (~38/40-word split). Full revised
-  passages for both in the writeup.
+  **Applied fix (Option B):** split into two sentences grouped by the
+  single-gate-vs-joint-metric distinction ($C$/M1 in one sentence; F1
+  detection and the 86.5% blind-recovery figure plus the takeaway in
+  the other), echoing the already-applied C7 thesis fix. No numbers or
+  qualifiers changed. Verified: `main.tex` compiles cleanly end-to-end,
+  zero errors/undefined references.
 
 - [x] ✅ **C4 — Beyraghi/Rauf citations set up a contrast in the intro that's never paid off in Discussion** *(fixed — Option F)*
   Intro: Beyraghi's calibration "assumes known tower positions, a luxury
