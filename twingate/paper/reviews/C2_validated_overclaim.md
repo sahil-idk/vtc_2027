@@ -1,6 +1,6 @@
 # Review Finding C2 — "Each Validated on a Held-Out Temporal Split" Overclaims
 
-**Status:** documented, not yet applied · **Severity:** 🟠 Weakens-the-paper ·
+**Status:** ✅ fixed (Option B applied) · **Severity:** 🟠 Weakens-the-paper ·
 **Section(s) affected:** §I "Contributions," bullet 1
 
 ---
@@ -131,6 +131,23 @@ analogous to C4's numeric-comparison risk here.
   result (the twin-gate agreement), not the three-metrics-jointly claim
   bullet 1 makes; it doesn't have the same overclaim problem.
 
-**Not applied.** No changes to `main.tex` — this document only lays out
-the finding and drafted fix text (Options A and B, full paragraphs) for
-review.
+## 7. Resolution
+
+**Applied: Option B.** `main.tex` §I Contributions bullet 1 now reads:
+
+> Development of a DT readiness framework: three quantitative
+> metrics ($C$, M1, M2), drawn from two independent evidence
+> sources, empirical recurrence and physics-based ray tracing,
+> that jointly assess measurement quality, geometric fidelity, and
+> functional coverage accuracy, each evaluated on a held-out
+> temporal split.
+
+This matches the wording already used for the identical three-metric
+claim in §IV-B ("...all evaluated exclusively on the held-out day~3")
+and the Conclusion ("TWINGATE evaluates all three readiness
+criteria..."), so the fix also removes an internal inconsistency, not
+just the overclaim. The Conclusion's own "constructed and validated
+end-to-end" sentence (M6's scope) was left untouched, per §6. Verified:
+`main.tex` compiles cleanly end-to-end (pdflatex+bibtex+2×pdflatex),
+zero errors, zero undefined references. No numbers, tables, or other
+sections touched.
