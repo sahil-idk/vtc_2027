@@ -1,6 +1,6 @@
 # Review Finding C1 — "Layers" (Intro) vs. "Gates" (Method) Vocabulary Never Explicitly Reconciled
 
-**Status:** documented, not yet applied · **Severity:** ⚪ Polish ·
+**Status:** ✅ fixed (Option A applied) · **Severity:** ⚪ Polish ·
 **Section(s) affected:** §III "TWINGATE Framework" (where the bridge
 should be added), §I "Introduction" (where the vocabulary this bridges
 originates)
@@ -152,6 +152,24 @@ surfacing, not just plumbing.
   does its own job (describing what the figure shows) and doesn't need
   to duplicate the Introduction's layer vocabulary on top of that.
 
-**Not applied.** No changes to `main.tex` — this document only lays out
-the finding, the M2-is-already-joint detail verified against the actual
-text, and drafted fix text (Options A/B/C, full paragraphs) for review.
+## 6. Resolution
+
+**Applied: Option A.** `main.tex` §III's opening paragraph now ends
+with the mapping sentence appended (nothing removed — the original
+paragraph, including its figure reference, is unchanged):
+
+> ...Both pipelines run in parallel on the same RSRP logs, neither told
+> what the other found until the final convergence check. Concretely,
+> the three readiness layers introduced in Section~\ref{sec:intro} map
+> onto this architecture as follows: Gate~1 alone produces the
+> measurement-quality metric $C$; Gate~2 alone produces the
+> geometric-fidelity metric M1; and the functional-coverage-accuracy
+> metric M2 is computed jointly, by evaluating Gate~2's calibrated
+> predictions against the dead-zone locations Gate~1
+> identifies---already a first, narrower instance of the twin-gate
+> cross-checking developed further in Section~\ref{sec:coupling}.
+
+Figure~\ref{fig:architecture} and its caption are completely untouched,
+per §5's "what NOT to change." Verified: `main.tex` compiles cleanly
+end-to-end (pdflatex+bibtex+2×pdflatex), zero errors, zero undefined
+references. No numbers, tables, or other sections touched.
