@@ -236,11 +236,19 @@ Severity key:
 
 ## Curation (how it reads)
 
-- [ ] ⚪ **C1 — "Layers" (intro) vs. "Gates" (method) vocabulary never explicitly reconciled**
+- [~] ⚪ **C1 — "Layers" (intro) vs. "Gates" (method) vocabulary never explicitly reconciled** *(documented, awaiting decision)*
   Reader has to infer the C/M1/M2 ↔ Gate1/Gate2 mapping from a single
-  Contributions bullet.
-  **Fix:** one bridging sentence at the start of §III mapping each layer to
-  its gate.
+  Contributions bullet. Verified against the text: $C$ and M1 are each
+  single-gate metrics, but M2 is already a *joint* metric (Gate~2's
+  predictions scored against Gate~1's TypeB labels) — a detail the
+  paper never surfaces before the twin-gate convergence result.
+  📄 Detailed writeup: [`C1_layers_gates_vocabulary.md`](./C1_layers_gates_vocabulary.md)
+  **Proposed fix (drafted, not applied):** Option A (recommended) — one
+  sentence at the end of §III's opening paragraph stating the mapping
+  explicitly, including the M2-is-joint detail, foreshadowing §IV-B's
+  twin-gate convergence; Option B — a lighter forward-pointer added to
+  §I bullet 1 instead; Option C — both. Full revised paragraphs for all
+  three in the writeup.
 
 - [x] ✅ **C2 — "each validated on a held-out temporal split" overclaims** *(fixed)*
   "Validated" implied a pass; neither operator cleanly passed all three
